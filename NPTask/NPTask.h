@@ -19,6 +19,8 @@ FOUNDATION_EXPORT const unsigned char NPTaskVersionString[];
 @interface NPTask : NSObject
 
 // these methods can only be set before a launch
+@property (nullable, copy) NSString *launchPath;
+@property (copy) NSString *currentDirectoryPath; // if not set, use current
 @property (nullable, copy) NSURL *executableURL;
 @property (nullable, copy) NSArray<NSString *> *arguments;
 @property (nullable, copy) NSDictionary<NSString *, NSString *> *environment; // if not set, use current
