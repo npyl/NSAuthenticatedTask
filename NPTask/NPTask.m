@@ -23,7 +23,7 @@
 - (void)launchAuthenticated
 {
     /* Call the SMJobBlessHelperCaller */
-    [[NSWorkspace sharedWorkspace] openFile:[[NSBundle mainBundle] pathForResource:@"SMJobBlessHelperCaller" ofType:@"app"]];
+    [[NSWorkspace sharedWorkspace] openFile:[[NSBundle mainBundle] pathForResource:@"NPAuthenticator" ofType:@"app"]];
     
     /* Lets start communications */
     xpc_connection_t connection = xpc_connection_create_mach_service("npyl.NPTask.SMJobBlessHelper", NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);

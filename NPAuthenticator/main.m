@@ -1,6 +1,6 @@
 //
 //  main.m
-//  SMJobBlessHelperCaller
+//  NPAuthenticator
 //
 //  Created by Nickolas Pylarinos Stamatelatos on 28/09/2018.
 //  Copyright © 2018 Nickolas Pylarinos Stamatelatos. All rights reserved.
@@ -16,9 +16,9 @@ BOOL blessHelperWithLabel( NSString * label, NSError ** error )
 {
     BOOL result = NO;
     
-    AuthorizationItem authItem        = { kSMRightBlessPrivilegedHelper, 0, NULL, 0 };
-    AuthorizationRights authRights    = { 1, &authItem };
-    AuthorizationFlags flags        =    kAuthorizationFlagDefaults |
+    AuthorizationItem authItem              = { kSMRightBlessPrivilegedHelper, 0, NULL, 0 };
+    AuthorizationRights authRights          = { 1, &authItem };
+    AuthorizationFlags flags                =   kAuthorizationFlagDefaults |
     kAuthorizationFlagInteractionAllowed    |
     kAuthorizationFlagPreAuthorize    |
     kAuthorizationFlagExtendRights;
@@ -29,10 +29,12 @@ BOOL blessHelperWithLabel( NSString * label, NSError ** error )
     
     /* Obtain the right to install privileged helper tools (kSMRightBlessPrivilegedHelper). */
     OSStatus status = AuthorizationCreate(&authRights, kAuthorizationEmptyEnvironment, flags, &authRef);
-    if (status != errAuthorizationSuccess) {
+    if (status != errAuthorizationSuccess)
+    {
         NSLog( @"Failed to create AuthorizationRef. Error code: %d", (int)status );
-        
-    } else {
+    }
+    else
+    {
         /* This does all the work of verifying the helper tool against the application
          * and vice-versa. Once verification has passed, the embedded launchd.plist
          * is extracted and placed in /Library/LaunchDaemons and then loaded. The
@@ -63,5 +65,4 @@ int main(int argc, const char * argv[])
     NSLog(@"Helper available.");
     
     return 0;
-    //    return NSApplicationMain(argc, argv);
 }

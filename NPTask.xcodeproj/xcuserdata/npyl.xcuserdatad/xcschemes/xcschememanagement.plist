@@ -4,25 +4,43 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>NPAuthenticator.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
 		<key>NPTask.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>1</integer>
-		</dict>
-		<key>SMJobBlessHelper.xcscheme</key>
-		<dict>
-			<key>orderHint</key>
-			<integer>2</integer>
-		</dict>
-		<key>SMJobBlessHelperCaller.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>SMJobBlessHelper.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>tester.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>3</integer>
+			<integer>2</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>092F04AF215E5C8B00869C20</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>092F04C4215E5C8F00869C20</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>092F04CF215E5C8F00869C20</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
