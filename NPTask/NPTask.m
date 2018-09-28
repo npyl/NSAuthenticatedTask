@@ -10,6 +10,17 @@
 
 @implementation NPTask
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        _launchPath = @"not_set";
+        _currentDirectoryPath = @"not_set";
+    }
+    return self;
+}
+
 - (void)interrupt {}
 - (void)terminate {}
 
@@ -59,12 +70,43 @@
     
     xpc_connection_resume(connection);
 
+//    @property (nullable, copy) NSString *launchPath;
+//    @property (copy) NSString *currentDirectoryPath; // if not set, use current
+//    @property (nullable, copy) NSURL *executableURL;
+//    @property (nullable, copy) NSArray<NSString *> *arguments;
+//    @property (nullable, copy) NSDictionary<NSString *, NSString *> *environment; // if not set, use current
+//    @property (nullable, copy) NSURL *currentDirectoryURL;
+
+    
     /*
-     * Send a dummy-message to start the whole thing up
+     * Send message with launchPath and currentLaunchPath
      */
-    xpc_object_t initialMessage = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(initialMessage, "dummy", "dummy");
-    xpc_connection_send_message(connection, initialMessage);
+    xpc_object_t paths = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(paths, "launchPath", _launchPath.UTF8String);
+    xpc_dictionary_set_string(paths, "currentDirectoryPath", _currentDirectoryPath.UTF8String);
+    xpc_connection_send_message(connection, paths);
+    
+    /*
+     * Send the arguments
+     */
+    xpc_object_t arguments = xpc_array_create(NULL, 0);
+    for (NSString *str in _arguments)
+    {
+        static int i = 0;
+        xpc_array_set_string(arguments, i++, str.UTF8String);
+    }
+    xpc_connection_send_message(connection, arguments);
+    
+    /*
+     * Send environment
+     */
+    xpc_object_t environment = xpc_dictionary_create(NULL, NULL, 0);
+    for (NSString *key in [_environment keyEnumerator])
+    {
+        NSString *value = [_environment objectForKey:key];
+        xpc_dictionary_set_string(environment, key.UTF8String, value.UTF8String);
+    }
+    xpc_connection_send_message(connection, environment);
 }
 
 @end

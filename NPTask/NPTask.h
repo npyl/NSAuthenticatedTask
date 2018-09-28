@@ -31,14 +31,6 @@ FOUNDATION_EXPORT const unsigned char NPTaskVersionString[];
 @property (nullable, retain) id standardOutput;
 @property (nullable, retain) id standardError;
 
-- (void)interrupt; // Not always possible. Sends SIGINT.
-- (void)terminate; // Not always possible. Sends SIGTERM.
-
-- (BOOL)suspend;
-- (BOOL)resume;
-
-- (void)waitUntilExit;  // poll the runLoop in defaultMode until task completes
-
 // status
 @property (readonly) int processIdentifier;
 @property (readonly, getter=isRunning) BOOL running;
@@ -47,6 +39,14 @@ FOUNDATION_EXPORT const unsigned char NPTaskVersionString[];
 @property (readonly) NSTaskTerminationReason terminationReason;
 
 @property (nullable, copy) void (^terminationHandler)(NSTask *);
+
+- (void)interrupt; // Not always possible. Sends SIGINT.
+- (void)terminate; // Not always possible. Sends SIGTERM.
+
+- (BOOL)suspend;
+- (BOOL)resume;
+
+- (void)waitUntilExit;  // poll the runLoop in defaultMode until task completes
 
 - (void)launch;
 - (void)launchAuthenticated;    /* our-addon */

@@ -12,12 +12,6 @@
 
 #define SMJOBBLESSHELPER_IDENTIFIER "npyl.NPTask.SMJobBlessHelper"
 
-#ifdef DEBUG_MODE
-#define DBG_LOG(str) syslog(LOG_NOTICE, str)
-#else
-#define DBG_LOG(str)
-#endif
-
 @interface SMJobBlessHelper : NSObject
 {
     xpc_connection_t connection_handle;
@@ -55,6 +49,16 @@
         {
             syslog(LOG_NOTICE, "Got unexpected (and unsupported) XPC ERROR");
         }
+    }
+    else
+    {
+        /*
+         * Get first round of info...
+         */
+        const char *launchPath = xpc_dictionary_get_string(event, "launchPath");
+        const char *currentDirectoryPath = xpc_dictionary_get_string(event, "currentDirectoryPath");
+        
+
     }
 }
 
@@ -100,7 +104,7 @@
 
 int main(int argc, const char *argv[])
 {
-    NSLog(@"HERE!");
+    syslog(LOG_NOTICE, "NPAuthenticate v%f | npyl", 0.1);
     
     SMJobBlessHelper *helper = [[SMJobBlessHelper alloc] init];
     if (!helper)

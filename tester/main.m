@@ -15,6 +15,8 @@ int main(int argc, const char * argv[])
     task.launchPath = @"/bin/echo";
     task.arguments = @[@"hello", @"konitsua"];
     [task launchAuthenticated];
-    
+
+    [task waitUntilExit];
+
     return 0;
 }
