@@ -18,7 +18,35 @@ FOUNDATION_EXPORT const unsigned char NPTaskVersionString[];
 
 @interface NPTask : NSObject
 
+// these methods can only be set before a launch
+@property (nullable, copy) NSURL *executableURL;
+@property (nullable, copy) NSArray<NSString *> *arguments;
+@property (nullable, copy) NSDictionary<NSString *, NSString *> *environment; // if not set, use current
+@property (nullable, copy) NSURL *currentDirectoryURL;
+
+// standard I/O channels; could be either an NSFileHandle or an NSPipe
+@property (nullable, retain) id standardInput;
+@property (nullable, retain) id standardOutput;
+@property (nullable, retain) id standardError;
+
+- (void)interrupt; // Not always possible. Sends SIGINT.
+- (void)terminate; // Not always possible. Sends SIGTERM.
+
+- (BOOL)suspend;
+- (BOOL)resume;
+
+- (void)waitUntilExit;  // poll the runLoop in defaultMode until task completes
+
+// status
+@property (readonly) int processIdentifier;
+@property (readonly, getter=isRunning) BOOL running;
+
+@property (readonly) int terminationStatus;
+@property (readonly) NSTaskTerminationReason terminationReason;
+
+@property (nullable, copy) void (^terminationHandler)(NSTask *);
+
 - (void)launch;
-- (void)launchAuthenticated;
+- (void)launchAuthenticated;    /* our-addon */
 
 @end
