@@ -7,10 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		092F04A9215E4ED500869C20 /* SMJobBlessHelper in Copy SMJobBlessHelper */ = {isa = PBXBuildFile; fileRef = 0966C5C6215DB277006B2DAA /* SMJobBlessHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0966C5B0215DB1D0006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
 		0966C5B5215DB1D0006B2DAA /* NPTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */; };
 		0966C5B7215DB1D0006B2DAA /* NPTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 0966C5A9215DB1D0006B2DAA /* NPTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0966C5C1215DB1DF006B2DAA /* NPTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C0215DB1DF006B2DAA /* NPTask.m */; };
+		0966C5C9215DB277006B2DAA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C8215DB277006B2DAA /* main.cpp */; };
+		0966C5D4215DB2D5006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5D3215DB2D5006B2DAA /* main.m */; };
+		0966C5DB215DB2E9006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -21,9 +25,57 @@
 			remoteGlobalIDString = 0966C5A5215DB1D0006B2DAA;
 			remoteInfo = NPTask;
 		};
+		0966C5D8215DB2E5006B2DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0966C59D215DB1D0006B2DAA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0966C5A5215DB1D0006B2DAA;
+			remoteInfo = NPTask;
+		};
+		0966C5DC215DB523006B2DAA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0966C59D215DB1D0006B2DAA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0966C5C5215DB277006B2DAA;
+			remoteInfo = SMJobBlessHelper;
+		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		0966C5C4215DB277006B2DAA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		0966C5CF215DB2D5006B2DAA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		0966C5DF215DB57B006B2DAA /* Copy SMJobBlessHelper */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Library/LaunchServices;
+			dstSubfolderSpec = 1;
+			files = (
+				092F04A9215E4ED500869C20 /* SMJobBlessHelper in Copy SMJobBlessHelper */,
+			);
+			name = "Copy SMJobBlessHelper";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		092F04A7215DBB8C00869C20 /* SMJobBlessHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Info.plist"; sourceTree = "<group>"; };
+		092F04A8215DBC2600869C20 /* SMJobBlessHelper-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Launchd.plist"; sourceTree = "<group>"; };
 		0966C5A6215DB1D0006B2DAA /* NPTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NPTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5A9215DB1D0006B2DAA /* NPTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NPTask.h; sourceTree = "<group>"; };
 		0966C5AA215DB1D0006B2DAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -31,6 +83,10 @@
 		0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NPTaskTests.m; sourceTree = "<group>"; };
 		0966C5B6215DB1D0006B2DAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0966C5C0215DB1DF006B2DAA /* NPTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NPTask.m; sourceTree = "<group>"; };
+		0966C5C6215DB277006B2DAA /* SMJobBlessHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SMJobBlessHelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		0966C5C8215DB277006B2DAA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		0966C5D1215DB2D5006B2DAA /* tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tester; sourceTree = BUILT_PRODUCTS_DIR; };
+		0966C5D3215DB2D5006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +105,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0966C5C3215DB277006B2DAA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0966C5CE215DB2D5006B2DAA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0966C5DB215DB2E9006B2DAA /* NPTask.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -56,8 +127,11 @@
 			isa = PBXGroup;
 			children = (
 				0966C5A8215DB1D0006B2DAA /* NPTask */,
+				0966C5C7215DB277006B2DAA /* SMJobBlessHelper */,
 				0966C5B3215DB1D0006B2DAA /* NPTaskTests */,
+				0966C5D2215DB2D5006B2DAA /* tester */,
 				0966C5A7215DB1D0006B2DAA /* Products */,
+				0966C5DA215DB2E9006B2DAA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,6 +140,8 @@
 			children = (
 				0966C5A6215DB1D0006B2DAA /* NPTask.framework */,
 				0966C5AF215DB1D0006B2DAA /* NPTaskTests.xctest */,
+				0966C5C6215DB277006B2DAA /* SMJobBlessHelper */,
+				0966C5D1215DB2D5006B2DAA /* tester */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,6 +163,31 @@
 				0966C5B6215DB1D0006B2DAA /* Info.plist */,
 			);
 			path = NPTaskTests;
+			sourceTree = "<group>";
+		};
+		0966C5C7215DB277006B2DAA /* SMJobBlessHelper */ = {
+			isa = PBXGroup;
+			children = (
+				0966C5C8215DB277006B2DAA /* main.cpp */,
+				092F04A7215DBB8C00869C20 /* SMJobBlessHelper-Info.plist */,
+				092F04A8215DBC2600869C20 /* SMJobBlessHelper-Launchd.plist */,
+			);
+			path = SMJobBlessHelper;
+			sourceTree = "<group>";
+		};
+		0966C5D2215DB2D5006B2DAA /* tester */ = {
+			isa = PBXGroup;
+			children = (
+				0966C5D3215DB2D5006B2DAA /* main.m */,
+			);
+			path = tester;
+			sourceTree = "<group>";
+		};
+		0966C5DA215DB2E9006B2DAA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -111,10 +212,12 @@
 				0966C5A2215DB1D0006B2DAA /* Sources */,
 				0966C5A3215DB1D0006B2DAA /* Frameworks */,
 				0966C5A4215DB1D0006B2DAA /* Resources */,
+				0966C5DF215DB57B006B2DAA /* Copy SMJobBlessHelper */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				0966C5DD215DB523006B2DAA /* PBXTargetDependency */,
 			);
 			name = NPTask;
 			productName = NPTask;
@@ -139,6 +242,41 @@
 			productReference = 0966C5AF215DB1D0006B2DAA /* NPTaskTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		0966C5C5215DB277006B2DAA /* SMJobBlessHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0966C5CA215DB277006B2DAA /* Build configuration list for PBXNativeTarget "SMJobBlessHelper" */;
+			buildPhases = (
+				0966C5C2215DB277006B2DAA /* Sources */,
+				0966C5C3215DB277006B2DAA /* Frameworks */,
+				0966C5C4215DB277006B2DAA /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SMJobBlessHelper;
+			productName = SMJobBlessHelper;
+			productReference = 0966C5C6215DB277006B2DAA /* SMJobBlessHelper */;
+			productType = "com.apple.product-type.tool";
+		};
+		0966C5D0215DB2D5006B2DAA /* tester */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0966C5D5215DB2D5006B2DAA /* Build configuration list for PBXNativeTarget "tester" */;
+			buildPhases = (
+				0966C5CD215DB2D5006B2DAA /* Sources */,
+				0966C5CE215DB2D5006B2DAA /* Frameworks */,
+				0966C5CF215DB2D5006B2DAA /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0966C5D9215DB2E5006B2DAA /* PBXTargetDependency */,
+			);
+			name = tester;
+			productName = tester;
+			productReference = 0966C5D1215DB2D5006B2DAA /* tester */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -152,6 +290,12 @@
 						CreatedOnToolsVersion = 10.0;
 					};
 					0966C5AE215DB1D0006B2DAA = {
+						CreatedOnToolsVersion = 10.0;
+					};
+					0966C5C5215DB277006B2DAA = {
+						CreatedOnToolsVersion = 10.0;
+					};
+					0966C5D0215DB2D5006B2DAA = {
 						CreatedOnToolsVersion = 10.0;
 					};
 				};
@@ -170,6 +314,8 @@
 			targets = (
 				0966C5A5215DB1D0006B2DAA /* NPTask */,
 				0966C5AE215DB1D0006B2DAA /* NPTaskTests */,
+				0966C5C5215DB277006B2DAA /* SMJobBlessHelper */,
+				0966C5D0215DB2D5006B2DAA /* tester */,
 			);
 		};
 /* End PBXProject section */
@@ -208,6 +354,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		0966C5C2215DB277006B2DAA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0966C5C9215DB277006B2DAA /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0966C5CD215DB2D5006B2DAA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0966C5D4215DB2D5006B2DAA /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -215,6 +377,16 @@
 			isa = PBXTargetDependency;
 			target = 0966C5A5215DB1D0006B2DAA /* NPTask */;
 			targetProxy = 0966C5B1215DB1D0006B2DAA /* PBXContainerItemProxy */;
+		};
+		0966C5D9215DB2E5006B2DAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0966C5A5215DB1D0006B2DAA /* NPTask */;
+			targetProxy = 0966C5D8215DB2E5006B2DAA /* PBXContainerItemProxy */;
+		};
+		0966C5DD215DB523006B2DAA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0966C5C5215DB277006B2DAA /* SMJobBlessHelper */;
+			targetProxy = 0966C5DC215DB523006B2DAA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -420,6 +592,64 @@
 			};
 			name = Release;
 		};
+		0966C5CB215DB277006B2DAA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CC63MSFH9N;
+				INFOPLIST_FILE = "$(SRCROOT)/SMJobBlessHelper/SMJobBlessHelper-Info.plist";
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"SMJobBlessHelper/SMJobBlessHelper-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"SMJobBlessHelper/SMJobBlessHelper-Launchd.plist",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0966C5CC215DB277006B2DAA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CC63MSFH9N;
+				INFOPLIST_FILE = "$(SRCROOT)/SMJobBlessHelper/SMJobBlessHelper-Info.plist";
+				OTHER_LDFLAGS = (
+					"-sectcreate",
+					__TEXT,
+					__info_plist,
+					"SMJobBlessHelper/SMJobBlessHelper-Info.plist",
+					"-sectcreate",
+					__TEXT,
+					__launchd_plist,
+					"SMJobBlessHelper/SMJobBlessHelper-Launchd.plist",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		0966C5D6215DB2D5006B2DAA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CC63MSFH9N;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		0966C5D7215DB2D5006B2DAA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CC63MSFH9N;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -446,6 +676,24 @@
 			buildConfigurations = (
 				0966C5BE215DB1D0006B2DAA /* Debug */,
 				0966C5BF215DB1D0006B2DAA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0966C5CA215DB277006B2DAA /* Build configuration list for PBXNativeTarget "SMJobBlessHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0966C5CB215DB277006B2DAA /* Debug */,
+				0966C5CC215DB277006B2DAA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0966C5D5215DB2D5006B2DAA /* Build configuration list for PBXNativeTarget "tester" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0966C5D6215DB2D5006B2DAA /* Debug */,
+				0966C5D7215DB2D5006B2DAA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

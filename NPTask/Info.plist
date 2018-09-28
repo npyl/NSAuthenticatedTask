@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>SMPrivilegedExecutables</key>
+	<dict>
+		<key>npyl.NPTask.SMJobBlessHelper</key>
+		<string>identifier &amp;quot;org.npyl.EnhanceDiskUtility.SMJobBlessHelper&amp;quot; and anchor apple generic and certificate leaf[subject.CN] = &amp;quot;Mac Developer: n.pylarinos@hotmail.com (C674784ZBL)&amp;quot; and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
