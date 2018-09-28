@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		092F04A9215E4ED500869C20 /* SMJobBlessHelper in Copy SMJobBlessHelper */ = {isa = PBXBuildFile; fileRef = 0966C5C6215DB277006B2DAA /* SMJobBlessHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		092F04A9215E4ED500869C20 /* npyl.NPTask.SMJobBlessHelper in Copy SMJobBlessHelper */ = {isa = PBXBuildFile; fileRef = 0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		092F04AB215E547700869C20 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 092F04AA215E547700869C20 /* ServiceManagement.framework */; };
 		0966C5B0215DB1D0006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
 		0966C5B5215DB1D0006B2DAA /* NPTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */; };
 		0966C5B7215DB1D0006B2DAA /* NPTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 0966C5A9215DB1D0006B2DAA /* NPTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0966C5C1215DB1DF006B2DAA /* NPTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C0215DB1DF006B2DAA /* NPTask.m */; };
-		0966C5C9215DB277006B2DAA /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C8215DB277006B2DAA /* main.cpp */; };
+		0966C5C9215DB277006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C8215DB277006B2DAA /* main.m */; };
 		0966C5D4215DB2D5006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5D3215DB2D5006B2DAA /* main.m */; };
 		0966C5DB215DB2E9006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
 /* End PBXBuildFile section */
@@ -67,7 +67,7 @@
 			dstPath = Library/LaunchServices;
 			dstSubfolderSpec = 1;
 			files = (
-				092F04A9215E4ED500869C20 /* SMJobBlessHelper in Copy SMJobBlessHelper */,
+				092F04A9215E4ED500869C20 /* npyl.NPTask.SMJobBlessHelper in Copy SMJobBlessHelper */,
 			);
 			name = "Copy SMJobBlessHelper";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -85,8 +85,8 @@
 		0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NPTaskTests.m; sourceTree = "<group>"; };
 		0966C5B6215DB1D0006B2DAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0966C5C0215DB1DF006B2DAA /* NPTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NPTask.m; sourceTree = "<group>"; };
-		0966C5C6215DB277006B2DAA /* SMJobBlessHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = SMJobBlessHelper; sourceTree = BUILT_PRODUCTS_DIR; };
-		0966C5C8215DB277006B2DAA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = npyl.NPTask.SMJobBlessHelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		0966C5C8215DB277006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0966C5D1215DB2D5006B2DAA /* tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tester; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5D3215DB2D5006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,7 +143,7 @@
 			children = (
 				0966C5A6215DB1D0006B2DAA /* NPTask.framework */,
 				0966C5AF215DB1D0006B2DAA /* NPTaskTests.xctest */,
-				0966C5C6215DB277006B2DAA /* SMJobBlessHelper */,
+				0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */,
 				0966C5D1215DB2D5006B2DAA /* tester */,
 			);
 			name = Products;
@@ -171,7 +171,7 @@
 		0966C5C7215DB277006B2DAA /* SMJobBlessHelper */ = {
 			isa = PBXGroup;
 			children = (
-				0966C5C8215DB277006B2DAA /* main.cpp */,
+				0966C5C8215DB277006B2DAA /* main.m */,
 				092F04A7215DBB8C00869C20 /* SMJobBlessHelper-Info.plist */,
 				092F04A8215DBC2600869C20 /* SMJobBlessHelper-Launchd.plist */,
 			);
@@ -260,7 +260,7 @@
 			);
 			name = SMJobBlessHelper;
 			productName = SMJobBlessHelper;
-			productReference = 0966C5C6215DB277006B2DAA /* SMJobBlessHelper */;
+			productReference = 0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */;
 			productType = "com.apple.product-type.tool";
 		};
 		0966C5D0215DB2D5006B2DAA /* tester */ = {
@@ -362,7 +362,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0966C5C9215DB277006B2DAA /* main.cpp in Sources */,
+				0966C5C9215DB277006B2DAA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,7 +612,7 @@
 					__launchd_plist,
 					"SMJobBlessHelper/SMJobBlessHelper-Launchd.plist",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = npyl.NPTask.SMJobBlessHelper;
 			};
 			name = Debug;
 		};
@@ -632,7 +632,7 @@
 					__launchd_plist,
 					"SMJobBlessHelper/SMJobBlessHelper-Launchd.plist",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = npyl.NPTask.SMJobBlessHelper;
 			};
 			name = Release;
 		};

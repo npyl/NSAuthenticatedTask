@@ -26,6 +26,8 @@ BOOL blessHelperWithLabel( NSString * label, NSError ** error )
     
     AuthorizationRef authRef = NULL;
     
+    CFErrorRef outError = nil;
+
     /* Obtain the right to install privileged helper tools (kSMRightBlessPrivilegedHelper). */
     OSStatus status = AuthorizationCreate(&authRights, kAuthorizationEmptyEnvironment, flags, &authRef);
     if (status != errAuthorizationSuccess) {
@@ -37,8 +39,11 @@ BOOL blessHelperWithLabel( NSString * label, NSError ** error )
          * is extracted and placed in /Library/LaunchDaemons and then loaded. The
          * executable is placed in /Library/PrivilegedHelperTools.
          */
-        NSLog( @"%@", label );
-        result = SMJobBless(kSMDomainSystemLaunchd, (__bridge CFStringRef)label, authRef, nil /*(CFErrorRef *)error*/);
+        NSLog(@"%@", label);
+        result = SMJobBless(kSMDomainSystemLaunchd, (__bridge CFStringRef)label, authRef, &outError);
+        
+        /* get NSError out of CFErrorRef */
+        *error = (__bridge NSError *)outError;
     }
     
     return result;
