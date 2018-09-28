@@ -35,25 +35,26 @@
 {
     xpc_type_t type = xpc_get_type(event);
     
-    if (type == XPC_TYPE_ERROR) {
-        if (event == XPC_ERROR_CONNECTION_INVALID) {
+    if (type == XPC_TYPE_ERROR)
+    {
+        if (event == XPC_ERROR_CONNECTION_INVALID)
+        {
             // The client process on the other end of the connection has either
             // crashed or cancelled the connection. After receiving this error,
             // the connection is in an invalid state, and you do not need to
             // call xpc_connection_cancel(). Just tear down any associated state
             // here.
             syslog(LOG_NOTICE, "CONNECTION_INVALID");
-        } else if (event == XPC_ERROR_TERMINATION_IMMINENT) {
+        }
+        else if (event == XPC_ERROR_TERMINATION_IMMINENT)
+        {
             // Handle per-connection termination cleanup.
             syslog(LOG_NOTICE, "CONNECTION_IMMINENT");
-        } else {
+        }
+        else
+        {
             syslog(LOG_NOTICE, "Got unexpected (and unsupported) XPC ERROR");
         }
-
-    }
-    else
-    {
-
     }
 }
 
