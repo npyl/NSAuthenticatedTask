@@ -5,7 +5,7 @@
 	<key>SMPrivilegedExecutables</key>
 	<dict>
 		<key>npyl.NPTask.SMJobBlessHelper</key>
-		<string>identifier &amp;quot;org.npyl.EnhanceDiskUtility.SMJobBlessHelper&amp;quot; and anchor apple generic and certificate leaf[subject.CN] = &amp;quot;Mac Developer: n.pylarinos@hotmail.com (C674784ZBL)&amp;quot; and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
+		<string>identifier &amp;quot;npyl.NPTask.SMJobBlessHelper&amp;quot; and anchor apple generic and certificate leaf[subject.CN] = &amp;quot;Mac Developer: n.pylarinos@hotmail.com (C674784ZBL)&amp;quot; and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
 	</dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
