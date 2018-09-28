@@ -16,4 +16,9 @@ FOUNDATION_EXPORT const unsigned char NPTaskVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <NPTask/PublicHeader.h>
 
+@interface NPTask : NSObject
 
+- (void)launch;
+- (void)launchAuthenticated;
+
+@end

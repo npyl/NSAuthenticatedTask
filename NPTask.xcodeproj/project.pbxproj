@@ -10,6 +10,7 @@
 		0966C5B0215DB1D0006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
 		0966C5B5215DB1D0006B2DAA /* NPTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */; };
 		0966C5B7215DB1D0006B2DAA /* NPTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 0966C5A9215DB1D0006B2DAA /* NPTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0966C5C1215DB1DF006B2DAA /* NPTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C0215DB1DF006B2DAA /* NPTask.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		0966C5AF215DB1D0006B2DAA /* NPTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NPTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NPTaskTests.m; sourceTree = "<group>"; };
 		0966C5B6215DB1D0006B2DAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0966C5C0215DB1DF006B2DAA /* NPTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NPTask.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				0966C5A9215DB1D0006B2DAA /* NPTask.h */,
+				0966C5C0215DB1DF006B2DAA /* NPTask.m */,
 				0966C5AA215DB1D0006B2DAA /* Info.plist */,
 			);
 			path = NPTask;
@@ -193,6 +196,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0966C5C1215DB1DF006B2DAA /* NPTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
