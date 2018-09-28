@@ -7,8 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		092F04A9215E4ED500869C20 /* npyl.NPTask.SMJobBlessHelper in Copy SMJobBlessHelper */ = {isa = PBXBuildFile; fileRef = 0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		092F04AB215E547700869C20 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 092F04AA215E547700869C20 /* ServiceManagement.framework */; };
+		092F04B4215E5C8B00869C20 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F04B3215E5C8B00869C20 /* AppDelegate.m */; };
+		092F04B7215E5C8B00869C20 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F04B6215E5C8B00869C20 /* ViewController.m */; };
+		092F04B9215E5C8E00869C20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 092F04B8215E5C8E00869C20 /* Assets.xcassets */; };
+		092F04BC215E5C8E00869C20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 092F04BA215E5C8E00869C20 /* Main.storyboard */; };
+		092F04BF215E5C8E00869C20 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F04BE215E5C8E00869C20 /* main.m */; };
+		092F04CA215E5C8F00869C20 /* SMJobBlessHelperCallerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F04C9215E5C8F00869C20 /* SMJobBlessHelperCallerTests.m */; };
+		092F04D5215E5C8F00869C20 /* SMJobBlessHelperCallerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F04D4215E5C8F00869C20 /* SMJobBlessHelperCallerUITests.m */; };
+		092F04E2215E5D1600869C20 /* SMJobBlessHelperCaller.app in Resources */ = {isa = PBXBuildFile; fileRef = 092F04B0215E5C8B00869C20 /* SMJobBlessHelperCaller.app */; };
+		092F04E4215E626800869C20 /* npyl.NPTask.SMJobBlessHelper in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0966C5B0215DB1D0006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
 		0966C5B5215DB1D0006B2DAA /* NPTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */; };
 		0966C5B7215DB1D0006B2DAA /* NPTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 0966C5A9215DB1D0006B2DAA /* NPTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -19,6 +27,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		092F04C6215E5C8F00869C20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0966C59D215DB1D0006B2DAA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 092F04AF215E5C8B00869C20;
+			remoteInfo = SMJobBlessHelperCaller;
+		};
+		092F04D1215E5C8F00869C20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0966C59D215DB1D0006B2DAA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 092F04AF215E5C8B00869C20;
+			remoteInfo = SMJobBlessHelperCaller;
+		};
+		092F04E0215E5D0D00869C20 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0966C59D215DB1D0006B2DAA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 092F04AF215E5C8B00869C20;
+			remoteInfo = SMJobBlessHelperCaller;
+		};
 		0966C5B1215DB1D0006B2DAA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0966C59D215DB1D0006B2DAA /* Project object */;
@@ -33,16 +62,19 @@
 			remoteGlobalIDString = 0966C5A5215DB1D0006B2DAA;
 			remoteInfo = NPTask;
 		};
-		0966C5DC215DB523006B2DAA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0966C59D215DB1D0006B2DAA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0966C5C5215DB277006B2DAA;
-			remoteInfo = SMJobBlessHelper;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		092F04E3215E625100869C20 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Contents/Library/LaunchServices;
+			dstSubfolderSpec = 7;
+			files = (
+				092F04E4215E626800869C20 /* npyl.NPTask.SMJobBlessHelper in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0966C5C4215DB277006B2DAA /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -61,23 +93,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
-		0966C5DF215DB57B006B2DAA /* Copy SMJobBlessHelper */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = Library/LaunchServices;
-			dstSubfolderSpec = 1;
-			files = (
-				092F04A9215E4ED500869C20 /* npyl.NPTask.SMJobBlessHelper in Copy SMJobBlessHelper */,
-			);
-			name = "Copy SMJobBlessHelper";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		092F04A7215DBB8C00869C20 /* SMJobBlessHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Info.plist"; sourceTree = "<group>"; };
 		092F04A8215DBC2600869C20 /* SMJobBlessHelper-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Launchd.plist"; sourceTree = "<group>"; };
 		092F04AA215E547700869C20 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
+		092F04B0215E5C8B00869C20 /* SMJobBlessHelperCaller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SMJobBlessHelperCaller.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		092F04B2215E5C8B00869C20 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		092F04B3215E5C8B00869C20 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		092F04B5215E5C8B00869C20 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		092F04B6215E5C8B00869C20 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		092F04B8215E5C8E00869C20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		092F04BB215E5C8E00869C20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		092F04BD215E5C8E00869C20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		092F04BE215E5C8E00869C20 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		092F04C0215E5C8E00869C20 /* SMJobBlessHelperCaller.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SMJobBlessHelperCaller.entitlements; sourceTree = "<group>"; };
+		092F04C5215E5C8F00869C20 /* SMJobBlessHelperCallerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SMJobBlessHelperCallerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		092F04C9215E5C8F00869C20 /* SMJobBlessHelperCallerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMJobBlessHelperCallerTests.m; sourceTree = "<group>"; };
+		092F04CB215E5C8F00869C20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		092F04D0215E5C8F00869C20 /* SMJobBlessHelperCallerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SMJobBlessHelperCallerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		092F04D4215E5C8F00869C20 /* SMJobBlessHelperCallerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SMJobBlessHelperCallerUITests.m; sourceTree = "<group>"; };
+		092F04D6215E5C8F00869C20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0966C5A6215DB1D0006B2DAA /* NPTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NPTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5A9215DB1D0006B2DAA /* NPTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NPTask.h; sourceTree = "<group>"; };
 		0966C5AA215DB1D0006B2DAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -92,6 +129,27 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		092F04AD215E5C8B00869C20 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		092F04C2215E5C8F00869C20 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		092F04CD215E5C8F00869C20 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0966C5A3215DB1D0006B2DAA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -126,15 +184,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		092F04B1215E5C8B00869C20 /* SMJobBlessHelperCaller */ = {
+			isa = PBXGroup;
+			children = (
+				092F04B2215E5C8B00869C20 /* AppDelegate.h */,
+				092F04B3215E5C8B00869C20 /* AppDelegate.m */,
+				092F04B5215E5C8B00869C20 /* ViewController.h */,
+				092F04B6215E5C8B00869C20 /* ViewController.m */,
+				092F04B8215E5C8E00869C20 /* Assets.xcassets */,
+				092F04BA215E5C8E00869C20 /* Main.storyboard */,
+				092F04BD215E5C8E00869C20 /* Info.plist */,
+				092F04BE215E5C8E00869C20 /* main.m */,
+				092F04C0215E5C8E00869C20 /* SMJobBlessHelperCaller.entitlements */,
+			);
+			path = SMJobBlessHelperCaller;
+			sourceTree = "<group>";
+		};
+		092F04C8215E5C8F00869C20 /* SMJobBlessHelperCallerTests */ = {
+			isa = PBXGroup;
+			children = (
+				092F04C9215E5C8F00869C20 /* SMJobBlessHelperCallerTests.m */,
+				092F04CB215E5C8F00869C20 /* Info.plist */,
+			);
+			path = SMJobBlessHelperCallerTests;
+			sourceTree = "<group>";
+		};
+		092F04D3215E5C8F00869C20 /* SMJobBlessHelperCallerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				092F04D4215E5C8F00869C20 /* SMJobBlessHelperCallerUITests.m */,
+				092F04D6215E5C8F00869C20 /* Info.plist */,
+			);
+			path = SMJobBlessHelperCallerUITests;
+			sourceTree = "<group>";
+		};
 		0966C59C215DB1D0006B2DAA = {
 			isa = PBXGroup;
 			children = (
 				0966C5A8215DB1D0006B2DAA /* NPTask */,
 				0966C5C7215DB277006B2DAA /* SMJobBlessHelper */,
-				0966C5B3215DB1D0006B2DAA /* NPTaskTests */,
+				092F04B1215E5C8B00869C20 /* SMJobBlessHelperCaller */,
 				0966C5D2215DB2D5006B2DAA /* tester */,
+				0966C5B3215DB1D0006B2DAA /* NPTaskTests */,
+				092F04C8215E5C8F00869C20 /* SMJobBlessHelperCallerTests */,
+				092F04D3215E5C8F00869C20 /* SMJobBlessHelperCallerUITests */,
 				0966C5A7215DB1D0006B2DAA /* Products */,
-				0966C5DA215DB2E9006B2DAA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -145,6 +239,9 @@
 				0966C5AF215DB1D0006B2DAA /* NPTaskTests.xctest */,
 				0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */,
 				0966C5D1215DB2D5006B2DAA /* tester */,
+				092F04B0215E5C8B00869C20 /* SMJobBlessHelperCaller.app */,
+				092F04C5215E5C8F00869C20 /* SMJobBlessHelperCallerTests.xctest */,
+				092F04D0215E5C8F00869C20 /* SMJobBlessHelperCallerUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -152,6 +249,7 @@
 		0966C5A8215DB1D0006B2DAA /* NPTask */ = {
 			isa = PBXGroup;
 			children = (
+				0966C5DA215DB2E9006B2DAA /* Frameworks */,
 				0966C5A9215DB1D0006B2DAA /* NPTask.h */,
 				0966C5C0215DB1DF006B2DAA /* NPTask.m */,
 				0966C5AA215DB1D0006B2DAA /* Info.plist */,
@@ -192,6 +290,7 @@
 				092F04AA215E547700869C20 /* ServiceManagement.framework */,
 			);
 			name = Frameworks;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -208,6 +307,60 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		092F04AF215E5C8B00869C20 /* SMJobBlessHelperCaller */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 092F04DD215E5C8F00869C20 /* Build configuration list for PBXNativeTarget "SMJobBlessHelperCaller" */;
+			buildPhases = (
+				092F04AC215E5C8B00869C20 /* Sources */,
+				092F04AD215E5C8B00869C20 /* Frameworks */,
+				092F04AE215E5C8B00869C20 /* Resources */,
+				092F04E3215E625100869C20 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SMJobBlessHelperCaller;
+			productName = SMJobBlessHelperCaller;
+			productReference = 092F04B0215E5C8B00869C20 /* SMJobBlessHelperCaller.app */;
+			productType = "com.apple.product-type.application";
+		};
+		092F04C4215E5C8F00869C20 /* SMJobBlessHelperCallerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 092F04DE215E5C8F00869C20 /* Build configuration list for PBXNativeTarget "SMJobBlessHelperCallerTests" */;
+			buildPhases = (
+				092F04C1215E5C8F00869C20 /* Sources */,
+				092F04C2215E5C8F00869C20 /* Frameworks */,
+				092F04C3215E5C8F00869C20 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				092F04C7215E5C8F00869C20 /* PBXTargetDependency */,
+			);
+			name = SMJobBlessHelperCallerTests;
+			productName = SMJobBlessHelperCallerTests;
+			productReference = 092F04C5215E5C8F00869C20 /* SMJobBlessHelperCallerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		092F04CF215E5C8F00869C20 /* SMJobBlessHelperCallerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 092F04DF215E5C8F00869C20 /* Build configuration list for PBXNativeTarget "SMJobBlessHelperCallerUITests" */;
+			buildPhases = (
+				092F04CC215E5C8F00869C20 /* Sources */,
+				092F04CD215E5C8F00869C20 /* Frameworks */,
+				092F04CE215E5C8F00869C20 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				092F04D2215E5C8F00869C20 /* PBXTargetDependency */,
+			);
+			name = SMJobBlessHelperCallerUITests;
+			productName = SMJobBlessHelperCallerUITests;
+			productReference = 092F04D0215E5C8F00869C20 /* SMJobBlessHelperCallerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		0966C5A5215DB1D0006B2DAA /* NPTask */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0966C5BA215DB1D0006B2DAA /* Build configuration list for PBXNativeTarget "NPTask" */;
@@ -216,12 +369,11 @@
 				0966C5A2215DB1D0006B2DAA /* Sources */,
 				0966C5A3215DB1D0006B2DAA /* Frameworks */,
 				0966C5A4215DB1D0006B2DAA /* Resources */,
-				0966C5DF215DB57B006B2DAA /* Copy SMJobBlessHelper */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0966C5DD215DB523006B2DAA /* PBXTargetDependency */,
+				092F04E1215E5D0D00869C20 /* PBXTargetDependency */,
 			);
 			name = NPTask;
 			productName = NPTask;
@@ -290,6 +442,17 @@
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Nickolas Pylarinos Stamatelatos";
 				TargetAttributes = {
+					092F04AF215E5C8B00869C20 = {
+						CreatedOnToolsVersion = 10.0;
+					};
+					092F04C4215E5C8F00869C20 = {
+						CreatedOnToolsVersion = 10.0;
+						TestTargetID = 092F04AF215E5C8B00869C20;
+					};
+					092F04CF215E5C8F00869C20 = {
+						CreatedOnToolsVersion = 10.0;
+						TestTargetID = 092F04AF215E5C8B00869C20;
+					};
 					0966C5A5215DB1D0006B2DAA = {
 						CreatedOnToolsVersion = 10.0;
 					};
@@ -310,6 +473,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 0966C59C215DB1D0006B2DAA;
 			productRefGroup = 0966C5A7215DB1D0006B2DAA /* Products */;
@@ -320,15 +484,42 @@
 				0966C5AE215DB1D0006B2DAA /* NPTaskTests */,
 				0966C5C5215DB277006B2DAA /* SMJobBlessHelper */,
 				0966C5D0215DB2D5006B2DAA /* tester */,
+				092F04AF215E5C8B00869C20 /* SMJobBlessHelperCaller */,
+				092F04C4215E5C8F00869C20 /* SMJobBlessHelperCallerTests */,
+				092F04CF215E5C8F00869C20 /* SMJobBlessHelperCallerUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		092F04AE215E5C8B00869C20 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				092F04B9215E5C8E00869C20 /* Assets.xcassets in Resources */,
+				092F04BC215E5C8E00869C20 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		092F04C3215E5C8F00869C20 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		092F04CE215E5C8F00869C20 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0966C5A4215DB1D0006B2DAA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				092F04E2215E5D1600869C20 /* SMJobBlessHelperCaller.app in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +533,32 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		092F04AC215E5C8B00869C20 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				092F04B7215E5C8B00869C20 /* ViewController.m in Sources */,
+				092F04BF215E5C8E00869C20 /* main.m in Sources */,
+				092F04B4215E5C8B00869C20 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		092F04C1215E5C8F00869C20 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				092F04CA215E5C8F00869C20 /* SMJobBlessHelperCallerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		092F04CC215E5C8F00869C20 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				092F04D5215E5C8F00869C20 /* SMJobBlessHelperCallerUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		0966C5A2215DB1D0006B2DAA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -377,6 +594,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		092F04C7215E5C8F00869C20 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 092F04AF215E5C8B00869C20 /* SMJobBlessHelperCaller */;
+			targetProxy = 092F04C6215E5C8F00869C20 /* PBXContainerItemProxy */;
+		};
+		092F04D2215E5C8F00869C20 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 092F04AF215E5C8B00869C20 /* SMJobBlessHelperCaller */;
+			targetProxy = 092F04D1215E5C8F00869C20 /* PBXContainerItemProxy */;
+		};
+		092F04E1215E5D0D00869C20 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 092F04AF215E5C8B00869C20 /* SMJobBlessHelperCaller */;
+			targetProxy = 092F04E0215E5D0D00869C20 /* PBXContainerItemProxy */;
+		};
 		0966C5B2215DB1D0006B2DAA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0966C5A5215DB1D0006B2DAA /* NPTask */;
@@ -387,14 +619,130 @@
 			target = 0966C5A5215DB1D0006B2DAA /* NPTask */;
 			targetProxy = 0966C5D8215DB2E5006B2DAA /* PBXContainerItemProxy */;
 		};
-		0966C5DD215DB523006B2DAA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0966C5C5215DB277006B2DAA /* SMJobBlessHelper */;
-			targetProxy = 0966C5DC215DB523006B2DAA /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
+/* Begin PBXVariantGroup section */
+		092F04BA215E5C8E00869C20 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				092F04BB215E5C8E00869C20 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
 /* Begin XCBuildConfiguration section */
+		092F04D7215E5C8F00869C20 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SMJobBlessHelperCaller/SMJobBlessHelperCaller.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CC63MSFH9N;
+				INFOPLIST_FILE = SMJobBlessHelperCaller/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = npyl.SMJobBlessHelperCaller;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		092F04D8215E5C8F00869C20 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SMJobBlessHelperCaller/SMJobBlessHelperCaller.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CC63MSFH9N;
+				INFOPLIST_FILE = SMJobBlessHelperCaller/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = npyl.SMJobBlessHelperCaller;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		092F04D9215E5C8F00869C20 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CC63MSFH9N;
+				INFOPLIST_FILE = SMJobBlessHelperCallerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = npyl.SMJobBlessHelperCallerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SMJobBlessHelperCaller.app/Contents/MacOS/SMJobBlessHelperCaller";
+			};
+			name = Debug;
+		};
+		092F04DA215E5C8F00869C20 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CC63MSFH9N;
+				INFOPLIST_FILE = SMJobBlessHelperCallerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = npyl.SMJobBlessHelperCallerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SMJobBlessHelperCaller.app/Contents/MacOS/SMJobBlessHelperCaller";
+			};
+			name = Release;
+		};
+		092F04DB215E5C8F00869C20 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CC63MSFH9N;
+				INFOPLIST_FILE = SMJobBlessHelperCallerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = npyl.SMJobBlessHelperCallerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SMJobBlessHelperCaller;
+			};
+			name = Debug;
+		};
+		092F04DC215E5C8F00869C20 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = CC63MSFH9N;
+				INFOPLIST_FILE = SMJobBlessHelperCallerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = npyl.SMJobBlessHelperCallerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = SMJobBlessHelperCaller;
+			};
+			name = Release;
+		};
 		0966C5B8215DB1D0006B2DAA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -657,6 +1005,33 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		092F04DD215E5C8F00869C20 /* Build configuration list for PBXNativeTarget "SMJobBlessHelperCaller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				092F04D7215E5C8F00869C20 /* Debug */,
+				092F04D8215E5C8F00869C20 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		092F04DE215E5C8F00869C20 /* Build configuration list for PBXNativeTarget "SMJobBlessHelperCallerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				092F04D9215E5C8F00869C20 /* Debug */,
+				092F04DA215E5C8F00869C20 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		092F04DF215E5C8F00869C20 /* Build configuration list for PBXNativeTarget "SMJobBlessHelperCallerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				092F04DB215E5C8F00869C20 /* Debug */,
+				092F04DC215E5C8F00869C20 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		0966C5A0215DB1D0006B2DAA /* Build configuration list for PBXProject "NPTask" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
