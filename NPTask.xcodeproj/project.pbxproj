@@ -8,10 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		092F04AB215E547700869C20 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 092F04AA215E547700869C20 /* ServiceManagement.framework */; };
-		092F04ED215E69BA00869C20 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F04EC215E69BA00869C20 /* AppDelegate.m */; };
-		092F04F0215E69BA00869C20 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F04EF215E69BA00869C20 /* ViewController.m */; };
-		092F04F2215E69BB00869C20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 092F04F1215E69BB00869C20 /* Assets.xcassets */; };
-		092F04F5215E69BB00869C20 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 092F04F3215E69BB00869C20 /* Main.storyboard */; };
 		092F04F8215E69BB00869C20 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F04F7215E69BB00869C20 /* main.m */; };
 		092F04FF215E6AF300869C20 /* NPAuthenticator.app in Resources */ = {isa = PBXBuildFile; fileRef = 092F04E9215E69BA00869C20 /* NPAuthenticator.app */; };
 		092F0501215E6B2A00869C20 /* npyl.NPTask.SMJobBlessHelper in Copy SMJobBlessHelper */ = {isa = PBXBuildFile; fileRef = 0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -92,15 +88,8 @@
 		092F04A8215DBC2600869C20 /* SMJobBlessHelper-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Launchd.plist"; sourceTree = "<group>"; };
 		092F04AA215E547700869C20 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		092F04E9215E69BA00869C20 /* NPAuthenticator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NPAuthenticator.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		092F04EB215E69BA00869C20 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		092F04EC215E69BA00869C20 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		092F04EE215E69BA00869C20 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		092F04EF215E69BA00869C20 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		092F04F1215E69BB00869C20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		092F04F4215E69BB00869C20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		092F04F6215E69BB00869C20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		092F04F7215E69BB00869C20 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		092F04F9215E69BB00869C20 /* NPAuthenticator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NPAuthenticator.entitlements; sourceTree = "<group>"; };
 		0966C5A6215DB1D0006B2DAA /* NPTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NPTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5A9215DB1D0006B2DAA /* NPTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NPTask.h; sourceTree = "<group>"; };
 		0966C5AA215DB1D0006B2DAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -159,15 +148,8 @@
 		092F04EA215E69BA00869C20 /* NPAuthenticator */ = {
 			isa = PBXGroup;
 			children = (
-				092F04EB215E69BA00869C20 /* AppDelegate.h */,
-				092F04EC215E69BA00869C20 /* AppDelegate.m */,
-				092F04EE215E69BA00869C20 /* ViewController.h */,
-				092F04EF215E69BA00869C20 /* ViewController.m */,
-				092F04F1215E69BB00869C20 /* Assets.xcassets */,
-				092F04F3215E69BB00869C20 /* Main.storyboard */,
 				092F04F6215E69BB00869C20 /* Info.plist */,
 				092F04F7215E69BB00869C20 /* main.m */,
-				092F04F9215E69BB00869C20 /* NPAuthenticator.entitlements */,
 			);
 			path = NPAuthenticator;
 			sourceTree = "<group>";
@@ -401,8 +383,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				092F04F2215E69BB00869C20 /* Assets.xcassets in Resources */,
-				092F04F5215E69BB00869C20 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,9 +408,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				092F04F0215E69BA00869C20 /* ViewController.m in Sources */,
 				092F04F8215E69BB00869C20 /* main.m in Sources */,
-				092F04ED215E69BA00869C20 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,23 +469,11 @@
 		};
 /* End PBXTargetDependency section */
 
-/* Begin PBXVariantGroup section */
-		092F04F3215E69BB00869C20 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				092F04F4215E69BB00869C20 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		092F04FB215E69BB00869C20 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = NPAuthenticator/NPAuthenticator.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = CC63MSFH9N;
@@ -525,7 +491,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = NPAuthenticator/NPAuthenticator.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = CC63MSFH9N;
