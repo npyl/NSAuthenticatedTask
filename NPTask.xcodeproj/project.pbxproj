@@ -463,10 +463,10 @@
 			projectRoot = "";
 			targets = (
 				0966C5A5215DB1D0006B2DAA /* NPTask */,
-				0966C5AE215DB1D0006B2DAA /* NPTaskTests */,
 				0966C5C5215DB277006B2DAA /* SMJobBlessHelper */,
-				0966C5D0215DB2D5006B2DAA /* tester */,
 				092F04AF215E5C8B00869C20 /* SMJobBlessHelperCaller */,
+				0966C5D0215DB2D5006B2DAA /* tester */,
+				0966C5AE215DB1D0006B2DAA /* NPTaskTests */,
 				092F04C4215E5C8F00869C20 /* SMJobBlessHelperCallerTests */,
 				092F04CF215E5C8F00869C20 /* SMJobBlessHelperCallerUITests */,
 			);

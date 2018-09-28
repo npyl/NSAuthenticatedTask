@@ -99,6 +99,8 @@
 
 int main(int argc, const char *argv[])
 {
+    NSLog(@"HERE!");
+    
     SMJobBlessHelper *helper = [[SMJobBlessHelper alloc] init];
     if (!helper)
         return EXIT_FAILURE;
