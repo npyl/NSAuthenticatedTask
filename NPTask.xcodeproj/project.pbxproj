@@ -182,9 +182,9 @@
 			isa = PBXGroup;
 			children = (
 				0966C5DA215DB2E9006B2DAA /* Frameworks */,
+				0966C5AA215DB1D0006B2DAA /* Info.plist */,
 				0966C5A9215DB1D0006B2DAA /* NPTask.h */,
 				0966C5C0215DB1DF006B2DAA /* NPTask.m */,
-				0966C5AA215DB1D0006B2DAA /* Info.plist */,
 			);
 			path = NPTask;
 			sourceTree = "<group>";
@@ -192,8 +192,8 @@
 		0966C5B3215DB1D0006B2DAA /* NPTaskTests */ = {
 			isa = PBXGroup;
 			children = (
-				0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */,
 				0966C5B6215DB1D0006B2DAA /* Info.plist */,
+				0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */,
 			);
 			path = NPTaskTests;
 			sourceTree = "<group>";
@@ -201,9 +201,9 @@
 		0966C5C7215DB277006B2DAA /* SMJobBlessHelper */ = {
 			isa = PBXGroup;
 			children = (
-				0966C5C8215DB277006B2DAA /* main.m */,
 				092F04A7215DBB8C00869C20 /* SMJobBlessHelper-Info.plist */,
 				092F04A8215DBC2600869C20 /* SMJobBlessHelper-Launchd.plist */,
+				0966C5C8215DB277006B2DAA /* main.m */,
 			);
 			path = SMJobBlessHelper;
 			sourceTree = "<group>";
