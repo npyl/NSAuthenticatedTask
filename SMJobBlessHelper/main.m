@@ -19,7 +19,6 @@
 }
 
 - (instancetype)init;
-- (void)dispatchMain;
 
 @end
 
@@ -68,8 +67,10 @@ int STATE = STATE_LAUNCHPATH;
     {
         static const char *launchPath = nil;
         static const char *currentDirectoryPath = nil;
-        static xpc_object_t arguments = nil;
-        
+        static xpc_object_t arguments = nil;            /* array */
+        static xpc_object_t environment = nil;          /* dictionary */
+        static xpc_object_t environmentVariables = nil; /* array */
+
         switch (STATE)
         {
             case STATE_LAUNCHPATH:
@@ -87,12 +88,13 @@ int STATE = STATE_LAUNCHPATH;
                 STATE++;
                 break;
             case STATE_ARGUMENTS:
-                
+                arguments = event;
                 
                 STATE++;
                 break;
             case STATE_ENVIRONMENT:
-                
+                environment = xpc_array_get_dictionary(event, 0);
+                environmentVariables = xpc_array_get_array(event, 1);
                 
                 STATE++;
                 break;
@@ -118,11 +120,6 @@ int STATE = STATE_LAUNCHPATH;
                                      });
     
     xpc_connection_resume(connection);
-}
-
-- (void)dispatchMain
-{
-    dispatch_main();
 }
 
 - (instancetype)init
@@ -158,7 +155,7 @@ int main(int argc, const char *argv[])
     if (!helper)
         return EXIT_FAILURE;
     
-    [helper dispatchMain];
+    dispatch_main();
     
     return EXIT_SUCCESS;
 }

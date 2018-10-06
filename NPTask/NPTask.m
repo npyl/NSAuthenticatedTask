@@ -10,19 +10,19 @@
 
 @implementation NSTask (NPTask)
 
-- (instancetype)init
-{
-    self = [super init];
-    if (self)
-    {
-    }
-    return self;
-}
-
 - (void)launchAuthenticated
 {
-    /* Call the SMJobBlessHelperCaller */
-    [[NSWorkspace sharedWorkspace] openFile:[[NSBundle mainBundle] pathForResource:@"NPAuthenticator" ofType:@"app"]];
+    /* Call the NPAuthenticator */
+    NSTask *NPAuthenticator = [[NSTask alloc] init];
+    NPAuthenticator.launchPath = [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"NPAuthenticator" ofType:@"app"]] executablePath];
+    [NPAuthenticator launch];
+    [NPAuthenticator waitUntilExit];
+    
+    if ([NPAuthenticator terminationStatus] != 0)
+    {
+        NSLog(@"Authentication failed!");
+        return;
+    }
     
     /* Lets start communications */
     xpc_connection_t connection = xpc_connection_create_mach_service("npyl.NPTask.SMJobBlessHelper",
@@ -49,13 +49,6 @@
     
     xpc_connection_resume(connection);
 
-//    @property (nullable, copy) NSString *launchPath;
-//    @property (copy) NSString *currentDirectoryPath; // if not set, use current
-//    @property (nullable, copy) NSURL *executableURL;
-//    @property (nullable, copy) NSArray<NSString *> *arguments;
-//    @property (nullable, copy) NSDictionary<NSString *, NSString *> *environment; // if not set, use current
-//    @property (nullable, copy) NSURL *currentDirectoryURL;
-
     /*
      * Send message with launchPath and currentLaunchPath
      */
@@ -63,41 +56,42 @@
     xpc_dictionary_set_string(paths, "launchPath", self.launchPath.UTF8String);
     xpc_dictionary_set_string(paths, "currentDirectoryPath", self.currentDirectoryPath.UTF8String);
     xpc_connection_send_message(connection, paths);
-    
+
     /*
      * Send the arguments
      */
-    /* create array */
-    //xpc_object_t arguments = xpc_array_create(NULL, 0);
-
-    /* fill array's contents */
-    /*for (NSString *arg in self.arguments)
+    xpc_object_t arguments = xpc_array_create(NULL, 0);
+    for (NSString *arg in self.arguments)
     {
-        if (arg.UTF8String)
-            xpc_array_append_value(arguments, xpc_string_create(arg.UTF8String));
-        else
-            xpc_array_append_value(arguments, xpc_null_create());
-    }*/
-
-    /* send array */
-    /*@try {
-        xpc_connection_send_message(connection, arguments);
-    } @catch (NSException *exception) {
-        NSLog(@"%@", exception);
-    } @finally {
-        
-    }*/
-
+        xpc_array_append_value(arguments, xpc_string_create(arg.UTF8String));
+    }
+    xpc_connection_send_message(connection, arguments);
+    
     /*
-     * Send environment
+     * Send Environment
      */
+    /* create dictionary with environment variables */
     xpc_object_t environment = xpc_dictionary_create(NULL, NULL, 0);
     for (NSString *key in [self.environment keyEnumerator])
     {
         NSString *value = [self.environment objectForKey:key];
         xpc_dictionary_set_string(environment, key.UTF8String, value.UTF8String);
     }
-    xpc_connection_send_message(connection, environment);
+    
+    /* create array with keys */
+    xpc_object_t environmentVariables = xpc_array_create(NULL, 0);
+    for (NSString *key in [self.environment keyEnumerator])
+    {
+        xpc_array_append_value(environmentVariables, xpc_string_create(key.UTF8String));
+    }
+    
+    /* create array with the dictionary and the keys */
+    xpc_object_t environmentBatch = xpc_array_create(NULL, 0);
+    xpc_array_append_value(environmentBatch, environment);
+    xpc_array_append_value(environmentBatch, environmentVariables);
+    
+    /* send environment info */
+    xpc_connection_send_message(connection, environmentBatch);
 }
 
 @end
