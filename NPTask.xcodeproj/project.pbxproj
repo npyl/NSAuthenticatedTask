@@ -18,6 +18,7 @@
 		0966C5C9215DB277006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C8215DB277006B2DAA /* main.m */; };
 		0966C5D4215DB2D5006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5D3215DB2D5006B2DAA /* main.m */; };
 		0966C5DB215DB2E9006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
+		09E912E1216900CF00BECB57 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09E912E0216900CF00BECB57 /* Media.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,8 @@
 		0966C5C8215DB277006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0966C5D1215DB2D5006B2DAA /* tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tester; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5D3215DB2D5006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		09E912E0216900CF00BECB57 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
+		09E912E22169019B00BECB57 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +153,7 @@
 			children = (
 				092F04F6215E69BB00869C20 /* Info.plist */,
 				092F04F7215E69BB00869C20 /* main.m */,
+				09E912E0216900CF00BECB57 /* Media.xcassets */,
 			);
 			path = NPAuthenticator;
 			sourceTree = "<group>";
@@ -157,6 +161,7 @@
 		0966C59C215DB1D0006B2DAA = {
 			isa = PBXGroup;
 			children = (
+				09E912E22169019B00BECB57 /* README.md */,
 				0966C5A8215DB1D0006B2DAA /* NPTask */,
 				0966C5C7215DB277006B2DAA /* SMJobBlessHelper */,
 				092F04EA215E69BA00869C20 /* NPAuthenticator */,
@@ -383,6 +388,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09E912E1216900CF00BECB57 /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
