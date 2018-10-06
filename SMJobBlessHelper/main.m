@@ -14,8 +14,20 @@
 
 @interface SMJobBlessHelper : NSObject
 {
-    xpc_connection_t connection_handle;
-    xpc_connection_t service;
+    xpc_connection_t    connection_handle;
+    xpc_connection_t    service;
+    
+    /* data */
+    const char          *launchPath;
+    const char          *currentDirectoryPath;
+    char                **arguments;
+    
+    NSDictionary        *environment;
+    xpc_object_t        environmentVariables;   /* list of keys */
+
+    /* misc */
+    size_t              argumentsCount;
+    size_t              variablesCount;
 }
 
 - (instancetype)init;
@@ -65,15 +77,10 @@ int STATE = STATE_LAUNCHPATH;
     }
     else
     {
-        static const char *launchPath = nil;
-        static const char *currentDirectoryPath = nil;
-        static xpc_object_t arguments = nil;            /* array */
-        static xpc_object_t environment = nil;          /* dictionary */
-        static xpc_object_t environmentVariables = nil; /* array */
-
         switch (STATE)
         {
             case STATE_LAUNCHPATH:
+
                 launchPath = xpc_dictionary_get_string(event, "launchPath");
                 currentDirectoryPath = xpc_dictionary_get_string(event, "currentDirectoryPath");
                 
@@ -88,24 +95,44 @@ int STATE = STATE_LAUNCHPATH;
                 STATE++;
                 break;
             case STATE_ARGUMENTS:
-                arguments = event;
+                
+                argumentsCount = xpc_array_get_count(event);
+                
+                /* allocate memory */
+                arguments = (char **)malloc(argumentsCount * sizeof(char *));
+                if (!arguments)
+                {
+                    syslog(LOG_NOTICE, "Failed to allocate memory.");
+                    exit(-1);
+                }
+                
+                /* fill data */
+                for (int i = 0; i < argumentsCount; i++)
+                {
+                    strcpy(&(*arguments[i]), xpc_array_get_string(event, i));
+                
+                    NSLog(@"GOT %c", *arguments[i]);
+                }
                 
                 STATE++;
                 break;
             case STATE_ENVIRONMENT:
-                environment = xpc_array_get_dictionary(event, 0);
-                environmentVariables = xpc_array_get_array(event, 1);
+
+                //environment = xpc_array_get_dictionary(event, 0);
+                //environmentVariables = xpc_array_get_array(event, 1);
                 
                 STATE++;
                 break;
+
             case STATE_RUN:
+                
                 
                 STATE++;
                 break;
 
             default:
             case STATE_DONE:
-                syslog(LOG_NOTICE, "I can now exit!");
+                syslog(LOG_NOTICE, "exiting...");
                 exit(0);
                 break;
         }
