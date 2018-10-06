@@ -25,8 +25,22 @@
 
 @implementation SMJobBlessHelper
 
+enum {
+    STATE_LAUNCHPATH = 0,
+    STATE_ARGUMENTS,
+    STATE_ENVIRONMENT,
+    STATE_RUN,
+    
+    STATE_DONE, /* we can exit now... */
+};
+
+int STATE = STATE_LAUNCHPATH;
+
 - (void) __XPC_Peer_Event_Handler:(xpc_connection_t)connection withEvent:(xpc_object_t)event
 {
+    printf("Received message in generic event handler: %p\n", event);
+    printf("%s\n", xpc_copy_description(event));
+
     xpc_type_t type = xpc_get_type(event);
     
     if (type == XPC_TYPE_ERROR)
@@ -52,13 +66,47 @@
     }
     else
     {
-        /*
-         * Get first round of info...
-         */
-        const char *launchPath = xpc_dictionary_get_string(event, "launchPath");
-        const char *currentDirectoryPath = xpc_dictionary_get_string(event, "currentDirectoryPath");
+        static const char *launchPath = nil;
+        static const char *currentDirectoryPath = nil;
+        static xpc_object_t arguments = nil;
         
+        switch (STATE)
+        {
+            case STATE_LAUNCHPATH:
+                launchPath = xpc_dictionary_get_string(event, "launchPath");
+                currentDirectoryPath = xpc_dictionary_get_string(event, "currentDirectoryPath");
+                
+                if (launchPath == nil || currentDirectoryPath == nil)
+                {
+                    syslog(LOG_ERR, "Either launchPath or currentDirectoryPath is null. launchPath = %s \b currentDirectoryPath = %s.", launchPath, currentDirectoryPath);
+                    return;
+                }
+                
+                syslog(LOG_NOTICE, "launchPath = %s . currentDirectoryPath = %s.", launchPath, currentDirectoryPath);
 
+                STATE++;
+                break;
+            case STATE_ARGUMENTS:
+                
+                
+                STATE++;
+                break;
+            case STATE_ENVIRONMENT:
+                
+                
+                STATE++;
+                break;
+            case STATE_RUN:
+                
+                STATE++;
+                break;
+
+            default:
+            case STATE_DONE:
+                syslog(LOG_NOTICE, "I can now exit!");
+                exit(0);
+                break;
+        }
     }
 }
 
@@ -104,7 +152,7 @@
 
 int main(int argc, const char *argv[])
 {
-    syslog(LOG_NOTICE, "NPAuthenticate v%f | npyl", 0.1);
+    syslog(LOG_NOTICE, "NSAuthenticatedTask v%f | npyl", 0.2);
     
     SMJobBlessHelper *helper = [[SMJobBlessHelper alloc] init];
     if (!helper)

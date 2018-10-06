@@ -11,9 +11,9 @@
 
 int main(int argc, const char * argv[])
 {
-    NPTask *task = [[NPTask alloc] init];
-    task.launchPath = @"/bin/echo";
-    task.arguments = @[@"hello", @"konitsua"];
+    NSTask *task = [[NSTask alloc] init];
+    task.launchPath = @"/bin/echo";                     /* setting this means we can throw error if the launchPath doesn't correspond to real executable */
+    task.arguments = @[@"hello", @"konitsua"];          // Thinking about this, it may be a better idea to just use NSTask... and provide the launchAuthenticated as a plugin
     [task launchAuthenticated];
 
     [task waitUntilExit];
