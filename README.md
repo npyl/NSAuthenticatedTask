@@ -1,5 +1,7 @@
 #  NSTask+Authentication (also named NPTask)
 
+**UNDER DEVELOPMENT**
+
 A framework that adds a small perk to NSTask (Authentication) so you can execute your task with root permissions!
 Follows Apple's recommended way of doing this, using SMJobBlessHelper and XPC! (No deprecated APIs here!)
 
