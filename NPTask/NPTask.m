@@ -77,7 +77,7 @@
     }
     
     /*
-     * Send message with launchPath and currentLaunchPath
+     * Send data!
      */
     xpc_object_t dictionary = xpc_dictionary_create(NULL, NULL, 0);
     xpc_dictionary_set_string(dictionary, "launchPath", self.launchPath.UTF8String);

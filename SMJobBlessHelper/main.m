@@ -18,16 +18,12 @@
     xpc_connection_t    service;
     
     /* data */
-    const char          *launchPath;
-    const char          *currentDirectoryPath;
+    const char          *launch_path;
+    const char          *current_directory_path;
     xpc_object_t        arguments;
     
-    xpc_object_t        environment;           /* dictionary */
-    xpc_object_t        environmentVariables;   /* array: list of keys */
-
-    /* misc */
-    size_t              argumentsCount;
-    size_t              variablesCount;
+    xpc_object_t        environment;            /* dictionary */
+    xpc_object_t        environment_variables;  /* array: list of keys */
 }
 
 - (instancetype)init;
@@ -84,11 +80,11 @@ void advance_state(void) { STATE++; }
                 /*
                  * Paths
                  */
-                launchPath = xpc_dictionary_get_string(event, "launchPath");
-                currentDirectoryPath = xpc_dictionary_get_string(event, "currentDirectoryPath");
-                if (!launchPath || !currentDirectoryPath)
+                launch_path = xpc_dictionary_get_string(event, "launchPath");
+                current_directory_path = xpc_dictionary_get_string(event, "currentDirectoryPath");
+                if (!launch_path || !current_directory_path)
                 {
-                    syslog(LOG_ERR, "Either launchPath or currentDirectoryPath is null. launchPath = %s \b currentDirectoryPath = %s", launchPath, currentDirectoryPath);
+                    syslog(LOG_ERR, "Either launchPath or currentDirectoryPath is null. launchPath = %s \b currentDirectoryPath = %s", launch_path, current_directory_path);
                     return;
                 }
                 
@@ -99,40 +95,38 @@ void advance_state(void) { STATE++; }
                 if (!arguments)
                 {
                     syslog(LOG_ERR, "Arguments is null");
-                    return;
+                    exit(EXIT_FAILURE);
                 }
                 
                 /*
                  * Environment
                  */
-                environmentVariables = xpc_dictionary_get_value(event, "environmentVariables");
-                if (!environmentVariables)
+                environment_variables = xpc_dictionary_get_value(event, "environmentVariables");
+                if (!environment_variables)
                 {
                     syslog(LOG_ERR, "Env Variables is null");
-                    return;
+                    exit(EXIT_FAILURE);
                 }
                 
                 environment = xpc_dictionary_get_value(event, "environment");
                 if (!environment)
                 {
                     syslog(LOG_ERR, "Environment is null");
-                    return;
+                    exit(EXIT_FAILURE);
                 }
 
                 break;
             case STATE_RUN:
                 syslog(LOG_NOTICE, "launchPath = %s \n currentDirectoryPath = %s.",
-                       launchPath,
-                       currentDirectoryPath);
-                
-                // exec...
+                       launch_path,
+                       current_directory_path);
                 
                 /* fallthrough */
 
             case STATE_DONE:
             default:
                 syslog(LOG_NOTICE, "exiting...");
-                exit(0);
+                exit(EXIT_SUCCESS);
                 break;
         }
         
@@ -178,7 +172,7 @@ void advance_state(void) { STATE++; }
 
 int main(int argc, const char *argv[])
 {
-    syslog(LOG_NOTICE, "NSAuthenticatedTask v%f | npyl", 0.2);
+    syslog(LOG_NOTICE, "NSAuthenticatedTask v%f | npyl", 0.3);
     
     SMJobBlessHelper *helper = [[SMJobBlessHelper alloc] init];
     if (!helper)
