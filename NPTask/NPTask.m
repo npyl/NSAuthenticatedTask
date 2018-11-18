@@ -50,12 +50,30 @@
     xpc_connection_resume(connection);
 
     /*
-     * Send the arguments
+     * Create the arguments array
      */
     xpc_object_t arguments = xpc_array_create(NULL, 0);
     for (NSString *arg in self.arguments)
     {
         xpc_array_append_value(arguments, xpc_string_create(arg.UTF8String));
+    }
+    
+    /*
+     * Create the environment keys array
+     */
+    xpc_object_t environment_variables = xpc_array_create(NULL, 0);
+    
+    /*
+     * Create the environment dictionary
+     */
+    NSDictionary *environmentDictionary = [NSProcessInfo processInfo].environment;
+    xpc_object_t environment = xpc_dictionary_create(NULL, NULL, 0);
+    for (NSString *key in environmentDictionary.allKeys)
+    {
+        xpc_object_t value = xpc_string_create([[environmentDictionary objectForKey:key] UTF8String]);
+        
+        xpc_array_append_value(environment_variables, xpc_string_create(key.UTF8String));
+        xpc_dictionary_set_value(environment, key.UTF8String, value);
     }
     
     /*
@@ -65,8 +83,9 @@
     xpc_dictionary_set_string(dictionary, "launchPath", self.launchPath.UTF8String);
     xpc_dictionary_set_string(dictionary, "currentDirectoryPath", self.currentDirectoryPath.UTF8String);
     xpc_dictionary_set_value(dictionary, "arguments", arguments);
-    // XXX env
-    xpc_connection_send_message(connection, dictionary);    
+    xpc_dictionary_set_value(dictionary, "environmentVariables", environment_variables);
+    xpc_dictionary_set_value(dictionary, "environment", environment);
+    xpc_connection_send_message(connection, dictionary);
 }
 
 @end
