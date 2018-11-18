@@ -22,8 +22,8 @@
     const char          *currentDirectoryPath;
     xpc_object_t        arguments;
     
-    NSDictionary        *environment;
-    xpc_object_t        environmentVariables;   /* list of keys */
+    xpc_object_t        environment;           /* dictionary */
+    xpc_object_t        environmentVariables;   /* array: list of keys */
 
     /* misc */
     size_t              argumentsCount;
@@ -43,6 +43,8 @@ enum {
 };
 
 int STATE = STATE_LAUNCHINFO;
+
+void advance_state(void) { STATE++; }
 
 - (void) __XPC_Peer_Event_Handler:(xpc_connection_t)connection withEvent:(xpc_object_t)event
 {
@@ -100,17 +102,32 @@ int STATE = STATE_LAUNCHINFO;
                     return;
                 }
                 
-                STATE++;
-                break;
-
-            case STATE_RUN:
+                /*
+                 * Environment
+                 */
+                environmentVariables = xpc_dictionary_get_value(event, "environmentVariables");
+                if (!environmentVariables)
+                {
+                    syslog(LOG_ERR, "Env Variables is null");
+                    return;
+                }
                 
-                syslog(LOG_NOTICE, "launchPath = %s \n currentDirectoryPath = %s.", launchPath, currentDirectoryPath);
+                environment = xpc_dictionary_get_value(event, "environment");
+                if (!environment)
+                {
+                    syslog(LOG_ERR, "Environment is null");
+                    return;
+                }
+
+                break;
+            case STATE_RUN:
+                syslog(LOG_NOTICE, "launchPath = %s \n currentDirectoryPath = %s.",
+                       launchPath,
+                       currentDirectoryPath);
                 
                 // exec...
                 
-                STATE++;
-                break;
+                /* fallthrough */
 
             case STATE_DONE:
             default:
@@ -118,6 +135,9 @@ int STATE = STATE_LAUNCHINFO;
                 exit(0);
                 break;
         }
+        
+        /*  */
+        advance_state();
     }
 }
 
