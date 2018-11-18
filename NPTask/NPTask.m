@@ -8,6 +8,8 @@
 
 #import "NPTask.h"
 
+#import "../Shared.h"
+
 @implementation NSTask (NPTask)
 
 - (void)launchAuthenticated
@@ -25,7 +27,7 @@
     }
     
     /* Lets start communications */
-    xpc_connection_t connection = xpc_connection_create_mach_service("npyl.NPTask.SMJobBlessHelper",
+    xpc_connection_t connection = xpc_connection_create_mach_service(HELPER_IDENTIFIER,
                                                                      NULL,
                                                                      XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
     
@@ -80,11 +82,11 @@
      * Send data!
      */
     xpc_object_t dictionary = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(dictionary, "launchPath", self.launchPath.UTF8String);
-    xpc_dictionary_set_string(dictionary, "currentDirectoryPath", self.currentDirectoryPath.UTF8String);
-    xpc_dictionary_set_value(dictionary, "arguments", arguments);
-    xpc_dictionary_set_value(dictionary, "environmentVariables", environment_variables);
-    xpc_dictionary_set_value(dictionary, "environment", environment);
+    xpc_dictionary_set_string(dictionary,   LAUNCH_PATH_KEY,    self.launchPath.UTF8String);
+    xpc_dictionary_set_string(dictionary,   CURRENT_DIR_KEY,    self.currentDirectoryPath.UTF8String);
+    xpc_dictionary_set_value(dictionary,    ARGUMENTS_KEY,      arguments);
+    xpc_dictionary_set_value(dictionary,    ENV_VARS_KEY,       environment_variables);
+    xpc_dictionary_set_value(dictionary,    ENVIRONMENT_KEY,    environment);
     xpc_connection_send_message(connection, dictionary);
 }
 

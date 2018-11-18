@@ -8,9 +8,8 @@
 
 #import <syslog.h>
 #import <xpc/xpc.h>
+#import "../Shared.h"
 #import <Foundation/Foundation.h>
-
-#define SMJOBBLESSHELPER_IDENTIFIER "npyl.NPTask.SMJobBlessHelper"
 
 @interface SMJobBlessHelper : NSObject
 {
@@ -70,8 +69,8 @@
         /*
          * Paths
          */
-        launch_path = xpc_dictionary_get_string(event, "launchPath");
-        current_directory_path = xpc_dictionary_get_string(event, "currentDirectoryPath");
+        launch_path = xpc_dictionary_get_string(event, LAUNCH_PATH_KEY);
+        current_directory_path = xpc_dictionary_get_string(event, CURRENT_DIR_KEY);
         if (!launch_path || !current_directory_path)
         {
             syslog(LOG_ERR, "Either launchPath or currentDirectoryPath is null. launchPath = %s \b currentDirectoryPath = %s", launch_path, current_directory_path);
@@ -81,7 +80,7 @@
         /*
          * Arguments
          */
-        arguments = xpc_dictionary_get_value(event, "arguments");
+        arguments = xpc_dictionary_get_value(event, ARGUMENTS_KEY);
         if (!arguments)
         {
             syslog(LOG_ERR, "Arguments is null");
@@ -91,14 +90,14 @@
         /*
          * Environment
          */
-        environment_variables = xpc_dictionary_get_value(event, "environmentVariables");
+        environment_variables = xpc_dictionary_get_value(event, ENV_VARS_KEY);
         if (!environment_variables)
         {
             syslog(LOG_ERR, "Env Variables is null");
             exit(EXIT_FAILURE);
         }
     
-        environment = xpc_dictionary_get_value(event, "environment");
+        environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
         if (!environment)
         {
             syslog(LOG_ERR, "Environment is null");
@@ -148,7 +147,7 @@
     self = [super init];
     if (self)
     {
-        service = xpc_connection_create_mach_service(SMJOBBLESSHELPER_IDENTIFIER,
+        service = xpc_connection_create_mach_service(HELPER_IDENTIFIER,
                                                      dispatch_get_main_queue(),
                                                      XPC_CONNECTION_MACH_SERVICE_LISTENER);
         if (!service)

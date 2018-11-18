@@ -102,6 +102,7 @@
 		0966C5C8215DB277006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0966C5D1215DB2D5006B2DAA /* tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tester; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5D3215DB2D5006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0990FCD621A1D130009F4D1A /* Shared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
 		09E912E0216900CF00BECB57 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		09E912E22169019B00BECB57 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -162,6 +163,7 @@
 			isa = PBXGroup;
 			children = (
 				09E912E22169019B00BECB57 /* README.md */,
+				0990FCD621A1D130009F4D1A /* Shared.h */,
 				0966C5A8215DB1D0006B2DAA /* NPTask */,
 				0966C5C7215DB277006B2DAA /* SMJobBlessHelper */,
 				092F04EA215E69BA00869C20 /* NPAuthenticator */,
@@ -341,7 +343,7 @@
 		0966C59D215DB1D0006B2DAA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Nickolas Pylarinos Stamatelatos";
 				TargetAttributes = {
 					092F04E8215E69BA00869C20 = {
@@ -630,7 +632,7 @@
 		0966C5BB215DB1D0006B2DAA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -655,7 +657,7 @@
 		0966C5BC215DB1D0006B2DAA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -727,6 +729,7 @@
 					__launchd_plist,
 					"SMJobBlessHelper/SMJobBlessHelper-Launchd.plist",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = npyl.NPTask.SMJobBlessHelper;
 				PRODUCT_NAME = npyl.NPTask.SMJobBlessHelper;
 			};
 			name = Debug;
@@ -747,6 +750,7 @@
 					__launchd_plist,
 					"SMJobBlessHelper/SMJobBlessHelper-Launchd.plist",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = npyl.NPTask.SMJobBlessHelper;
 				PRODUCT_NAME = npyl.NPTask.SMJobBlessHelper;
 			};
 			name = Release;
