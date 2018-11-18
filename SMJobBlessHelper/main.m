@@ -20,7 +20,7 @@
     /* data */
     const char          *launchPath;
     const char          *currentDirectoryPath;
-    char                **arguments;
+    xpc_object_t        arguments;
     
     NSDictionary        *environment;
     xpc_object_t        environmentVariables;   /* list of keys */
@@ -37,20 +37,17 @@
 @implementation SMJobBlessHelper
 
 enum {
-    STATE_LAUNCHPATH = 0,
-    STATE_ARGUMENTS,
-    STATE_ENVIRONMENT,
+    STATE_LAUNCHINFO,
     STATE_RUN,
-    
     STATE_DONE, /* we can exit now... */
 };
 
-int STATE = STATE_LAUNCHPATH;
+int STATE = STATE_LAUNCHINFO;
 
 - (void) __XPC_Peer_Event_Handler:(xpc_connection_t)connection withEvent:(xpc_object_t)event
 {
-    printf("Received message in generic event handler: %p\n", event);
-    printf("%s\n", xpc_copy_description(event));
+//    syslog(LOG_NOTICE, "Received message in generic event handler: %p\n", event);
+//    syslog(LOG_NOTICE, "%s\n", xpc_copy_description(event));
 
     xpc_type_t type = xpc_get_type(event);
     
@@ -79,59 +76,44 @@ int STATE = STATE_LAUNCHPATH;
     {
         switch (STATE)
         {
-            case STATE_LAUNCHPATH:
-
+            case STATE_LAUNCHINFO:
+                syslog(LOG_NOTICE, "[Helper]: GETTING LAUNCHINFO...\n");
+                
+                /*
+                 * Paths
+                 */
                 launchPath = xpc_dictionary_get_string(event, "launchPath");
                 currentDirectoryPath = xpc_dictionary_get_string(event, "currentDirectoryPath");
-                
-                if (launchPath == nil || currentDirectoryPath == nil)
+                if (!launchPath || !currentDirectoryPath)
                 {
-                    syslog(LOG_ERR, "Either launchPath or currentDirectoryPath is null. launchPath = %s \b currentDirectoryPath = %s.", launchPath, currentDirectoryPath);
+                    syslog(LOG_ERR, "Either launchPath or currentDirectoryPath is null. launchPath = %s \b currentDirectoryPath = %s", launchPath, currentDirectoryPath);
                     return;
                 }
                 
-                syslog(LOG_NOTICE, "launchPath = %s . currentDirectoryPath = %s.", launchPath, currentDirectoryPath);
-
-                STATE++;
-                break;
-            case STATE_ARGUMENTS:
-                
-                argumentsCount = xpc_array_get_count(event);
-                
-                /* allocate memory */
-                arguments = (char **)malloc(argumentsCount * sizeof(char *));
+                /*
+                 * Arguments
+                 */
+                arguments = xpc_dictionary_get_value(event, "arguments");
                 if (!arguments)
                 {
-                    syslog(LOG_NOTICE, "Failed to allocate memory.");
-                    exit(-1);
+                    syslog(LOG_ERR, "Arguments is null");
+                    return;
                 }
-                
-                /* fill data */
-                for (int i = 0; i < argumentsCount; i++)
-                {
-                    strcpy(&(*arguments[i]), xpc_array_get_string(event, i));
-                
-                    NSLog(@"GOT %c", *arguments[i]);
-                }
-                
-                STATE++;
-                break;
-            case STATE_ENVIRONMENT:
-
-                //environment = xpc_array_get_dictionary(event, 0);
-                //environmentVariables = xpc_array_get_array(event, 1);
                 
                 STATE++;
                 break;
 
             case STATE_RUN:
                 
+                syslog(LOG_NOTICE, "launchPath = %s \n currentDirectoryPath = %s.", launchPath, currentDirectoryPath);
+                
+                // exec...
                 
                 STATE++;
                 break;
 
-            default:
             case STATE_DONE:
+            default:
                 syslog(LOG_NOTICE, "exiting...");
                 exit(0);
                 break;

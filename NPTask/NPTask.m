@@ -50,14 +50,6 @@
     xpc_connection_resume(connection);
 
     /*
-     * Send message with launchPath and currentLaunchPath
-     */
-    xpc_object_t paths = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(paths, "launchPath", self.launchPath.UTF8String);
-    xpc_dictionary_set_string(paths, "currentDirectoryPath", self.currentDirectoryPath.UTF8String);
-    xpc_connection_send_message(connection, paths);
-
-    /*
      * Send the arguments
      */
     xpc_object_t arguments = xpc_array_create(NULL, 0);
@@ -65,33 +57,16 @@
     {
         xpc_array_append_value(arguments, xpc_string_create(arg.UTF8String));
     }
-    xpc_connection_send_message(connection, arguments);
     
     /*
-     * Send Environment
+     * Send message with launchPath and currentLaunchPath
      */
-    /* create dictionary with environment variables */
-    xpc_object_t environment = xpc_dictionary_create(NULL, NULL, 0);
-    for (NSString *key in [self.environment keyEnumerator])
-    {
-        NSString *value = [self.environment objectForKey:key];
-        xpc_dictionary_set_string(environment, key.UTF8String, value.UTF8String);
-    }
-    
-    /* create array with keys */
-    xpc_object_t environmentVariables = xpc_array_create(NULL, 0);
-    for (NSString *key in [self.environment keyEnumerator])
-    {
-        xpc_array_append_value(environmentVariables, xpc_string_create(key.UTF8String));
-    }
-    
-    /* create array with the dictionary and the keys */
-    xpc_object_t environmentBatch = xpc_array_create(NULL, 0);
-    xpc_array_append_value(environmentBatch, environment);
-    xpc_array_append_value(environmentBatch, environmentVariables);
-    
-    /* send environment info */
-    xpc_connection_send_message(connection, environmentBatch);
+    xpc_object_t dictionary = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(dictionary, "launchPath", self.launchPath.UTF8String);
+    xpc_dictionary_set_string(dictionary, "currentDirectoryPath", self.currentDirectoryPath.UTF8String);
+    xpc_dictionary_set_value(dictionary, "arguments", arguments);
+    // XXX env
+    xpc_connection_send_message(connection, dictionary);    
 }
 
 @end
