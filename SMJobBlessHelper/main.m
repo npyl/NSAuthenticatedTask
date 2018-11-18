@@ -28,6 +28,17 @@
 
 @end
 
+void helper_log(const char *format, ...);
+void helper_log(const char *format, ...)
+{
+    va_list vargs;
+    va_start(vargs, format);
+    NSString* formattedMessage = [[NSString alloc] initWithFormat:[NSString stringWithUTF8String:format] arguments:vargs];
+    va_end(vargs);
+    
+    syslog(LOG_NOTICE, "[HELPER]: %s", formattedMessage.UTF8String);
+}
+
 @implementation SMJobBlessHelper
 
 - (void) __XPC_Peer_Event_Handler:(xpc_connection_t)connection withEvent:(xpc_object_t)event
@@ -46,16 +57,16 @@
             // the connection is in an invalid state, and you do not need to
             // call xpc_connection_cancel(). Just tear down any associated state
             // here.
-            syslog(LOG_NOTICE, "CONNECTION_INVALID");
+            helper_log("CONNECTION_INVALID");
         }
         else if (event == XPC_ERROR_TERMINATION_IMMINENT)
         {
             // Handle per-connection termination cleanup.
-            syslog(LOG_NOTICE, "CONNECTION_IMMINENT");
+            helper_log("CONNECTION_IMMINENT");
         }
         else
         {
-            syslog(LOG_NOTICE, "Got unexpected (and unsupported) XPC ERROR");
+            helper_log("Got unexpected (and unsupported) XPC ERROR");
         }
     }
     else
@@ -64,7 +75,7 @@
         //                                 DATA
         //==================================//==================================
 
-        syslog(LOG_NOTICE, "[Helper]: GETTING LAUNCHINFO...\n");
+        helper_log("GETTING LAUNCHINFO...");
     
         /*
          * Paths
@@ -73,8 +84,8 @@
         current_directory_path = xpc_dictionary_get_string(event, CURRENT_DIR_KEY);
         if (!launch_path || !current_directory_path)
         {
-            syslog(LOG_ERR, "Either launchPath or currentDirectoryPath is null. launchPath = %s \b currentDirectoryPath = %s", launch_path, current_directory_path);
-            return;
+            helper_log("Either launchPath or currentDirectoryPath is null. launchPath = %s \b currentDirectoryPath = %s", launch_path, current_directory_path);
+            exit(EXIT_FAILURE);
         }
     
         /*
@@ -83,7 +94,7 @@
         arguments = xpc_dictionary_get_value(event, ARGUMENTS_KEY);
         if (!arguments)
         {
-            syslog(LOG_ERR, "Arguments is null");
+            helper_log("Arguments is null");
             exit(EXIT_FAILURE);
         }
     
@@ -93,14 +104,14 @@
         environment_variables = xpc_dictionary_get_value(event, ENV_VARS_KEY);
         if (!environment_variables)
         {
-            syslog(LOG_ERR, "Env Variables is null");
+            helper_log("Env Variables is null");
             exit(EXIT_FAILURE);
         }
     
         environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
         if (!environment)
         {
-            syslog(LOG_ERR, "Environment is null");
+            helper_log("Environment is null");
             exit(EXIT_FAILURE);
         }
         
@@ -108,26 +119,26 @@
         //                                LOGGING
         //==================================//==================================
 
-        syslog(LOG_NOTICE, "launch_path = %s \n current_directory_path = %s.", launch_path, current_directory_path);
+        helper_log("launch_path = %s \n current_directory_path = %s.", launch_path, current_directory_path);
         
-        syslog(LOG_NOTICE, "ARGUMENTS:\n");
+        helper_log("ARGUMENTS:\n");
         for (int i = 0; i < xpc_array_get_count(arguments); i++)
         {
-            syslog(LOG_NOTICE, "%s\n", xpc_array_get_string(arguments, i));
+            helper_log("%s\n", xpc_array_get_string(arguments, i));
         }
 
-        syslog(LOG_NOTICE, "ENVIRONMENT:\n");
+        helper_log("ENVIRONMENT:\n");
         for (int i = 0; i < xpc_array_get_count(environment_variables); i++)
         {
             const char *key = xpc_array_get_string(environment_variables, i);
-            syslog(LOG_NOTICE, "%s: %s\n", key, xpc_dictionary_get_string(environment_variables, key));
+            helper_log("%s: %s\n", key, xpc_dictionary_get_string(environment_variables, key));
         }
         
         //==================================//==================================
         //                                EXECUTE
         //==================================//==================================
         
-        syslog(LOG_NOTICE, "exiting...");
+        helper_log("exiting...");
         exit(EXIT_SUCCESS);
     }
 }
@@ -152,7 +163,7 @@
                                                      XPC_CONNECTION_MACH_SERVICE_LISTENER);
         if (!service)
         {
-            syslog(LOG_NOTICE, "Failed to create service.");
+            helper_log("Failed to create service.");
             exit(EXIT_FAILURE);
         }
         
@@ -169,7 +180,7 @@
 
 int main(int argc, const char *argv[])
 {
-    syslog(LOG_NOTICE, "NSAuthenticatedTask v%.1f | npyl", 0.3);
+    helper_log("NSAuthenticatedTask v%.1f | npyl", 0.3);
     
     SMJobBlessHelper *helper = [[SMJobBlessHelper alloc] init];
     if (!helper)
