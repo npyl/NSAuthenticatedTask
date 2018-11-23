@@ -127,16 +127,32 @@ void helper_log(const char *format, ...)
             helper_log("%s\n", xpc_array_get_string(arguments, i));
         }
 
-        helper_log("ENVIRONMENT:\n");
-        for (int i = 0; i < xpc_array_get_count(environment_variables); i++)
-        {
-            const char *key = xpc_array_get_string(environment_variables, i);
-            helper_log("%s: %s\n", key, xpc_dictionary_get_string(environment_variables, key));
-        }
+        // XXX this is crashing!
+        //helper_log("ENVIRONMENT:\n");
+        //for (int i = 0; i < xpc_array_get_count(environment_variables); i++)
+        //{
+        //    const char *key = xpc_array_get_string(environment_variables, i);
+        //    helper_log("%s: %s\n", key, xpc_dictionary_get_string(environment_variables, key));
+        //}
         
         //==================================//==================================
         //                                EXECUTE
         //==================================//==================================
+
+        NSMutableArray *args = [NSMutableArray array];
+        for (int i = 0; i < xpc_array_get_count(arguments); i++)
+        {
+            NSString *arg = [NSString stringWithUTF8String:xpc_array_get_string(arguments, i)];
+            [args addObject:arg];
+        }
+
+        NSTask *task = [[NSTask alloc] init];
+        task.launchPath = [NSString stringWithUTF8String:launch_path];
+        task.currentDirectoryPath = [NSString stringWithUTF8String:current_directory_path];
+        task.arguments = args;
+        
+        [task launch];
+        [task waitUntilExit];
         
         helper_log("exiting...");
         exit(EXIT_SUCCESS);
