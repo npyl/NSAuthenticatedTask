@@ -84,7 +84,8 @@ void helper_log(const char *format, ...)
         current_directory_path = xpc_dictionary_get_string(event, CURRENT_DIR_KEY);
         if (!launch_path || !current_directory_path)
         {
-            helper_log("Either launchPath or currentDirectoryPath is null. launchPath = %s \b currentDirectoryPath = %s", launch_path, current_directory_path);
+            helper_log("launchPath = %s", launch_path);
+            helper_log("currentDirectoryPath = %s", current_directory_path);
             exit(EXIT_FAILURE);
         }
     
@@ -119,7 +120,7 @@ void helper_log(const char *format, ...)
         //                                LOGGING
         //==================================//==================================
 
-        helper_log("launch_path = %s \n current_directory_path = %s.", launch_path, current_directory_path);
+        helper_log("launch_path = %s \n current_directory_path = %s", launch_path, current_directory_path);
         
         helper_log("ARGUMENTS:\n");
         for (int i = 0; i < xpc_array_get_count(arguments); i++)
