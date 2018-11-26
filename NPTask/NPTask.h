@@ -16,6 +16,8 @@ FOUNDATION_EXPORT const unsigned char NPTaskVersionString[];
 
 @interface NSTask (NPTask)
 
+@property NSString *icon;   /* authentication icon */
+
 - (void)launchAuthenticated;    /* our-addon */
 
 @end

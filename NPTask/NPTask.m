@@ -14,9 +14,15 @@
 
 - (void)launchAuthenticated
 {
-    /* Call the NPAuthenticator */
+    /*
+     * Call the NPAuthenticator
+     */
+    NSString *NPAuthenticatorPath = [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"NPAuthenticator" ofType:@"app"]] executablePath];
+    NSString *icon = @"temp";   // XXX Todo
+    
     NSTask *NPAuthenticator = [[NSTask alloc] init];
-    NPAuthenticator.launchPath = [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"NPAuthenticator" ofType:@"app"]] executablePath];
+    NPAuthenticator.launchPath = NPAuthenticatorPath;
+    NPAuthenticator.arguments = @[icon];
     [NPAuthenticator launch];
     [NPAuthenticator waitUntilExit];
     
