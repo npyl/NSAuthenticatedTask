@@ -84,8 +84,7 @@ void helper_log(const char *format, ...)
         current_directory_path = xpc_dictionary_get_string(event, CURRENT_DIR_KEY);
         if (!launch_path || !current_directory_path)
         {
-            helper_log("launchPath = %s", launch_path);
-            helper_log("currentDirectoryPath = %s", current_directory_path);
+            helper_log("failed@1st part");
             exit(EXIT_FAILURE);
         }
     
@@ -95,24 +94,24 @@ void helper_log(const char *format, ...)
         arguments = xpc_dictionary_get_value(event, ARGUMENTS_KEY);
         if (!arguments)
         {
-            helper_log("Arguments is null");
+            helper_log("arguments: %i", arguments);
             exit(EXIT_FAILURE);
         }
     
         /*
          * Environment
          */
-        environment_variables = xpc_dictionary_get_value(event, ENV_VARS_KEY);
+        environment_variables = xpc_dictionary_get_array(event, ENV_VARS_KEY);
         if (!environment_variables)
         {
-            helper_log("Env Variables is null");
+            helper_log("environment_variables: %i", environment_variables);
             exit(EXIT_FAILURE);
         }
     
-        environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
+        environment = xpc_dictionary_get_dictionary(event, ENVIRONMENT_KEY);
         if (!environment)
         {
-            helper_log("Environment is null");
+            helper_log("environment: %i", environment);
             exit(EXIT_FAILURE);
         }
         
@@ -120,7 +119,8 @@ void helper_log(const char *format, ...)
         //                                LOGGING
         //==================================//==================================
 
-        helper_log("launch_path = %s \n current_directory_path = %s", launch_path, current_directory_path);
+        helper_log("launchPath = %s", launch_path);
+        helper_log("currentDirectoryPath = %s", current_directory_path);
         
         helper_log("ARGUMENTS:\n");
         for (int i = 0; i < xpc_array_get_count(arguments); i++)
@@ -128,13 +128,18 @@ void helper_log(const char *format, ...)
             helper_log("%s\n", xpc_array_get_string(arguments, i));
         }
 
-        // XXX this is crashing!
-        //helper_log("ENVIRONMENT:\n");
-        //for (int i = 0; i < xpc_array_get_count(environment_variables); i++)
-        //{
-        //    const char *key = xpc_array_get_string(environment_variables, i);
-        //    helper_log("%s: %s\n", key, xpc_dictionary_get_string(environment_variables, key));
-        //}
+//        helper_log("ENVIRONMENT:\n");
+//        for (int i = 0; i < xpc_array_get_count(environment_variables); i++)
+//        {
+//            const char *key = xpc_array_get_string(environment_variables, i);
+//            if (!key)
+//            {
+//                helper_log("ignoring %i", i);
+//                continue;
+//            }
+//
+//            helper_log("%s: %s\n", key, xpc_dictionary_get_string(environment_variables, key));
+//        }
         
         //==================================//==================================
         //                                EXECUTE
@@ -197,7 +202,7 @@ void helper_log(const char *format, ...)
 
 int main(int argc, const char *argv[])
 {
-    helper_log("NSAuthenticatedTask v%.1f | npyl", 0.3);
+    helper_log("NSAuthenticatedTask v%.1f | npyl", 0.4);
     
     SMJobBlessHelper *helper = [[SMJobBlessHelper alloc] init];
     if (!helper)
