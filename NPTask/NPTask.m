@@ -70,11 +70,16 @@
      */
     NSDictionary *environmentDictionary = [NSProcessInfo processInfo].environment;
     xpc_object_t environment = xpc_dictionary_create(NULL, NULL, 0);
+
     for (NSString *key in environmentDictionary.allKeys)
     {
         xpc_object_t value = xpc_string_create([[environmentDictionary objectForKey:key] UTF8String]);
+        xpc_object_t key_o = xpc_string_create(key.UTF8String);
+
+//        NSLog(@"adding value: %@", value);
+//        NSLog(@"for key: %@", key_o);
         
-        xpc_array_append_value(environment_variables, xpc_string_create(key.UTF8String));
+        xpc_array_append_value(environment_variables, key_o);
         xpc_dictionary_set_value(environment, key.UTF8String, value);
     }
     

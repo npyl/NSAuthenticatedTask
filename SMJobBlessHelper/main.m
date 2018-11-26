@@ -97,7 +97,9 @@ void helper_log(const char *format, ...)
             helper_log("arguments: %i", arguments);
             exit(EXIT_FAILURE);
         }
-    
+//        helper_log("arguments: %i", arguments);
+//        NSLog(@"arguments: %@", arguments);
+
         /*
          * Environment
          */
@@ -107,14 +109,18 @@ void helper_log(const char *format, ...)
             helper_log("environment_variables: %i", environment_variables);
             exit(EXIT_FAILURE);
         }
-    
-        environment = xpc_dictionary_get_dictionary(event, ENVIRONMENT_KEY);
+//        helper_log("environment_variables: %i", environment_variables);
+//        NSLog(@"environment_variables: %@", environment_variables);
+
+        environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
         if (!environment)
         {
             helper_log("environment: %i", environment);
             exit(EXIT_FAILURE);
         }
-        
+//        helper_log("environment: %i", environment);
+//        NSLog(@"environment: %@", environment);
+
         //==================================//==================================
         //                                LOGGING
         //==================================//==================================
