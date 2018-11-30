@@ -18,7 +18,7 @@ int main(int argc, const char * argv[])
     task.arguments = @[@"-p", @"/usr/local/test1234"];
 
     [task launchAuthenticated];
-    [task waitUntilExit];   // XXX test this...
+    [task waitUntilExit];
 
     return 0;
 }
