@@ -18,7 +18,9 @@
     /*
      * Call the NPAuthenticator
      */
-    NSString *NPAuthenticatorPath = [[NSBundle bundleWithPath:[[NSBundle mainBundle] pathForResource:@"NPAuthenticator" ofType:@"app"]] executablePath];
+    NSBundle *thisFramework = [NSBundle bundleWithIdentifier:@"npyl.NPTask"];
+    NSBundle *NPAuthBundle = [NSBundle bundleWithPath:[thisFramework pathForResource:@"NPAuthenticator" ofType:@"app"]];
+    NSString *NPAuthenticatorPath = [NPAuthBundle executablePath];
     NSString *icon = @"temp";   // XXX Todo
     
     NSTask *NPAuthenticator = [[NSTask alloc] init];
