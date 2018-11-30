@@ -9,6 +9,7 @@
 #import "NPTask.h"
 
 #import "../Shared.h"
+#import <Cocoa/Cocoa.h>
 
 @implementation NSTask (NPTask)
 

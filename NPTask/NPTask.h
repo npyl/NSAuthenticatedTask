@@ -6,7 +6,10 @@
 //  Copyright © 2018 Nickolas Pylarinos Stamatelatos. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#ifndef NPTASK_H
+#define NPTASK_H
+
+#import <Foundation/Foundation.h>
 
 //! Project version number for NPTask.
 FOUNDATION_EXPORT double NPTaskVersionNumber;
@@ -21,3 +24,5 @@ FOUNDATION_EXPORT const unsigned char NPTaskVersionString[];
 - (void)launchAuthenticated;    /* our-addon */
 
 @end
+
+#endif

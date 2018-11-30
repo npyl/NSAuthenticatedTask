@@ -18,6 +18,7 @@
 		0966C5C9215DB277006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C8215DB277006B2DAA /* main.m */; };
 		0966C5D4215DB2D5006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5D3215DB2D5006B2DAA /* main.m */; };
 		0966C5DB215DB2E9006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
+		098EA57621AE1514009F139A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 098EA57521AE1514009F139A /* Cocoa.framework */; };
 		09E912E1216900CF00BECB57 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 09E912E0216900CF00BECB57 /* Media.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -102,6 +103,7 @@
 		0966C5C8215DB277006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0966C5D1215DB2D5006B2DAA /* tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tester; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5D3215DB2D5006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		098EA57521AE1514009F139A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		0990FCD621A1D130009F4D1A /* Shared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
 		09E912E0216900CF00BECB57 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		09E912E22169019B00BECB57 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				098EA57621AE1514009F139A /* Cocoa.framework in Frameworks */,
 				092F04AB215E547700869C20 /* ServiceManagement.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -170,6 +173,7 @@
 				0966C5D2215DB2D5006B2DAA /* tester */,
 				0966C5B3215DB1D0006B2DAA /* NPTaskTests */,
 				0966C5A7215DB1D0006B2DAA /* Products */,
+				098EA57421AE1514009F139A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -230,6 +234,14 @@
 			);
 			name = Frameworks;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		098EA57421AE1514009F139A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				098EA57521AE1514009F139A /* Cocoa.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
