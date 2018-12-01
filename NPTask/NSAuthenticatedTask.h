@@ -23,10 +23,22 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 @property NSString *icon;   /* authentication icon */
 
 // these methods can only be set before a launch
+@property (nullable, copy) NSString *launchPath;
 @property (nullable, copy) NSURL *executableURL;
 @property (nullable, copy) NSArray<NSString *> *arguments;
 @property (nullable, copy) NSDictionary<NSString *, NSString *> *environment; // if not set, use current
 @property (nullable, copy) NSURL *currentDirectoryURL;
+@property (copy) NSString *currentDirectoryPath; // if not set, use current
+
+// status
+@property (readonly) int processIdentifier;
+@property (readonly, getter=isRunning) BOOL running;
+
+@property (readonly) int terminationStatus;
+@property (readonly) NSTaskTerminationReason terminationReason;
+
+@property (nullable, copy) void (^terminationHandler)(NSTask *);
+@property NSQualityOfService qualityOfService;
 
 // standard I/O channels; could be either an NSFileHandle or an NSPipe
 @property (nullable, retain) id standardInput;
@@ -42,32 +54,14 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 - (BOOL)suspend;
 - (BOOL)resume;
 
-// status
-@property (readonly) int processIdentifier;
-@property (readonly, getter=isRunning) BOOL running;
-
-@property (readonly) int terminationStatus;
-@property (readonly) NSTaskTerminationReason terminationReason;
-
-@property (nullable, copy) void (^terminationHandler)(NSTask *);
-@property NSQualityOfService qualityOfService;
-
-@end
-
-@interface NSTask (NSTaskConveniences)
-
-+ (nullable NSTask *)launchedTaskWithExecutableURL:(NSURL *)url arguments:(NSArray<NSString *> *)arguments error:(out NSError ** _Nullable)error terminationHandler:(void (^_Nullable)(NSTask *))terminationHandler API_AVAILABLE(macos(10.13)) API_UNAVAILABLE(ios, watchos, tvos);
+- (void)launch;
+- (void)launchAuthenticated;    /* our-addon */
 
 - (void)waitUntilExit;
 // poll the runLoop in defaultMode until task completes
 
-@property (nullable, copy) NSString *launchPath;
-@property (copy) NSString *currentDirectoryPath; // if not set, use current
-
-- (void)launch;
-
-- (void)launchAuthenticated;    /* our-addon */
-
 @end
+
+//+ (nullable NSTask *)launchedTaskWithExecutableURL:(NSURL *)url arguments:(NSArray<NSString *> *)arguments error:(out NSError ** _Nullable)error terminationHandler:(void (^_Nullable)(NSTask *))terminationHandler;
 
 #endif
