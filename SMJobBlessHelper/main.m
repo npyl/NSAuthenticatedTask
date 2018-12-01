@@ -78,55 +78,37 @@ void helper_log(const char *format, ...)
         helper_log("GETTING LAUNCHINFO...");
     
         /*
-         * Paths
+         * All info...
          */
         launch_path = xpc_dictionary_get_string(event, LAUNCH_PATH_KEY);
         current_directory_path = xpc_dictionary_get_string(event, CURRENT_DIR_KEY);
-        if (!launch_path || !current_directory_path)
-        {
-            helper_log("failed@1st part");
-            exit(EXIT_FAILURE);
-        }
-    
-        /*
-         * Arguments
-         */
         arguments = xpc_dictionary_get_value(event, ARGUMENTS_KEY);
-        if (!arguments)
+        environment_variables = xpc_dictionary_get_array(event, ENV_VARS_KEY);
+        environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
+
+        helper_log("launch_path: %s", launch_path);
+        helper_log("current_directory_path: %s", current_directory_path);
+        helper_log("arguments: %i", arguments);
+        helper_log("environment_variables: %i", environment_variables);
+        helper_log("environment: %i", environment);
+        
+        if (!launch_path || !current_directory_path || !arguments || !environment_variables || !environment)
         {
-            helper_log("arguments: %i", arguments);
             exit(EXIT_FAILURE);
         }
+
 //        helper_log("arguments: %i", arguments);
 //        NSLog(@"arguments: %@", arguments);
 
-        /*
-         * Environment
-         */
-        environment_variables = xpc_dictionary_get_array(event, ENV_VARS_KEY);
-        if (!environment_variables)
-        {
-            helper_log("environment_variables: %i", environment_variables);
-            exit(EXIT_FAILURE);
-        }
 //        helper_log("environment_variables: %i", environment_variables);
 //        NSLog(@"environment_variables: %@", environment_variables);
 
-        environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
-        if (!environment)
-        {
-            helper_log("environment: %i", environment);
-            exit(EXIT_FAILURE);
-        }
 //        helper_log("environment: %i", environment);
 //        NSLog(@"environment: %@", environment);
 
         //==================================//==================================
         //                                LOGGING
         //==================================//==================================
-
-        helper_log("launchPath = %s", launch_path);
-        helper_log("currentDirectoryPath = %s", current_directory_path);
         
         helper_log("ARGUMENTS:\n");
         for (int i = 0; i < xpc_array_get_count(arguments); i++)
