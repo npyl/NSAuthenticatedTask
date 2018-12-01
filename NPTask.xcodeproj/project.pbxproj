@@ -13,8 +13,8 @@
 		092F0501215E6B2A00869C20 /* npyl.NPTask.SMJobBlessHelper in Copy SMJobBlessHelper */ = {isa = PBXBuildFile; fileRef = 0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0966C5B0215DB1D0006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
 		0966C5B5215DB1D0006B2DAA /* NPTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */; };
-		0966C5B7215DB1D0006B2DAA /* NPTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 0966C5A9215DB1D0006B2DAA /* NPTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		0966C5C1215DB1DF006B2DAA /* NPTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C0215DB1DF006B2DAA /* NPTask.m */; };
+		0966C5B7215DB1D0006B2DAA /* NSAuthenticatedTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 0966C5A9215DB1D0006B2DAA /* NSAuthenticatedTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0966C5C1215DB1DF006B2DAA /* NSAuthenticatedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C0215DB1DF006B2DAA /* NSAuthenticatedTask.m */; };
 		0966C5C9215DB277006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C8215DB277006B2DAA /* main.m */; };
 		0966C5D4215DB2D5006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5D3215DB2D5006B2DAA /* main.m */; };
 		0966C5DB215DB2E9006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
@@ -93,12 +93,12 @@
 		092F04F6215E69BB00869C20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		092F04F7215E69BB00869C20 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0966C5A6215DB1D0006B2DAA /* NPTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NPTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0966C5A9215DB1D0006B2DAA /* NPTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NPTask.h; sourceTree = "<group>"; };
+		0966C5A9215DB1D0006B2DAA /* NSAuthenticatedTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSAuthenticatedTask.h; sourceTree = "<group>"; };
 		0966C5AA215DB1D0006B2DAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0966C5AF215DB1D0006B2DAA /* NPTaskTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NPTaskTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NPTaskTests.m; sourceTree = "<group>"; };
 		0966C5B6215DB1D0006B2DAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0966C5C0215DB1DF006B2DAA /* NPTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NPTask.m; sourceTree = "<group>"; };
+		0966C5C0215DB1DF006B2DAA /* NSAuthenticatedTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSAuthenticatedTask.m; sourceTree = "<group>"; };
 		0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = npyl.NPTask.SMJobBlessHelper; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5C8215DB277006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0966C5D1215DB2D5006B2DAA /* tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tester; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,8 +194,8 @@
 			children = (
 				0966C5DA215DB2E9006B2DAA /* Frameworks */,
 				0966C5AA215DB1D0006B2DAA /* Info.plist */,
-				0966C5A9215DB1D0006B2DAA /* NPTask.h */,
-				0966C5C0215DB1DF006B2DAA /* NPTask.m */,
+				0966C5A9215DB1D0006B2DAA /* NSAuthenticatedTask.h */,
+				0966C5C0215DB1DF006B2DAA /* NSAuthenticatedTask.m */,
 			);
 			path = NPTask;
 			sourceTree = "<group>";
@@ -251,7 +251,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0966C5B7215DB1D0006B2DAA /* NPTask.h in Headers */,
+				0966C5B7215DB1D0006B2DAA /* NSAuthenticatedTask.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,7 +436,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0966C5C1215DB1DF006B2DAA /* NPTask.m in Sources */,
+				0966C5C1215DB1DF006B2DAA /* NSAuthenticatedTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

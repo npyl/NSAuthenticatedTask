@@ -6,12 +6,12 @@
 //  Copyright © 2018 Nickolas Pylarinos Stamatelatos. All rights reserved.
 //
 
-#import "NPTask.h"
+#import "NSAuthenticatedTask.h"
 
 #import "../Shared.h"
 #import <Cocoa/Cocoa.h>
 
-@implementation NSTask (NPTask)
+@implementation NSAuthenticatedTask
 
 - (void)launchAuthenticated
 {
@@ -36,10 +36,7 @@
     }
     
     /* Lets start communications */
-    xpc_connection_t connection = xpc_connection_create_mach_service(HELPER_IDENTIFIER,
-                                                                     NULL,
-                                                                     XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
-    
+    xpc_connection_t connection = xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
     if (!connection)
     {
         NSLog(@"Failed to create XPC connection.");
@@ -85,9 +82,7 @@
         xpc_object_t value = xpc_string_create([[environmentDictionary objectForKey:key] UTF8String]);
         xpc_object_t key_o = xpc_string_create(key.UTF8String);
 
-//        NSLog(@"adding value: %@", value);
-//        NSLog(@"for key: %@", key_o);
-        
+        /* fill-in */
         xpc_array_append_value(environment_variables, key_o);
         xpc_dictionary_set_value(environment, key.UTF8String, value);
     }
