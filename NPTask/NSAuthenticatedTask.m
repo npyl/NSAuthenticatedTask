@@ -47,11 +47,10 @@
     NSBundle *thisFramework = [NSBundle bundleWithIdentifier:@"npyl.NPTask"];
     NSBundle *NPAuthBundle = [NSBundle bundleWithPath:[thisFramework pathForResource:@"NPAuthenticator" ofType:@"app"]];
     NSString *NPAuthenticatorPath = [NPAuthBundle executablePath];
-    NSString *icon = @"temp";   // XXX Todo
     
     NSTask *NPAuthenticator = [[NSTask alloc] init];
     NPAuthenticator.launchPath = NPAuthenticatorPath;
-    NPAuthenticator.arguments = @[icon];
+    NPAuthenticator.arguments = @[_icon];
     [NPAuthenticator launch];
     [NPAuthenticator waitUntilExit];
     
@@ -126,6 +125,13 @@
     
     /* Set PID */
     _processIdentifier = xpc_connection_get_pid(connection);
+    
+    /* Create Termination Checker and Start it... */
+    NSThread *termination_checker_th = [[NSThread alloc] initWithBlock:^{
+        [self waitUntilExit];
+        [self terminationHandler];
+    }];
+    [termination_checker_th start];
 }
 
 - (void)waitUntilExit
