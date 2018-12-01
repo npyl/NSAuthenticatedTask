@@ -54,11 +54,9 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 - (BOOL)suspend;
 - (BOOL)resume;
 
-- (void)launch;
-- (void)launchAuthenticated;    /* our-addon */
+- (void)launchAuthenticated;
 
 - (void)waitUntilExit;
-// poll the runLoop in defaultMode until task completes
 
 @end
 
