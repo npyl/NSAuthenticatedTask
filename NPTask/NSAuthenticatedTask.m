@@ -13,6 +13,32 @@
 
 @implementation NSAuthenticatedTask
 
+- (void)interrupt
+{
+//    kill(_processIdentifier, SIGINT);
+}
+- (void)terminate
+{
+//    kill(_processIdentifier, SIGTERM);
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        /*
+         * Get current working directory (PWD)
+         */
+        char cwd[PATH_MAX];
+        if (getcwd(cwd, sizeof(cwd)) == NULL)
+            return nil;
+        
+        _currentDirectoryPath = [NSString stringWithUTF8String:cwd];
+    }
+    return self;
+}
+
 - (void)launchAuthenticated
 {
     /*
@@ -97,6 +123,15 @@
     xpc_dictionary_set_value(dictionary,    ENV_VARS_KEY,       environment_variables);
     xpc_dictionary_set_value(dictionary,    ENVIRONMENT_KEY,    environment);
     xpc_connection_send_message(connection, dictionary);
+    
+    /* Set PID */
+    _processIdentifier = xpc_connection_get_pid(connection);
+}
+
+- (void)waitUntilExit
+{
+    int status;
+    waitpid(_processIdentifier, &status, 0);
 }
 
 @end

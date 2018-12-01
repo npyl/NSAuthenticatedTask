@@ -6,8 +6,8 @@
 //  Copyright © 2018 Nickolas Pylarinos Stamatelatos. All rights reserved.
 //
 
-#ifndef NPTASK_H
-#define NPTASK_H
+#ifndef NSAUTHENTICATEDTASK_H
+#define NSAUTHENTICATEDTASK_H
 
 #import <Foundation/Foundation.h>
 
@@ -45,9 +45,6 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 @property (nullable, retain) id standardOutput;
 @property (nullable, retain) id standardError;
 
-// actions
-- (BOOL)launchAndReturnError:(out NSError **_Nullable)error;
-
 - (void)interrupt; // Not always possible. Sends SIGINT.
 - (void)terminate; // Not always possible. Sends SIGTERM.
 
@@ -61,5 +58,9 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 @end
 
 //+ (nullable NSTask *)launchedTaskWithExecutableURL:(NSURL *)url arguments:(NSArray<NSString *> *)arguments error:(out NSError ** _Nullable)error terminationHandler:(void (^_Nullable)(NSTask *))terminationHandler;
+
+// actions
+// (npyl): I don't like this...
+//- (BOOL)launchAndReturnError:(out NSError **_Nullable)error;
 
 #endif
