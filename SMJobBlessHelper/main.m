@@ -28,17 +28,6 @@
 
 @end
 
-void helper_log(const char *format, ...);
-void helper_log(const char *format, ...)
-{
-    va_list vargs;
-    va_start(vargs, format);
-    NSString* formattedMessage = [[NSString alloc] initWithFormat:[NSString stringWithUTF8String:format] arguments:vargs];
-    va_end(vargs);
-    
-    syslog(LOG_NOTICE, "[HELPER]: %s", formattedMessage.UTF8String);
-}
-
 @implementation SMJobBlessHelper
 
 - (void) __XPC_Peer_Event_Handler:(xpc_connection_t)connection withEvent:(xpc_object_t)event

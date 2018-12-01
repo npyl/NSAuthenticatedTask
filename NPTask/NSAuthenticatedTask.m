@@ -13,6 +13,14 @@
 
 @implementation NSAuthenticatedTask
 
+- (BOOL)suspend
+{
+    return NO;
+}
+- (BOOL)resume
+{
+    return NO;
+}
 - (void)interrupt
 {
 //    kill(_processIdentifier, SIGINT);
@@ -35,6 +43,7 @@
             return nil;
         
         _currentDirectoryPath = [NSString stringWithUTF8String:cwd];
+        _environment = [[NSProcessInfo processInfo] environment];
     }
     return self;
 }

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		091A613B21B3570800ECF7AA /* Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 091A613A21B3570800ECF7AA /* Shared.m */; };
+		091A613C21B3575000ECF7AA /* Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 091A613A21B3570800ECF7AA /* Shared.m */; };
+		091A613D21B3575700ECF7AA /* Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 091A613A21B3570800ECF7AA /* Shared.m */; };
 		092F04AB215E547700869C20 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 092F04AA215E547700869C20 /* ServiceManagement.framework */; };
 		092F04F8215E69BB00869C20 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F04F7215E69BB00869C20 /* main.m */; };
 		092F04FF215E6AF300869C20 /* NPAuthenticator.app in Resources */ = {isa = PBXBuildFile; fileRef = 092F04E9215E69BA00869C20 /* NPAuthenticator.app */; };
@@ -86,6 +89,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		091A613A21B3570800ECF7AA /* Shared.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Shared.m; sourceTree = "<group>"; };
 		092F04A7215DBB8C00869C20 /* SMJobBlessHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Info.plist"; sourceTree = "<group>"; };
 		092F04A8215DBC2600869C20 /* SMJobBlessHelper-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Launchd.plist"; sourceTree = "<group>"; };
 		092F04AA215E547700869C20 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
@@ -167,6 +171,7 @@
 			children = (
 				09E912E22169019B00BECB57 /* README.md */,
 				0990FCD621A1D130009F4D1A /* Shared.h */,
+				091A613A21B3570800ECF7AA /* Shared.m */,
 				0966C5A8215DB1D0006B2DAA /* NPTask */,
 				0966C5C7215DB277006B2DAA /* SMJobBlessHelper */,
 				092F04EA215E69BA00869C20 /* NPAuthenticator */,
@@ -428,6 +433,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				091A613D21B3575700ECF7AA /* Shared.m in Sources */,
 				092F04F8215E69BB00869C20 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -436,6 +442,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				091A613B21B3570800ECF7AA /* Shared.m in Sources */,
 				0966C5C1215DB1DF006B2DAA /* NSAuthenticatedTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -452,6 +459,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				091A613C21B3575000ECF7AA /* Shared.m in Sources */,
 				0966C5C9215DB277006B2DAA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

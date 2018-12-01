@@ -20,4 +20,9 @@
 #define ENV_VARS_KEY        "environment_variables_key"
 #define ENVIRONMENT_KEY     "environment_key"
 
+/*
+ * Logging
+ */
+void helper_log(const char *format, ...);
+
 #endif /* Shared_h */
