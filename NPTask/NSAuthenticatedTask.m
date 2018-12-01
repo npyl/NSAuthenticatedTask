@@ -60,6 +60,9 @@
         return;
     }
     
+    /* Set Running to Yes */
+    _running = YES;
+    
     /* Lets start communications */
     xpc_connection_t connection = xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
     if (!connection)
@@ -138,6 +141,9 @@
 {
     int status;
     waitpid(_processIdentifier, &status, 0);
+    
+    /* Set Running to NO */
+    _running = NO;
 }
 
 @end
