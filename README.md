@@ -1,4 +1,4 @@
-#  NSTask+Authentication (also named NPTask)
+#  NSTask+Authentication (also named NSAuthenticatedTask)
 
 **UNDER DEVELOPMENT**
 
