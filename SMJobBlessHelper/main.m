@@ -22,6 +22,7 @@
     xpc_object_t        arguments;
     xpc_object_t        environment;            /* dictionary */
     xpc_object_t        environment_variables;  /* array: list of keys */
+    bool                uses_pipes;
 }
 
 - (instancetype)init;
@@ -74,13 +75,15 @@
         arguments = xpc_dictionary_get_value(event, ARGUMENTS_KEY);
         environment_variables = xpc_dictionary_get_array(event, ENV_VARS_KEY);
         environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
+        uses_pipes = xpc_dictionary_get_bool(event, USE_PIPES_KEY);
 
         helper_log("launch_path: %s", launch_path);
         helper_log("current_directory_path: %s", current_directory_path);
         helper_log("arguments: %i", arguments);
         helper_log("environment_variables: %i", environment_variables);
         helper_log("environment: %i", environment);
-        
+        helper_log("pipes: %i", uses_pipes);
+
         if (!launch_path || !current_directory_path || !arguments || !environment_variables || !environment)
         {
             exit(EXIT_FAILURE);
@@ -133,6 +136,12 @@
         task.launchPath = [NSString stringWithUTF8String:launch_path];
         task.currentDirectoryPath = [NSString stringWithUTF8String:current_directory_path];
         task.arguments = args;
+        
+        /* if uses pipes, setup the pipe readers... */
+        if (uses_pipes)
+        {
+            // XXX
+        }
         
         [task launch];
         [task waitUntilExit];

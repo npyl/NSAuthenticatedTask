@@ -42,6 +42,7 @@
         if (getcwd(cwd, sizeof(cwd)) == NULL)
             return nil;
         
+        _usesPipes = NO;
         _icon = nil;
         _currentDirectoryPath = [NSString stringWithUTF8String:cwd];
         _environment = [[NSProcessInfo processInfo] environment];
@@ -51,6 +52,9 @@
 
 - (void)launchAuthenticated
 {
+    if (_standardInput || _standardOutput || _standardError)
+        _usesPipes = YES;
+    
     /*
      * Call the NPAuthenticator
      */
@@ -134,6 +138,7 @@
     xpc_dictionary_set_value(dictionary,    ARGUMENTS_KEY,      arguments);
     xpc_dictionary_set_value(dictionary,    ENV_VARS_KEY,       environment_variables);
     xpc_dictionary_set_value(dictionary,    ENVIRONMENT_KEY,    environment);
+    xpc_dictionary_set_bool(dictionary,     USE_PIPES_KEY,      _usesPipes);
     xpc_connection_send_message(connection, dictionary);
     
     /* Set PID */

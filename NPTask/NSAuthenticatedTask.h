@@ -18,6 +18,9 @@ FOUNDATION_EXPORT double NSAuthenticatedTaskVersionNumber;
 FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 
 @interface NSAuthenticatedTask : NSObject
+{
+    BOOL _usesPipes;
+}
 
 @property NSString *text;   /* authentication text */
 @property NSString *icon;   /* authentication icon */

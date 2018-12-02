@@ -19,6 +19,7 @@
 #define ARGUMENTS_KEY       "arguments_key"
 #define ENV_VARS_KEY        "environment_variables_key"
 #define ENVIRONMENT_KEY     "environment_key"
+#define USE_PIPES_KEY       "use_pipes_key"
 
 /*
  * Logging
