@@ -42,6 +42,7 @@
         if (getcwd(cwd, sizeof(cwd)) == NULL)
             return nil;
         
+        _icon = nil;
         _currentDirectoryPath = [NSString stringWithUTF8String:cwd];
         _environment = [[NSProcessInfo processInfo] environment];
     }
@@ -59,7 +60,7 @@
     
     NSTask *NPAuthenticator = [[NSTask alloc] init];
     NPAuthenticator.launchPath = NPAuthenticatorPath;
-    NPAuthenticator.arguments = @[_icon];
+    if (_icon) NPAuthenticator.arguments = @[_icon];
     [NPAuthenticator launch];
     [NPAuthenticator waitUntilExit];
     
