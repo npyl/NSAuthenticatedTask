@@ -9,9 +9,7 @@
 #import <NPTask/NSAuthenticatedTask.h>   // include for launchAuthenticated addition
 
 int main(int argc, const char * argv[])
-{
-    /* XXX setting this means we can throw error if the launchPath doesn't correspond to real executable */
-    
+{    
     NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
     task.icon = @"temp";
     task.launchPath = @"/bin/mkdir";

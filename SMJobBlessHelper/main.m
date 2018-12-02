@@ -119,15 +119,6 @@
             exit(EXIT_FAILURE);
         }
 
-//        helper_log("arguments: %i", arguments);
-//        NSLog(@"arguments: %@", arguments);
-
-//        helper_log("environment_variables: %i", environment_variables);
-//        NSLog(@"environment_variables: %@", environment_variables);
-
-//        helper_log("environment: %i", environment);
-//        NSLog(@"environment: %@", environment);
-
         //==================================//==================================
         //                                LOGGING
         //==================================//==================================
