@@ -31,6 +31,36 @@
 
 @implementation SMJobBlessHelper
 
+-(void)receivedData:(NSNotification*)notif
+{
+    NSFileHandle *fh = [notif object];
+    NSData *data = [fh availableData];
+    if (data.length > 0)
+    {
+        /* if data is found, re-register for more data (and print) */
+        [fh waitForDataInBackgroundAndNotify];
+        NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        
+        syslog(LOG_NOTICE, "Sending %s", [str UTF8String]);
+    }
+}
+
+/* Called when there is some data in the error pipe */
+
+-(void)receivedError:(NSNotification*)notif
+{
+    NSFileHandle *fh = [notif object];
+    NSData *data = [fh availableData];
+    if (data.length > 0)
+    {
+        /* if data is found, re-register for more data (and print) */
+        [fh waitForDataInBackgroundAndNotify];
+        NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        
+        syslog(LOG_NOTICE, "Error %s", [str UTF8String]);
+    }
+}
+
 - (void) __XPC_Peer_Event_Handler:(xpc_connection_t)connection withEvent:(xpc_object_t)event
 {
 //    syslog(LOG_NOTICE, "Received message in generic event handler: %p\n", event);
@@ -140,7 +170,22 @@
         /* if uses pipes, setup the pipe readers... */
         if (uses_pipes)
         {
-            // XXX
+            NSFileHandle *output, *error;
+            
+            [task setStandardOutput:[NSPipe pipe]];
+            [task setStandardError:[NSPipe pipe]];
+            
+            output = [task.standardOutput fileHandleForReading];
+            error = [task.standardError fileHandleForReading];
+
+            [output waitForDataInBackgroundAndNotify];
+            [error waitForDataInBackgroundAndNotify];
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:output];
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedError:) name:NSFileHandleDataAvailableNotification object:error];
+
+            // XXX use terminationHandler???
         }
         
         [task launch];
