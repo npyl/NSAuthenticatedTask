@@ -95,6 +95,31 @@
             else if (event == XPC_ERROR_CONNECTION_INVALID) { NSLog(@"XPC connection invalid, releasing."); }
             else                                            { NSLog(@"Unexpected XPC connection error."); }
         }
+        else
+        {
+            /*
+             * Ok, we are starting to get pipe data...
+             */
+            const char *standardOutput = xpc_dictionary_get_string(event, "standardOutput");
+            const char *standardError = xpc_dictionary_get_string(event, "standardError");
+            
+            NSFileHandle *writeHandle;
+            
+            if (standardOutput)
+            {
+                NSLog(@"out: %s", standardOutput);
+                
+                writeHandle = [self->_standardOutput fileHandleForWriting];
+                [writeHandle writeData:[[NSString stringWithUTF8String:standardOutput] dataUsingEncoding:NSUTF8StringEncoding]];
+            }
+            if (standardError)
+            {
+                NSLog(@"err: %s", standardError);
+
+                writeHandle = [self->_standardError fileHandleForWriting];
+                [writeHandle writeData:[[NSString stringWithUTF8String:standardError] dataUsingEncoding:NSUTF8StringEncoding]];
+            }
+        }
     });
     
     xpc_connection_resume(connection);

@@ -41,11 +41,13 @@
         [fh waitForDataInBackgroundAndNotify];
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
-        syslog(LOG_NOTICE, "Sending %s", [str UTF8String]);
+//        syslog(LOG_NOTICE, "Sending %s", [str UTF8String]);
+        
+        xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+        xpc_dictionary_set_string(msg, "standardOutput", [str UTF8String]);
+        xpc_connection_send_message(connection_handle, msg);
     }
 }
-
-/* Called when there is some data in the error pipe */
 
 -(void)receivedError:(NSNotification*)notif
 {
@@ -57,7 +59,11 @@
         [fh waitForDataInBackgroundAndNotify];
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
-        syslog(LOG_NOTICE, "Error %s", [str UTF8String]);
+//        syslog(LOG_NOTICE, "Error %s", [str UTF8String]);
+        
+        xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+        xpc_dictionary_set_string(msg, "standardError", [str UTF8String]);
+        xpc_connection_send_message(connection_handle, msg);
     }
 }
 

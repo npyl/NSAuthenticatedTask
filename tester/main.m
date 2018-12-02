@@ -15,9 +15,14 @@ int main(int argc, const char * argv[])
     task.launchPath = @"/bin/mkdir";
     task.standardOutput = [NSPipe pipe];
     task.arguments = @[@"-p"];
-
+    
     [task launchAuthenticated];
     [task waitUntilExit];
 
+    NSFileHandle *fh = [[task standardOutput] fileHandleForReading];
+    NSData *data = [fh readDataToEndOfFile];
+    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"GOT: %@", str);
+    
     return 0;
 }
