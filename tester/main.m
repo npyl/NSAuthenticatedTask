@@ -15,7 +15,8 @@ int main(int argc, const char * argv[])
     NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
     task.icon = @"temp";
     task.launchPath = @"/bin/mkdir";
-    task.arguments = @[@"-p", @"/usr/local/test1234"];
+    task.standardOutput = [NSPipe pipe];
+    task.arguments = @[@"-p"];
 
     [task launchAuthenticated];
     [task waitUntilExit];
