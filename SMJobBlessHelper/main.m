@@ -41,8 +41,6 @@
         [fh waitForDataInBackgroundAndNotify];
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
-//        syslog(LOG_NOTICE, "Sending %s", [str UTF8String]);
-        
         xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
         xpc_dictionary_set_string(msg, "standardOutput", [str UTF8String]);
         xpc_connection_send_message(connection_handle, msg);
@@ -59,8 +57,6 @@
         [fh waitForDataInBackgroundAndNotify];
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
-//        syslog(LOG_NOTICE, "Error %s", [str UTF8String]);
-        
         xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
         xpc_dictionary_set_string(msg, "standardError", [str UTF8String]);
         xpc_connection_send_message(connection_handle, msg);
@@ -69,8 +65,7 @@
 
 - (void) __XPC_Peer_Event_Handler:(xpc_connection_t)connection withEvent:(xpc_object_t)event
 {
-//    syslog(LOG_NOTICE, "Received message in generic event handler: %p\n", event);
-//    syslog(LOG_NOTICE, "%s\n", xpc_copy_description(event));
+//    syslog(LOG_NOTICE, "Received message in generic event handler: %s\n", xpc_copy_description(event));
 
     xpc_type_t type = xpc_get_type(event);
     
@@ -122,7 +117,8 @@
 
         if (!launch_path || !current_directory_path || !arguments || !environment_variables || !environment)
         {
-            exit(EXIT_FAILURE);
+            xpc_connection_cancel(connection);
+            return;
         }
 
         //==================================//==================================
@@ -188,8 +184,7 @@
         [task launch];
         [task waitUntilExit];
         
-        helper_log("exiting...");
-        exit(EXIT_SUCCESS);
+        xpc_connection_cancel(connection);
     }
 }
 

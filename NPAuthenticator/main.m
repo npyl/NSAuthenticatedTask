@@ -32,7 +32,7 @@ BOOL blessHelperWithLabel(NSString *label, NSError **error)
     OSStatus status = AuthorizationCreate(&authRights, kAuthorizationEmptyEnvironment, flags, &authRef);
     if (status != errAuthorizationSuccess)
     {
-        NSLog( @"Failed to create AuthorizationRef. Error code: %d", (int)status );
+        NSLog(@"Failed to create AuthorizationRef. Error code: %d", (int)status);
     }
     else
     {
