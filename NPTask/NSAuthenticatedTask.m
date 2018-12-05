@@ -15,19 +15,29 @@
 
 - (BOOL)suspend
 {
-    return NO;
+    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(msg, "msg", "SUSPEND");
+    xpc_connection_send_message(connection_handle, msg);
+    return YES;
 }
 - (BOOL)resume
 {
-    return NO;
+    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(msg, "msg", "RESUME");
+    xpc_connection_send_message(connection_handle, msg);
+    return YES;
 }
 - (void)interrupt
 {
-//    kill(_processIdentifier, SIGINT);
+    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(msg, "msg", "INTERRUPT");
+    xpc_connection_send_message(connection_handle, msg);
 }
 - (void)terminate
 {
-//    kill(_processIdentifier, SIGTERM);
+    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(msg, "msg", "TERMINATE");
+    xpc_connection_send_message(connection_handle, msg);
 }
 
 - (instancetype)init
@@ -79,6 +89,7 @@
     
     /* Lets start communications */
     xpc_connection_t connection = xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
+    connection_handle = connection;
     if (!connection)
     {
         NSLog(@"Failed to create XPC connection.");

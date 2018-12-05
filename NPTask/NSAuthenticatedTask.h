@@ -20,6 +20,7 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 @interface NSAuthenticatedTask : NSObject
 {
     BOOL _usesPipes;
+    xpc_connection_t connection_handle;
 }
 
 @property NSString *text;   /* authentication text */
