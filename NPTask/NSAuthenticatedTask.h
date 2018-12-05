@@ -9,6 +9,7 @@
 #ifndef NSAUTHENTICATEDTASK_H
 #define NSAUTHENTICATEDTASK_H
 
+#import <xpc/xpc.h>
 #import <Foundation/Foundation.h>
 
 //! Project version number for NSAuthenticatedTask.
