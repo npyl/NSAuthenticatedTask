@@ -12,13 +12,15 @@ int main(int argc, const char * argv[])
 {    
     NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
     task.icon = @"temp";
-    task.launchPath = @"/bin/mkdir";
+    task.launchPath = @"/bin/sleep";
     //task.standardOutput = [NSPipe pipe];
-    task.arguments = @[@"-p"];
+    task.arguments = @[@"10"];
     
     [task launchAuthenticated];
+    NSLog(@"START WAIT %i", task.processIdentifier);
     [task waitUntilExit];
-
+    NSLog(@"END WAIT");
+    
     /*
     NSFileHandle *fh = [[task standardOutput] fileHandleForReading];
     NSData *data = [fh readDataToEndOfFile];

@@ -56,6 +56,7 @@
         _icon = nil;
         _currentDirectoryPath = [NSString stringWithUTF8String:cwd];
         _environment = [[NSProcessInfo processInfo] environment];
+        _terminationHandler = ^(NSTask *tsk) {};
     }
     return self;
 }
@@ -177,6 +178,7 @@
     xpc_dictionary_set_bool(dictionary,     USE_PIPES_KEY,      _usesPipes);
     xpc_connection_send_message(connection, dictionary);
     
+    // XXX not passed correctly... please fix... (Fixes waitUntilExit probably...)
     /* Set PID */
     _processIdentifier = xpc_connection_get_pid(connection);
     
