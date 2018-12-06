@@ -12,9 +12,13 @@
 #import <Foundation/Foundation.h>
 
 #define HELPER_VER 0.5
-#define HELPER_STATE_RUN 0  // just run app
-#define HELPER_STATE_OPR 1  // just operate
-#define HELPER_STATE_BYE 2  // just quit-up
+
+enum {
+    HELPER_STATE_RUN = 0,   // just run app
+    HELPER_STATE_OPR,       // just operate
+    HELPER_STATE_BYE,       // just quit-up
+    HELPER_STATE_DXT        // disaster exit
+};
 
 @interface SMJobBlessHelper : NSObject
 {
@@ -172,6 +176,14 @@
                     [args addObject:arg];
                 }
                 
+                //
+                // XXX
+                // We need to ditch NSTask for exec* family, because:
+                // 1) NSTask throws runtime exceptions which we cannot handle
+                //      (Helper Crashes => security vurnerability)
+                //
+                // 2) too heavy code... This is a Helper
+                
                 task.launchPath = [NSString stringWithUTF8String:launch_path];
                 task.currentDirectoryPath = [NSString stringWithUTF8String:current_directory_path];
                 task.arguments = args;
@@ -193,12 +205,12 @@
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:output];
                     
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedError:) name:NSFileHandleDataAvailableNotification object:error];
-                    
-                    [task setTerminationHandler:^(NSTask * _Nonnull tsk) {
-                        helper_log("BYE!");
-                        STATE = HELPER_STATE_BYE;   // exit...
-                    }];
                 }
+                
+                [task setTerminationHandler:^(NSTask * _Nonnull tsk) {
+                    helper_log("BYE1!");
+                    STATE = HELPER_STATE_BYE;
+                }];
                 
                 [task launch];
                 
@@ -209,19 +221,18 @@
                 /*
                  * Accept general events...
                  */
-                
-                helper_log("temp3");
 
-                
+                helper_log("test_opr");
                 break;
                 
             case HELPER_STATE_BYE:
-                helper_log("Gracefully exiting!");
+                helper_log("BYE2!");
                 xpc_connection_cancel(connection_handle);
                 exit(EXIT_SUCCESS);
                 break;
                 
             default:
+            case HELPER_STATE_DXT:
                 helper_log("Oh Hi Unexpected HELPER_STATE!");
                 exit(EXIT_FAILURE);
                 break;
