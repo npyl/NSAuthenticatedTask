@@ -14,7 +14,7 @@
 #define HELPER_VER 0.5
 
 enum {
-    HELPER_STATE_RUN = 0,   // just run app
+    HELPER_STATE_RUN,       // just run app
     HELPER_STATE_OPR,       // just operate
     HELPER_STATE_BYE,       // just quit-up
     HELPER_STATE_DXT        // disaster exit
@@ -203,7 +203,6 @@ enum {
                     [error waitForDataInBackgroundAndNotify];
                     
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:output];
-                    
                     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedError:) name:NSFileHandleDataAvailableNotification object:error];
                 }
                 

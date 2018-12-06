@@ -66,7 +66,5 @@ int main(int argc, const char * argv[])
         return (-1);
     }
     
-    NSLog(@"Helper available.");
-    
     return 0;
 }

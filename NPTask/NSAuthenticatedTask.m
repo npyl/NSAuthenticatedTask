@@ -106,7 +106,7 @@
             else if (event == XPC_ERROR_CONNECTION_INVALID) { NSLog(@"XPC connection invalid, releasing."); }
             else                                            { NSLog(@"Unexpected XPC connection error."); }
         }
-        else
+        else if (self->_usesPipes)
         {
             /*
              * Ok, we are starting to get pipe data...
