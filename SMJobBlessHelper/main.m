@@ -11,6 +11,11 @@
 #import "../Shared.h"
 #import <Foundation/Foundation.h>
 
+#define HELPER_VER 0.5
+#define HELPER_STATE_RUN 0  // just run app
+#define HELPER_STATE_OPR 1  // just operate
+#define HELPER_STATE_BYE 2  // just quit-up
+
 @interface SMJobBlessHelper : NSObject
 {
     xpc_connection_t    connection_handle;
@@ -92,99 +97,135 @@
     }
     else
     {
-        //==================================//==================================
-        //                                 DATA
-        //==================================//==================================
-
-        helper_log("GETTING LAUNCHINFO...");
-    
-        /*
-         * All info...
+        static int STATE = HELPER_STATE_RUN;
+        
+        /* XXX
+         * Obj-C is so unmerciful that doesn't allow us to have
+         * these inside switch block...
          */
-        launch_path = xpc_dictionary_get_string(event, LAUNCH_PATH_KEY);
-        current_directory_path = xpc_dictionary_get_string(event, CURRENT_DIR_KEY);
-        arguments = xpc_dictionary_get_value(event, ARGUMENTS_KEY);
-        environment_variables = xpc_dictionary_get_array(event, ENV_VARS_KEY);
-        environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
-        uses_pipes = xpc_dictionary_get_bool(event, USE_PIPES_KEY);
-
-        helper_log("launch_path: %s", launch_path);
-        helper_log("current_directory_path: %s", current_directory_path);
-        helper_log("arguments: %i", arguments);
-        helper_log("environment_variables: %i", environment_variables);
-        helper_log("environment: %i", environment);
-        helper_log("pipes: %i", uses_pipes);
-
-        if (!launch_path || !current_directory_path || !arguments || !environment_variables || !environment)
-        {
-            xpc_connection_cancel(connection);
-            return;
-        }
-
-        //==================================//==================================
-        //                                LOGGING
-        //==================================//==================================
-        
-        helper_log("ARGUMENTS:\n");
-        for (int i = 0; i < xpc_array_get_count(arguments); i++)
-        {
-            helper_log("%s\n", xpc_array_get_string(arguments, i));
-        }
-
-//        helper_log("ENVIRONMENT:\n");
-//        for (int i = 0; i < xpc_array_get_count(environment_variables); i++)
-//        {
-//            const char *key = xpc_array_get_string(environment_variables, i);
-//            if (!key)
-//            {
-//                helper_log("ignoring %i", i);
-//                continue;
-//            }
-//
-//            helper_log("%s: %s\n", key, xpc_dictionary_get_string(environment_variables, key));
-//        }
-        
-        //==================================//==================================
-        //                                EXECUTE
-        //==================================//==================================
-
         NSMutableArray *args = [NSMutableArray array];
-        for (int i = 0; i < xpc_array_get_count(arguments); i++)
-        {
-            NSString *arg = [NSString stringWithUTF8String:xpc_array_get_string(arguments, i)];
-            [args addObject:arg];
-        }
-
         NSTask *task = [[NSTask alloc] init];
-        task.launchPath = [NSString stringWithUTF8String:launch_path];
-        task.currentDirectoryPath = [NSString stringWithUTF8String:current_directory_path];
-        task.arguments = args;
         
-        /* if uses pipes, setup the pipe readers... */
-        if (uses_pipes)
+        switch (STATE)
         {
-            NSFileHandle *output, *error;
-            
-            [task setStandardOutput:[NSPipe pipe]];
-            [task setStandardError:[NSPipe pipe]];
-            
-            output = [task.standardOutput fileHandleForReading];
-            error = [task.standardError fileHandleForReading];
+            case HELPER_STATE_RUN:
+                
+                //==================================//==================================
+                //                                 DATA
+                //==================================//==================================
+                
+                helper_log("GETTING LAUNCHINFO...");
+                
+                /*
+                 * All info...
+                 */
+                launch_path = xpc_dictionary_get_string(event, LAUNCH_PATH_KEY);
+                current_directory_path = xpc_dictionary_get_string(event, CURRENT_DIR_KEY);
+                arguments = xpc_dictionary_get_value(event, ARGUMENTS_KEY);
+                environment_variables = xpc_dictionary_get_array(event, ENV_VARS_KEY);
+                environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
+                uses_pipes = xpc_dictionary_get_bool(event, USE_PIPES_KEY);
+                
+                helper_log("launch_path: %s", launch_path);
+                helper_log("current_directory_path: %s", current_directory_path);
+                helper_log("arguments: %i", arguments);
+                helper_log("environment_variables: %i", environment_variables);
+                helper_log("environment: %i", environment);
+                helper_log("pipes: %i", uses_pipes);
+                
+                if (!launch_path || !current_directory_path || !arguments || !environment_variables || !environment)
+                {
+                    xpc_connection_cancel(connection);
+                    return;
+                }
+                
+                //==================================//==================================
+                //                                LOGGING
+                //==================================//==================================
+                
+                helper_log("ARGUMENTS:\n");
+                for (int i = 0; i < xpc_array_get_count(arguments); i++)
+                {
+                    helper_log("%s\n", xpc_array_get_string(arguments, i));
+                }
+                
+                //        helper_log("ENVIRONMENT:\n");
+                //        for (int i = 0; i < xpc_array_get_count(environment_variables); i++)
+                //        {
+                //            const char *key = xpc_array_get_string(environment_variables, i);
+                //            if (!key)
+                //            {
+                //                helper_log("ignoring %i", i);
+                //                continue;
+                //            }
+                //
+                //            helper_log("%s: %s\n", key, xpc_dictionary_get_string(environment_variables, key));
+                //        }
+                
+                //==================================//==================================
+                //                                EXECUTE
+                //==================================//==================================
+                
+                for (int i = 0; i < xpc_array_get_count(arguments); i++)
+                {
+                    NSString *arg = [NSString stringWithUTF8String:xpc_array_get_string(arguments, i)];
+                    [args addObject:arg];
+                }
+                
+                task.launchPath = [NSString stringWithUTF8String:launch_path];
+                task.currentDirectoryPath = [NSString stringWithUTF8String:current_directory_path];
+                task.arguments = args;
 
-            [output waitForDataInBackgroundAndNotify];
-            [error waitForDataInBackgroundAndNotify];
-            
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:output];
-            
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedError:) name:NSFileHandleDataAvailableNotification object:error];
+                /* if uses pipes, setup the pipe readers... */
+                if (uses_pipes)
+                {
+                    NSFileHandle *output, *error;
+                    
+                    [task setStandardOutput:[NSPipe pipe]];
+                    [task setStandardError:[NSPipe pipe]];
+                    
+                    output = [task.standardOutput fileHandleForReading];
+                    error = [task.standardError fileHandleForReading];
+                    
+                    [output waitForDataInBackgroundAndNotify];
+                    [error waitForDataInBackgroundAndNotify];
+                    
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:output];
+                    
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedError:) name:NSFileHandleDataAvailableNotification object:error];
+                    
+                    [task setTerminationHandler:^(NSTask * _Nonnull tsk) {
+                        helper_log("BYE!");
+                        STATE = HELPER_STATE_BYE;   // exit...
+                    }];
+                }
+                
+                [task launch];
+                
+                STATE++;
+                break;
+            case HELPER_STATE_OPR:
+                
+                /*
+                 * Accept general events...
+                 */
+                
+                helper_log("temp3");
 
-            // XXX use terminationHandler???
+                
+                break;
+                
+            case HELPER_STATE_BYE:
+                helper_log("Gracefully exiting!");
+                xpc_connection_cancel(connection_handle);
+                exit(EXIT_SUCCESS);
+                break;
+                
+            default:
+                helper_log("Oh Hi Unexpected HELPER_STATE!");
+                exit(EXIT_FAILURE);
+                break;
         }
-        
-        [task launch];
-        [task waitUntilExit];
-        
-        xpc_connection_cancel(connection);
     }
 }
 
@@ -225,7 +266,7 @@
 
 int main(int argc, const char *argv[])
 {
-    helper_log("NSAuthenticatedTask v%.1f | npyl", 0.4);
+    helper_log("NSAuthenticatedTask v%.1f | npyl", HELPER_VER);
     
     SMJobBlessHelper *helper = [[SMJobBlessHelper alloc] init];
     if (!helper)
