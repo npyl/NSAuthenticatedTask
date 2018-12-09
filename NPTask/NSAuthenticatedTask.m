@@ -63,6 +63,12 @@
 
 - (void)launchAuthenticated
 {
+    if (!_launchPath)
+    {
+        // XXX Throw exception
+        return;
+    }
+    
     if (_standardInput || _standardOutput || _standardError)
         _usesPipes = YES;
     
