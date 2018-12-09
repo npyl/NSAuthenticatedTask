@@ -24,8 +24,8 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
     xpc_connection_t connection_handle;
 }
 
-@property NSString *text;   /* authentication text */
-@property NSString *icon;   /* authentication icon */
+@property (nullable) NSString *text;   /* authentication text */
+@property (nullable) NSString *icon;   /* authentication icon */
 
 // these methods can only be set before a launch
 @property (nullable, copy) NSString *launchPath;
@@ -33,7 +33,7 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 @property (nullable, copy) NSArray<NSString *> *arguments;
 @property (nullable, copy) NSDictionary<NSString *, NSString *> *environment; // if not set, use current
 @property (nullable, copy) NSURL *currentDirectoryURL;
-@property (copy) NSString *currentDirectoryPath; // if not set, use current
+@property (copy) NSString * _Nonnull currentDirectoryPath; // if not set, use current
 
 // status
 @property (readonly) int processIdentifier;
@@ -42,7 +42,7 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 @property (readonly) int terminationStatus;
 @property (readonly) NSTaskTerminationReason terminationReason;
 
-@property (nullable, copy) void (^terminationHandler)(NSTask *);
+@property (nullable, copy) void (^terminationHandler)(NSTask *_Nonnull);
 @property NSQualityOfService qualityOfService;
 
 // standard I/O channels; could be either an NSFileHandle or an NSPipe
