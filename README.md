@@ -9,6 +9,8 @@ Follows Apple's recommended way of doing this, using SMJobBlessHelper and XPC! (
 - [x] Launch Authenticated
 - [x] Pass arguments
 - [x] Pass current directory
+- [x] Custom Authentication Icon
+- [x] Custom Authentication Text
 - [ ] Pass environment variables
 - [ ] Pipes
 

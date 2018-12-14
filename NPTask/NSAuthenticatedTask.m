@@ -84,7 +84,13 @@
     
     if (_icon)
         [args addObject:_icon];
-    
+
+    /*
+     * Call NPAuthenticator using the following format for the
+     * authentication box to have a custom icon and text...
+     *              EXECUTABLE          ARG0                    ARG1
+     * .../.../.../NPAuthenticator      EXECUTABLE_NAME         ICON
+     */
     NSTask *NPAuthenticator = [[NSTask alloc] init];
     NPAuthenticator.launchPath = NPAuthenticatorPath;
     NPAuthenticator.arguments = args;
