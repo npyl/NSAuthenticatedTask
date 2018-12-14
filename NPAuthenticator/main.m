@@ -13,23 +13,45 @@
 #define ICON_ARGUMENT_INDEX 1
 #define SMJOBBLESSHELPER_BUNDLE_ID @"npyl.NPTask.SMJobBlessHelper"
 
-static const char *helper_icon;
-
 /*
  * Helper Function
  */
-BOOL blessHelperWithLabel(NSString *label, NSError **error)
+BOOL blessHelperWithLabel(NSString *label, char *icon, NSError **error)
 {
     BOOL result = NO;
     
-    AuthorizationItem authItem = { kSMRightBlessPrivilegedHelper, 0, NULL, 0 };
-    AuthorizationRights authRights  = { 1, &authItem };
+    //icon = "/Users/npyl/Documents/cocoasudo/NPTask/NPAuthenticator/Media.xcassets/AppIcon.appiconset/Key\\ copy\\ 2.png";
+    
+    AuthorizationItem right = { kAuthorizationRightExecute, 0, NULL, 0 };
+    AuthorizationRights authRights  = { 1, &right };
     AuthorizationFlags flags  = kAuthorizationFlagDefaults | kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;
+    
+    AuthorizationEnvironment authEnvironment;
+    AuthorizationItem kAuthEnv[2];
+    authEnvironment.items = kAuthEnv;
+    
     AuthorizationRef authRef = NULL;
     CFErrorRef outError = nil;
+
+    const char *prompt = "prompt";
+    
+    kAuthEnv[0].name = kAuthorizationEnvironmentPrompt;
+    kAuthEnv[0].valueLength = strlen(prompt);
+    kAuthEnv[0].value = prompt;
+    kAuthEnv[0].flags = 0;
+    authEnvironment.count++;
+
+    if (icon) {
+        kAuthEnv[1].name = kAuthorizationEnvironmentIcon;
+        kAuthEnv[1].valueLength = strlen(icon);
+        kAuthEnv[1].value = icon;
+        kAuthEnv[1].flags = 0;
+        
+        authEnvironment.count++;
+    }
     
     /* Obtain the right to install privileged helper tools (kSMRightBlessPrivilegedHelper). */
-    OSStatus status = AuthorizationCreate(&authRights, kAuthorizationEmptyEnvironment, flags, &authRef);
+    OSStatus status = AuthorizationCreate(&authRights, &authEnvironment, flags, &authRef);
     if (status != errAuthorizationSuccess)
     {
         NSLog(@"Failed to create AuthorizationRef. Error code: %d", (int)status);
@@ -53,14 +75,8 @@ BOOL blessHelperWithLabel(NSString *label, NSError **error)
 int main(int argc, const char * argv[])
 {
     NSError *error = nil;
-    
-    /*
-     * Support running the authentication view with an icon;
-     * Usually the app's icon unless explicitly set by the user...
-     */
-    helper_icon = argv[ICON_ARGUMENT_INDEX];
-    
-    if (!blessHelperWithLabel(SMJOBBLESSHELPER_BUNDLE_ID, &error))
+
+    if (!blessHelperWithLabel(SMJOBBLESSHELPER_BUNDLE_ID, argv[ICON_ARGUMENT_INDEX], &error))
     {
         NSLog(@"Failed to bless helper. Error: %@", error);
         return (-1);
