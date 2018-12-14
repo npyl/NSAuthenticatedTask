@@ -65,12 +65,14 @@
 {
     if (!_launchPath)
     {
-        // XXX Throw exception
+        [NSException raise:@"launchPath cannot be nil" format:@""];
         return;
     }
     
     if (_standardInput || _standardOutput || _standardError)
         _usesPipes = YES;
+    
+    NSString *_executableName = [_launchPath lastPathComponent];
     
     /*
      * Call the NPAuthenticator
@@ -78,10 +80,14 @@
     NSBundle *thisFramework = [NSBundle bundleWithIdentifier:@"npyl.NPTask"];
     NSBundle *NPAuthBundle = [NSBundle bundleWithPath:[thisFramework pathForResource:@"NPAuthenticator" ofType:@"app"]];
     NSString *NPAuthenticatorPath = [NPAuthBundle executablePath];
+    NSMutableArray *args = [NSMutableArray arrayWithObject:_executableName];
+    
+    if (_icon)
+        [args addObject:_icon];
     
     NSTask *NPAuthenticator = [[NSTask alloc] init];
     NPAuthenticator.launchPath = NPAuthenticatorPath;
-    if (_icon) NPAuthenticator.arguments = @[_icon];
+    NPAuthenticator.arguments = args;
     [NPAuthenticator launch];
     [NPAuthenticator waitUntilExit];
     

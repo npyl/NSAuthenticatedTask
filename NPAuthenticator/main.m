@@ -10,13 +10,14 @@
 #import <ServiceManagement/ServiceManagement.h>
 
 /* defines */
-#define ICON_ARGUMENT_INDEX 1
+#define ICON_ARGUMENT_INDEX 2   // icon
+#define EXEC_ARGUMENT_INDEX 1   // executable
 #define SMJOBBLESSHELPER_BUNDLE_ID @"npyl.NPTask.SMJobBlessHelper"
 
 /*
  * Helper Function
  */
-BOOL blessHelperWithLabel(NSString *label, char *icon, NSError **error)
+BOOL blessHelperWithLabel(NSString *label, char *icon, char *prompt, NSError **error)
 {
     BOOL result = NO;
     
@@ -33,7 +34,12 @@ BOOL blessHelperWithLabel(NSString *label, char *icon, NSError **error)
     AuthorizationRef authRef = NULL;
     CFErrorRef outError = nil;
 
-    const char *prompt = "prompt";
+    if (!prompt)
+        prompt = "NPAuthenticator wants to make changes.\n\nCheckout NPAuthenticator in GitHub:\n(https://github.com/npyl/NSAuthenticatedTask)";
+    else
+    {
+        prompt = strcat(prompt, " needs administrator privileges.");
+    }
     
     kAuthEnv[0].name = kAuthorizationEnvironmentPrompt;
     kAuthEnv[0].valueLength = strlen(prompt);
@@ -46,7 +52,6 @@ BOOL blessHelperWithLabel(NSString *label, char *icon, NSError **error)
         kAuthEnv[1].valueLength = strlen(icon);
         kAuthEnv[1].value = icon;
         kAuthEnv[1].flags = 0;
-        
         authEnvironment.count++;
     }
     
@@ -76,7 +81,7 @@ int main(int argc, const char * argv[])
 {
     NSError *error = nil;
 
-    if (!blessHelperWithLabel(SMJOBBLESSHELPER_BUNDLE_ID, argv[ICON_ARGUMENT_INDEX], &error))
+    if (!blessHelperWithLabel(SMJOBBLESSHELPER_BUNDLE_ID, argv[ICON_ARGUMENT_INDEX], argv[EXEC_ARGUMENT_INDEX], &error))
     {
         NSLog(@"Failed to bless helper. Error: %@", error);
         return (-1);
