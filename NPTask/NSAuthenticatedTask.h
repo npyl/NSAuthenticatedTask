@@ -27,7 +27,7 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 @property (nullable) NSImage *icon;   /* authentication icon */
 
 // these methods can only be set before a launch
-@property (nullable, copy, setter=setLaunchPath:) NSString *launchPath;
+@property (nullable, copy, nonatomic, setter=setLaunchPath:) NSString *launchPath;
 @property (nullable, copy) NSURL *executableURL;
 @property (nullable, copy) NSArray<NSString *> *arguments;
 @property (nullable, copy) NSDictionary<NSString *, NSString *> *environment; // if not set, use current

@@ -13,33 +13,6 @@
 
 @implementation NSAuthenticatedTask
 
-- (BOOL)suspend
-{
-    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(msg, "msg", "SUSPEND");
-    xpc_connection_send_message(connection_handle, msg);
-    return YES;
-}
-- (BOOL)resume
-{
-    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(msg, "msg", "RESUME");
-    xpc_connection_send_message(connection_handle, msg);
-    return YES;
-}
-- (void)interrupt
-{
-    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(msg, "msg", "INTERRUPT");
-    xpc_connection_send_message(connection_handle, msg);
-}
-- (void)terminate
-{
-    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(msg, "msg", "TERMINATE");
-    xpc_connection_send_message(connection_handle, msg);
-}
-
 - (instancetype)init
 {
     self = [super init];
@@ -93,6 +66,8 @@
 //        NSLog(@"NOT A BUNDLE!");
         image = [[NSWorkspace sharedWorkspace] iconForFile:file];
     }
+    
+    CFRelease(fileUTI);
 
     return image;
 }
@@ -281,6 +256,33 @@
     
     /* Set Running to NO */
     _running = NO;
+}
+
+- (BOOL)suspend
+{
+    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(msg, "msg", "SUSPEND");
+    xpc_connection_send_message(connection_handle, msg);
+    return YES;
+}
+- (BOOL)resume
+{
+    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(msg, "msg", "RESUME");
+    xpc_connection_send_message(connection_handle, msg);
+    return YES;
+}
+- (void)interrupt
+{
+    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(msg, "msg", "INTERRUPT");
+    xpc_connection_send_message(connection_handle, msg);
+}
+- (void)terminate
+{
+    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(msg, "msg", "TERMINATE");
+    xpc_connection_send_message(connection_handle, msg);
 }
 
 @end
