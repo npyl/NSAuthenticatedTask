@@ -53,12 +53,20 @@
             return nil;
         
         _usesPipes = NO;
-        _icon = [self GetImageForFile:_launchPath]; /* guess executable icon */
+        _icon = nil;
         _currentDirectoryPath = [NSString stringWithUTF8String:cwd];
         _environment = [[NSProcessInfo processInfo] environment];
         _terminationHandler = ^(NSTask *tsk) {};
     }
     return self;
+}
+
+- (void)setLaunchPath:(NSString *)launchPath
+{
+    _launchPath = launchPath;
+    
+    /* Get Icon for File */
+    _icon = [self GetImageForFile:_launchPath];
 }
 
 /**
@@ -68,7 +76,25 @@
  */
 - (NSImage *)GetImageForFile:(NSString *)file
 {
-    return nil;
+    NSImage *image = nil;
+    
+    NSString *bundlePath = [[[file stringByDeletingLastPathComponent] stringByDeletingLastPathComponent] stringByDeletingLastPathComponent];
+  
+    CFStringRef fileExtension = (__bridge CFStringRef) [file pathExtension];
+    CFStringRef fileUTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, fileExtension, NULL);
+    
+    if (UTTypeConformsTo(fileUTI, kUTTypeBundle))
+    {
+//        NSLog(@"BUNDLE!");
+        image = [[NSWorkspace sharedWorkspace] iconForFile:bundlePath];
+    }
+    else
+    {
+//        NSLog(@"NOT A BUNDLE!");
+        image = [[NSWorkspace sharedWorkspace] iconForFile:file];
+    }
+
+    return image;
 }
 
 /**
@@ -82,8 +108,8 @@
     /* Generate a random path in /tmp/NPTask/icons */
     int r = arc4random_uniform(10000000);
     NSString *tmpdir = @"/tmp/NPTask/icons";
-    NSString *format = @"%@/%@-%llu.png";
-    NSString *path = [NSString stringWithFormat:format, tmpdir, image.name, r];
+    NSString *format = @"%@/%llu.png";
+    NSString *path = [NSString stringWithFormat:format, tmpdir, r];
     
     NSError *error = nil;
     [[NSFileManager defaultManager] createDirectoryAtPath:tmpdir withIntermediateDirectories:YES attributes:nil error:&error];
