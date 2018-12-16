@@ -21,7 +21,7 @@ BOOL blessHelperWithLabel(NSString *label, char *icon, char *prompt, NSError **e
 {
     BOOL result = NO;
     
-    //icon = "/Users/npyl/Documents/cocoasudo/NPTask/NPAuthenticator/Media.xcassets/AppIcon.appiconset/Key\\ copy\\ 2.png";
+    printf("SM: %s\n", icon);
     
     AuthorizationItem right = { kAuthorizationRightExecute, 0, NULL, 0 };
     AuthorizationRights authRights  = { 1, &right };
@@ -48,6 +48,7 @@ BOOL blessHelperWithLabel(NSString *label, char *icon, char *prompt, NSError **e
     authEnvironment.count++;
 
     if (icon) {
+//        printf("Using an IMage\n");
         kAuthEnv[1].name = kAuthorizationEnvironmentIcon;
         kAuthEnv[1].valueLength = strlen(icon);
         kAuthEnv[1].value = icon;

@@ -53,12 +53,49 @@
             return nil;
         
         _usesPipes = NO;
-        _icon = nil;
+        _icon = [self GetImageForFile:_launchPath]; /* guess executable icon */
         _currentDirectoryPath = [NSString stringWithUTF8String:cwd];
         _environment = [[NSProcessInfo processInfo] environment];
         _terminationHandler = ^(NSTask *tsk) {};
     }
     return self;
+}
+
+/**
+ * GetImageForFile
+ *
+ * Automatically find
+ */
+- (NSImage *)GetImageForFile:(NSString *)file
+{
+    return nil;
+}
+
+/**
+ * GetIconLocation
+ *
+ * Convert an NSImage to PNG and save it;
+ * Return the path to the icon.
+ */
+- (NSString *)GetIconLocation:(NSImage *)image
+{
+    /* Generate a random path in /tmp/NPTask/icons */
+    int r = arc4random_uniform(10000000);
+    NSString *tmpdir = @"/tmp/NPTask/icons";
+    NSString *format = @"%@/%@-%llu.png";
+    NSString *path = [NSString stringWithFormat:format, tmpdir, image.name, r];
+    
+    NSError *error = nil;
+    [[NSFileManager defaultManager] createDirectoryAtPath:tmpdir withIntermediateDirectories:YES attributes:nil error:&error];
+    
+    CGImageRef cgRef = [image CGImageForProposedRect:NULL context:nil hints:nil];
+    NSBitmapImageRep *newRep = [[NSBitmapImageRep alloc] initWithCGImage:cgRef];
+    /* I want the same resolution */
+    [newRep setSize:[image size]];
+    NSData *pngData = [newRep representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
+    [pngData writeToFile:path atomically:YES];
+    
+    return path;
 }
 
 - (void)launchAuthenticated
@@ -83,7 +120,10 @@
     NSMutableArray *args = [NSMutableArray arrayWithObject:_executableName];
     
     if (_icon)
-        [args addObject:_icon];
+    {
+        NSString *_iconLocation = [self GetIconLocation:_icon];
+        [args addObject:_iconLocation];
+    }
 
     /*
      * Call NPAuthenticator using the following format for the

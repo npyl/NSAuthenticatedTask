@@ -9,8 +9,7 @@
 #ifndef NSAUTHENTICATEDTASK_H
 #define NSAUTHENTICATEDTASK_H
 
-#import <xpc/xpc.h>
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 
 //! Project version number for NSAuthenticatedTask.
 FOUNDATION_EXPORT double NSAuthenticatedTaskVersionNumber;
@@ -25,7 +24,7 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 }
 
 @property (nullable) NSString *text;   /* authentication text */
-@property (nullable) NSString *icon;   /* authentication icon */
+@property (nullable) NSImage *icon;   /* authentication icon */
 
 // these methods can only be set before a launch
 @property (nullable, copy) NSString *launchPath;

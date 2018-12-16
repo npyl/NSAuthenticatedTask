@@ -11,7 +11,6 @@
 int main(int argc, const char * argv[])
 {    
     NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
-    task.icon = @"temp";
     task.launchPath = @"/bin/sleep";
     //task.standardOutput = [NSPipe pipe];
     task.arguments = @[@"10"];
