@@ -25,6 +25,7 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 
 @property (nullable) NSString *text;   /* authentication text */
 @property (nullable) NSImage *icon;   /* authentication icon */
+@property BOOL stayAuthorized;   /* ability to authorize only ONCE, but keep admin privileges for longer... */
 
 // these methods can only be set before a launch
 @property (nullable, copy, nonatomic, setter=setLaunchPath:) NSString *launchPath;
@@ -55,7 +56,7 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 - (BOOL)suspend;
 - (BOOL)resume;
 
-- (void)launchAuthenticated;
+- (void)launchAuthorized;
 
 - (void)waitUntilExit;
 

@@ -58,12 +58,10 @@
     
     if (UTTypeConformsTo(fileUTI, kUTTypeBundle))
     {
-//        NSLog(@"BUNDLE!");
         image = [[NSWorkspace sharedWorkspace] iconForFile:bundlePath];
     }
     else
     {
-//        NSLog(@"NOT A BUNDLE!");
         image = [[NSWorkspace sharedWorkspace] iconForFile:file];
     }
     
@@ -99,7 +97,7 @@
     return path;
 }
 
-- (void)launchAuthenticated
+- (void)launchAuthorized
 {
     if (!_launchPath)
     {
@@ -229,12 +227,13 @@
      * Send data!
      */
     xpc_object_t dictionary = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(dictionary,   LAUNCH_PATH_KEY,    self.launchPath.UTF8String);
-    xpc_dictionary_set_string(dictionary,   CURRENT_DIR_KEY,    self.currentDirectoryPath.UTF8String);
-    xpc_dictionary_set_value(dictionary,    ARGUMENTS_KEY,      arguments);
-    xpc_dictionary_set_value(dictionary,    ENV_VARS_KEY,       environment_variables);
-    xpc_dictionary_set_value(dictionary,    ENVIRONMENT_KEY,    environment);
-    xpc_dictionary_set_bool(dictionary,     USE_PIPES_KEY,      _usesPipes);
+    xpc_dictionary_set_bool(dictionary,     STAY_AUTHORIZED_KEY,    _stayAuthorized);
+    xpc_dictionary_set_string(dictionary,   LAUNCH_PATH_KEY,        self.launchPath.UTF8String);
+    xpc_dictionary_set_string(dictionary,   CURRENT_DIR_KEY,        self.currentDirectoryPath.UTF8String);
+    xpc_dictionary_set_value(dictionary,    ARGUMENTS_KEY,          arguments);
+    xpc_dictionary_set_value(dictionary,    ENV_VARS_KEY,           environment_variables);
+    xpc_dictionary_set_value(dictionary,    ENVIRONMENT_KEY,        environment);
+    xpc_dictionary_set_bool(dictionary,     USE_PIPES_KEY,          _usesPipes);
     xpc_connection_send_message(connection, dictionary);
     
     // XXX not passed correctly... please fix... (Fixes waitUntilExit probably...)

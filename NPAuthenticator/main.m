@@ -48,7 +48,6 @@ BOOL blessHelperWithLabel(NSString *label, char *icon, char *prompt, NSError **e
     authEnvironment.count++;
 
     if (icon) {
-//        printf("Using an IMage\n");
         kAuthEnv[1].name = kAuthorizationEnvironmentIcon;
         kAuthEnv[1].valueLength = strlen(icon);
         kAuthEnv[1].value = icon;
@@ -82,7 +81,12 @@ int main(int argc, const char * argv[])
 {
     NSError *error = nil;
 
-    if (!blessHelperWithLabel(SMJOBBLESSHELPER_BUNDLE_ID, argv[ICON_ARGUMENT_INDEX], argv[EXEC_ARGUMENT_INDEX], &error))
+    if (
+        !blessHelperWithLabel(SMJOBBLESSHELPER_BUNDLE_ID,
+                              (char *)argv[ICON_ARGUMENT_INDEX],
+                              (char *)argv[EXEC_ARGUMENT_INDEX],
+                              &error)
+        )
     {
         NSLog(@"Failed to bless helper. Error: %@", error);
         return (-1);

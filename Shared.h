@@ -14,6 +14,7 @@
 /*
  * Keys
  */
+#define STAY_AUTHORIZED_KEY "stay_authorized_key"
 #define LAUNCH_PATH_KEY     "launch_path_key"
 #define CURRENT_DIR_KEY     "current_directory_key"
 #define ARGUMENTS_KEY       "arguments_key"

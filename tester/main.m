@@ -11,20 +11,31 @@
 int main(int argc, const char * argv[])
 {    
     NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
-    task.launchPath = @"/bin/sleep";
-    //task.standardOutput = [NSPipe pipe];
-    task.arguments = @[@"10"];
+
+    /*
+     * Allow us to call another script with admin
+     * privileges without having to type in the password again.
+     */
+    task.stayAuthorized = YES;
     
-    [task launchAuthenticated];
-    NSLog(@"START WAIT %i", task.processIdentifier);
+    // batch1
+    task.launchPath = @"/bin/mkdir";
+    task.arguments = @[@"/hello.1"];
+    [task launchAuthorized];
     [task waitUntilExit];
-    NSLog(@"END WAIT");
+
+    // batch2
+    task.launchPath = @"/bin/sh";
+    task.arguments = @[@"/hello.2"];
+    [task launchAuthorized];
+    [task waitUntilExit];
     
     /*
     NSFileHandle *fh = [[task standardOutput] fileHandleForReading];
     NSData *data = [fh readDataToEndOfFile];
     NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"GOT: %@", str); */
+    NSLog(@"GOT: %@", str);
+     */
     
     return 0;
 }
