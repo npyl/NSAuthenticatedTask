@@ -99,6 +99,8 @@
 
 - (void)launchAuthorized
 {
+    static BOOL calledOnce = NO;
+    
     if (!_launchPath)
     {
         [NSException raise:@"launchPath cannot be nil" format:@""];
@@ -108,39 +110,48 @@
     if (_standardInput || _standardOutput || _standardError)
         _usesPipes = YES;
     
-    NSString *_executableName = [_launchPath lastPathComponent];
-    
     /*
-     * Call the NPAuthenticator
+     * Call NPAuthenticator to authenticate ONLY ONCE
+     * if `_stayAuthorized' is set by user.
      */
-    NSBundle *thisFramework = [NSBundle bundleWithIdentifier:@"npyl.NPTask"];
-    NSBundle *NPAuthBundle = [NSBundle bundleWithPath:[thisFramework pathForResource:@"NPAuthenticator" ofType:@"app"]];
-    NSString *NPAuthenticatorPath = [NPAuthBundle executablePath];
-    NSMutableArray *args = [NSMutableArray arrayWithObject:_executableName];
-    
-    if (_icon)
+    if (_stayAuthorized && calledOnce)
     {
-        NSString *_iconLocation = [self GetIconLocation:_icon];
-        [args addObject:_iconLocation];
+        NSString *_executableName = [_launchPath lastPathComponent];
+        
+        /*
+         * Call the NPAuthenticator
+         */
+        NSBundle *thisFramework = [NSBundle bundleWithIdentifier:@"npyl.NPTask"];
+        NSBundle *NPAuthBundle = [NSBundle bundleWithPath:[thisFramework pathForResource:@"NPAuthenticator" ofType:@"app"]];
+        NSString *NPAuthenticatorPath = [NPAuthBundle executablePath];
+        NSMutableArray *args = [NSMutableArray arrayWithObject:_executableName];
+        
+        if (_icon)
+        {
+            NSString *_iconLocation = [self GetIconLocation:_icon];
+            [args addObject:_iconLocation];
+        }
+        
+        /*
+         * Call NPAuthenticator using the following format for the
+         * authentication box to have a custom icon and text...
+         *              EXECUTABLE          ARG0                    ARG1
+         * .../.../.../NPAuthenticator      EXECUTABLE_NAME         ICON
+         */
+        NSTask *NPAuthenticator = [[NSTask alloc] init];
+        NPAuthenticator.launchPath = NPAuthenticatorPath;
+        NPAuthenticator.arguments = args;
+        [NPAuthenticator launch];
+        [NPAuthenticator waitUntilExit];
+        
+        if ([NPAuthenticator terminationStatus] != 0)
+        {
+            NSLog(@"Authentication failed!");
+            return;
+        }
     }
-
-    /*
-     * Call NPAuthenticator using the following format for the
-     * authentication box to have a custom icon and text...
-     *              EXECUTABLE          ARG0                    ARG1
-     * .../.../.../NPAuthenticator      EXECUTABLE_NAME         ICON
-     */
-    NSTask *NPAuthenticator = [[NSTask alloc] init];
-    NPAuthenticator.launchPath = NPAuthenticatorPath;
-    NPAuthenticator.arguments = args;
-    [NPAuthenticator launch];
-    [NPAuthenticator waitUntilExit];
     
-    if ([NPAuthenticator terminationStatus] != 0)
-    {
-        NSLog(@"Authentication failed!");
-        return;
-    }
+    calledOnce = YES;
     
     /* Set Running to Yes */
     _running = YES;
@@ -167,7 +178,7 @@
         else if (self->_usesPipes)
         {
             /*
-             * Ok, we are starting to get pipe data...
+             * Ok, we are probably starting to get pipe data...
              */
             const char *standardOutput = xpc_dictionary_get_string(event, "standardOutput");
             const char *standardError = xpc_dictionary_get_string(event, "standardError");
@@ -263,7 +274,7 @@
 - (void)waitUntilExit
 {
     while (_running)
-        sleep(5);   // 5 sec
+        sleep(2);   // 2 sec
 }
 
 - (BOOL)suspend

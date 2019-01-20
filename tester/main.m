@@ -25,7 +25,7 @@ int main(int argc, const char * argv[])
     [task waitUntilExit];
 
     // batch2
-    task.launchPath = @"/bin/sh";
+    task.launchPath = @"/bin/mkdir";
     task.arguments = @[@"/hello.2"];
     [task launchAuthorized];
     [task waitUntilExit];
