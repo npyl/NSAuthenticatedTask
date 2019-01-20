@@ -11,14 +11,7 @@
 #import "../Shared.h"
 #import <Foundation/Foundation.h>
 
-#define HELPER_VER 0.5
-
-enum {
-    HELPER_STATE_RUN,       // just run app
-    HELPER_STATE_OPR,       // just operate
-    HELPER_STATE_BYE,       // just quit-up
-    HELPER_STATE_DXT        // disaster exit
-};
+#define HELPER_VER 0.6
 
 @interface SMJobBlessHelper : NSObject
 {
@@ -76,6 +69,7 @@ enum {
 - (void) __XPC_Peer_Event_Handler:(xpc_connection_t)connection withEvent:(xpc_object_t)event
 {
 //    syslog(LOG_NOTICE, "Received message in generic event handler: %s\n", xpc_copy_description(event));
+    connection_handle = connection;
 
     xpc_type_t type = xpc_get_type(event);
     
@@ -185,10 +179,12 @@ enum {
         }
     
         [task setTerminationHandler:^(NSTask * _Nonnull tsk) {
-            /*
-             * XXX send message that process just finished...
-             * (This is how we get the wait_until_exit event)
-             */
+
+            /* Send termination message */
+            xpc_object_t exit_msg = xpc_dictionary_create(NULL, NULL, 0);
+            xpc_dictionary_set_string(exit_msg, "exit_message", "application_exited");
+            xpc_connection_send_message(connection, exit_msg);
+            
             helper_log("BYE1!");
         }];
     
@@ -244,7 +240,7 @@ enum {
 
 int main(int argc, const char *argv[])
 {
-    helper_log("NSAuthenticatedTask v%.1f | npyl", HELPER_VER);
+    helper_log("NSAuthenticatedTaskHelper v%.1f | npyl", HELPER_VER);
     
     SMJobBlessHelper *helper = [[SMJobBlessHelper alloc] init];
     if (!helper)

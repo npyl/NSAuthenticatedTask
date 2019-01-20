@@ -189,6 +189,16 @@
                 [writeHandle writeData:[[NSString stringWithUTF8String:standardError] dataUsingEncoding:NSUTF8StringEncoding]];
             }
         }
+        else // misc-events
+        {
+            const char *exit_event = xpc_dictionary_get_string(event, "exit_message");
+
+            if (exit_event)
+            {
+                NSLog(@"Launch request finished!");
+                self->_running = NO;
+            }
+        }
     });
     
     xpc_connection_resume(connection);
@@ -239,7 +249,6 @@
     xpc_dictionary_set_bool(dictionary,     USE_PIPES_KEY,          _usesPipes);
     xpc_connection_send_message(connection, dictionary);
     
-    // XXX not passed correctly... please fix... (Fixes waitUntilExit probably...)
     /* Set PID */
     _processIdentifier = xpc_connection_get_pid(connection);
     
@@ -253,7 +262,6 @@
 
 - (void)waitUntilExit
 {
-    // XXX i haven't implemented the send-receive code for getting the app exited...
     while (_running)
         sleep(5);   // 5 sec
 }
