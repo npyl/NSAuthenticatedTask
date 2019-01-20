@@ -103,14 +103,22 @@ enum {
     else
     {
         NSMutableArray *args = [NSMutableArray array];
-        NSTask *task = [[NSTask alloc] init];
         
         //==================================//==================================
         //                                 DATA
         //==================================//==================================
 
-        
-        
+        /*
+         * If `stay_authorized' is true, we need to identify what NSTask is sending us;
+         * It may be task control-events or a new-session event...
+         */
+        const char* new_session_stamp = xpc_dictionary_get_string(event, NEW_SESSION_KEY);
+        if (!new_session_stamp)
+        {
+            // For now just return...
+            return;
+        }
+
         stay_authorized = xpc_dictionary_get_bool(event, STAY_AUTHORIZED_KEY);
         launch_path = xpc_dictionary_get_string(event, LAUNCH_PATH_KEY);
         current_directory_path = xpc_dictionary_get_string(event, CURRENT_DIR_KEY);
@@ -118,7 +126,8 @@ enum {
         environment_variables = xpc_dictionary_get_array(event, ENV_VARS_KEY);
         environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
         uses_pipes = xpc_dictionary_get_bool(event, USE_PIPES_KEY);
-    
+
+        helper_log("stay_authzd: %d", stay_authorized);
         helper_log("launch_path: %s", launch_path);
         helper_log("current_directory_path: %s", current_directory_path);
         helper_log("arguments: %i", arguments);
@@ -152,6 +161,7 @@ enum {
             [args addObject:arg];
         }
     
+        NSTask *task = [[NSTask alloc] init];
         task.launchPath = [NSString stringWithUTF8String:launch_path];
         task.currentDirectoryPath = [NSString stringWithUTF8String:current_directory_path];
         task.arguments = args;
@@ -175,14 +185,19 @@ enum {
         }
     
         [task setTerminationHandler:^(NSTask * _Nonnull tsk) {
+            /*
+             * XXX send message that process just finished...
+             * (This is how we get the wait_until_exit event)
+             */
             helper_log("BYE1!");
-            STATE = HELPER_STATE_BYE;
         }];
     
         [task launch];
 
         /*
-         * Invalidate connection and close only if stay_authorized is false.
+         * Invalidate connection and close only if `stay_authorized' is false.
+         * This way we keep an authenticated SMJobBlessHelper running and we can
+         * execute more scripts/executables.  This should comprise of a SESSION.
          */
         if (!stay_authorized)
         {

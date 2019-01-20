@@ -14,6 +14,7 @@
 /*
  * Keys
  */
+#define NEW_SESSION_KEY     "new_session_stamp_key"
 #define STAY_AUTHORIZED_KEY "stay_authorized_key"
 #define LAUNCH_PATH_KEY     "launch_path_key"
 #define CURRENT_DIR_KEY     "current_directory_key"

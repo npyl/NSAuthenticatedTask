@@ -227,6 +227,9 @@
      * Send data!
      */
     xpc_object_t dictionary = xpc_dictionary_create(NULL, NULL, 0);
+
+    /* Tell Helper we are requesting a new-session event type */
+    xpc_dictionary_set_string(dictionary,   NEW_SESSION_KEY,        "###_NEW_SESSION_###");
     xpc_dictionary_set_bool(dictionary,     STAY_AUTHORIZED_KEY,    _stayAuthorized);
     xpc_dictionary_set_string(dictionary,   LAUNCH_PATH_KEY,        self.launchPath.UTF8String);
     xpc_dictionary_set_string(dictionary,   CURRENT_DIR_KEY,        self.currentDirectoryPath.UTF8String);
@@ -250,11 +253,9 @@
 
 - (void)waitUntilExit
 {
-    int status;
-    waitpid(_processIdentifier, &status, 0);
-    
-    /* Set Running to NO */
-    _running = NO;
+    // XXX i haven't implemented the send-receive code for getting the app exited...
+    while (_running)
+        sleep(5);   // 5 sec
 }
 
 - (BOOL)suspend
