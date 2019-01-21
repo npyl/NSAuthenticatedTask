@@ -34,6 +34,8 @@
 
 @implementation SMJobBlessHelper
 
+static NSTask *task = nil;
+
 -(void)receivedData:(NSNotification*)notif
 {
     NSFileHandle *fh = [notif object];
@@ -109,10 +111,34 @@
         const char* new_session_stamp = xpc_dictionary_get_string(event, NEW_SESSION_KEY);
         if (!new_session_stamp)
         {
-            // For now just return...
+            const char *msg = xpc_dictionary_get_string(event, "msg");
+
+            helper_log("msg: %s", msg);
+            
+            if (strcmp(msg, "SUSPEND") == 0)
+            {
+                [task suspend];
+            }
+            else if (strcmp(msg, "RESUME") == 0)
+            {
+                [task resume];
+            }
+            else if (strcmp(msg, "INTERRUPT") == 0)
+            {
+                [task interrupt];
+            }
+            else if (strcmp(msg, "TERMINATE") == 0)
+            {
+                [task terminate];
+            }
+            else
+            {
+                helper_log("received unknown msg (%s); ignoring.", msg);
+            }
+            
             return;
         }
-
+        
         stay_authorized = xpc_dictionary_get_bool(event, STAY_AUTHORIZED_KEY);
         launch_path = xpc_dictionary_get_string(event, LAUNCH_PATH_KEY);
         current_directory_path = xpc_dictionary_get_string(event, CURRENT_DIR_KEY);
@@ -155,7 +181,7 @@
             [args addObject:arg];
         }
     
-        NSTask *task = [[NSTask alloc] init];
+        task = [[NSTask alloc] init];
         task.launchPath = [NSString stringWithUTF8String:launch_path];
         task.currentDirectoryPath = [NSString stringWithUTF8String:current_directory_path];
         task.arguments = args;
@@ -185,7 +211,9 @@
             xpc_dictionary_set_string(exit_msg, "exit_message", "application_exited");
             xpc_connection_send_message(connection, exit_msg);
             
-            helper_log("BYE1!");
+            task = nil;
+            
+            helper_log("Task (%@) terminated.", tsk.launchPath.lastPathComponent);
         }];
     
         [task launch];
@@ -198,6 +226,7 @@
         if (!stay_authorized)
         {
             xpc_connection_cancel(connection_handle);
+            helper_log("Exiting...");
             exit(EXIT_SUCCESS);
         }
     }
