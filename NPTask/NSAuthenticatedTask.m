@@ -26,6 +26,7 @@
         if (getcwd(cwd, sizeof(cwd)) == NULL)
             return nil;
         
+        _stayAuthorized = NO;
         _usesPipes = NO;
         _icon = nil;
         _currentDirectoryPath = [NSString stringWithUTF8String:cwd];
@@ -280,6 +281,9 @@
 
 - (BOOL)suspend
 {
+    if (!connection_handle)
+        return NO;
+    
     xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
     xpc_dictionary_set_string(msg, "msg", "SUSPEND");
     xpc_connection_send_message(connection_handle, msg);
@@ -287,6 +291,9 @@
 }
 - (BOOL)resume
 {
+    if (!connection_handle)
+        return NO;
+
     xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
     xpc_dictionary_set_string(msg, "msg", "RESUME");
     xpc_connection_send_message(connection_handle, msg);
@@ -294,12 +301,18 @@
 }
 - (void)interrupt
 {
+    if (!connection_handle)
+        return;
+
     xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
     xpc_dictionary_set_string(msg, "msg", "INTERRUPT");
     xpc_connection_send_message(connection_handle, msg);
 }
 - (void)terminate
 {
+    if (!connection_handle)
+        return;
+
     xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
     xpc_dictionary_set_string(msg, "msg", "TERMINATE");
     xpc_connection_send_message(connection_handle, msg);
