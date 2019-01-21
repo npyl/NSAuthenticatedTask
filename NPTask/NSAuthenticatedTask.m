@@ -10,6 +10,7 @@
 
 #import "../Shared.h"
 #import <Cocoa/Cocoa.h>
+#import <syslog.h>
 
 @implementation NSAuthenticatedTask
 
@@ -146,7 +147,7 @@
         
         if ([NPAuthenticator terminationStatus] != 0)
         {
-            NSLog(@"Authentication failed!");
+            syslog(LOG_NOTICE, "Authentication failed!");
             return;
         }
     }
@@ -161,7 +162,7 @@
     connection_handle = connection;
     if (!connection)
     {
-        NSLog(@"Failed to create XPC connection.");
+        syslog(LOG_NOTICE, "Failed to create XPC connection.");
         return;
     }
     
@@ -171,9 +172,9 @@
         
         if (type == XPC_TYPE_ERROR)
         {
-            if (event == XPC_ERROR_CONNECTION_INTERRUPTED)  { NSLog(@"XPC connection interupted."); }
-            else if (event == XPC_ERROR_CONNECTION_INVALID) { NSLog(@"XPC connection invalid, releasing."); }
-            else                                            { NSLog(@"Unexpected XPC connection error."); }
+            if (event == XPC_ERROR_CONNECTION_INTERRUPTED)  { syslog(LOG_NOTICE, "XPC connection interupted."); }
+            else if (event == XPC_ERROR_CONNECTION_INVALID) { syslog(LOG_NOTICE, "XPC connection invalid, releasing."); }
+            else                                            { syslog(LOG_NOTICE, "Unexpected XPC connection error."); }
         }
         else if (self->_usesPipes)
         {
@@ -187,14 +188,14 @@
             
             if (standardOutput)
             {
-                NSLog(@"out: %s", standardOutput);
+                syslog(LOG_NOTICE, "out: %s", standardOutput);
                 
                 writeHandle = [self->_standardOutput fileHandleForWriting];
                 [writeHandle writeData:[[NSString stringWithUTF8String:standardOutput] dataUsingEncoding:NSUTF8StringEncoding]];
             }
             if (standardError)
             {
-                NSLog(@"err: %s", standardError);
+                syslog(LOG_NOTICE, "err: %s", standardError);
 
                 writeHandle = [self->_standardError fileHandleForWriting];
                 [writeHandle writeData:[[NSString stringWithUTF8String:standardError] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -206,7 +207,7 @@
 
             if (exit_event)
             {
-                NSLog(@"Launch request finished!");
+                syslog(LOG_NOTICE, "Launch request finished!");
                 self->_running = NO;
             }
         }
