@@ -11,7 +11,7 @@
 #import "../Shared.h"
 #import <Foundation/Foundation.h>
 
-#define HELPER_VER 0.6
+#define HELPER_VER 0.65
 
 @interface SMJobBlessHelper : NSObject
 {
@@ -115,22 +115,10 @@ static NSTask *task = nil;
 
             helper_log("msg: %s", msg);
             
-            if (strcmp(msg, "SUSPEND") == 0)
-            {
-                [task suspend];
-            }
-            else if (strcmp(msg, "RESUME") == 0)
-            {
-                [task resume];
-            }
-            else if (strcmp(msg, "INTERRUPT") == 0)
-            {
-                [task interrupt];
-            }
-            else if (strcmp(msg, "TERMINATE") == 0)
-            {
-                [task terminate];
-            }
+            if      (strcmp(msg, "SUSPEND") == 0)   { [task suspend];   }
+            else if (strcmp(msg, "RESUME") == 0)    { [task resume];    }
+            else if (strcmp(msg, "INTERRUPT") == 0) { [task interrupt]; }
+            else if (strcmp(msg, "TERMINATE") == 0) { [task terminate]; }
             else
             {
                 helper_log("received unknown msg (%s); ignoring.", msg);
@@ -158,6 +146,7 @@ static NSTask *task = nil;
         if (!launch_path || !current_directory_path || !arguments || !environment_variables || !environment)
         {
             xpc_connection_cancel(connection);
+            exit(EXIT_FAILURE);
             return;
         }
     
@@ -206,9 +195,11 @@ static NSTask *task = nil;
     
         [task setTerminationHandler:^(NSTask * _Nonnull tsk) {
 
+            const char *termStatusStr = [NSString stringWithFormat:@"%i", tsk.terminationStatus].UTF8String;
+            
             /* Send termination message */
             xpc_object_t exit_msg = xpc_dictionary_create(NULL, NULL, 0);
-            xpc_dictionary_set_string(exit_msg, "exit_message", "application_exited");
+            xpc_dictionary_set_string(exit_msg, "exit_message", termStatusStr);
             xpc_connection_send_message(connection, exit_msg);
             
             task = nil;

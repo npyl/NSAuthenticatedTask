@@ -8,9 +8,9 @@
 
 #import "NSAuthenticatedTask.h"
 
+#import <syslog.h>
 #import "../Shared.h"
 #import <Cocoa/Cocoa.h>
-#import <syslog.h>
 
 @implementation NSAuthenticatedTask
 
@@ -208,7 +208,9 @@
 
             if (exit_event)
             {
-                syslog(LOG_NOTICE, "Launch request finished!");
+                //sscanf(exit_event, "%i", &self->_terminationStatus);
+                
+                syslog(LOG_NOTICE, "Task finished with status: %i", self->_terminationStatus);
                 self->_running = NO;
             }
         }
