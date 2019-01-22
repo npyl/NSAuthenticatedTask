@@ -145,9 +145,13 @@ static NSTask *task = nil;
     
         if (!launch_path || !current_directory_path || !arguments || !environment_variables || !environment)
         {
-            xpc_connection_cancel(connection);
-            exit(EXIT_FAILURE);
-            return;
+            if (stay_authorized)
+                return;
+            else
+            {
+                xpc_connection_cancel(connection);
+                exit(EXIT_FAILURE);
+            }
         }
     
         //==================================//==================================

@@ -32,6 +32,7 @@
         _currentDirectoryPath = [NSString stringWithUTF8String:cwd];
         _environment = [[NSProcessInfo processInfo] environment];
         _terminationHandler = ^(NSTask *tsk) {};
+        _terminationStatus = 1; // !0 = error
     }
     return self;
 }
@@ -101,7 +102,7 @@
 
 - (void)launchAuthorized
 {
-    static BOOL calledOnce = NO;
+    static BOOL calledFirstTime = YES;
     
     if (!_launchPath)
     {
@@ -116,7 +117,7 @@
      * Call NPAuthenticator to authenticate ONLY ONCE
      * if `_stayAuthorized' is set by user.
      */
-    if (_stayAuthorized && calledOnce)
+    if (_stayAuthorized && calledFirstTime)
     {
         NSString *_executableName = [_launchPath lastPathComponent];
         
@@ -153,7 +154,7 @@
         }
     }
     
-    calledOnce = YES;
+    calledFirstTime = NO;
     
     /* Set Running to Yes */
     _running = YES;
@@ -208,10 +209,12 @@
 
             if (exit_event)
             {
-                //sscanf(exit_event, "%i", &self->_terminationStatus);
+                /* termination status */
+                sscanf(exit_event, "%i", &self->_terminationStatus);
+                /* running? */
+                self->_running = NO;
                 
                 syslog(LOG_NOTICE, "Task finished with status: %i", self->_terminationStatus);
-                self->_running = NO;
             }
         }
     });
