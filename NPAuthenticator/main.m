@@ -6,6 +6,7 @@
 //  Copyright © 2018 Nickolas Pylarinos Stamatelatos. All rights reserved.
 //
 
+#import <syslog.h>
 #import <Cocoa/Cocoa.h>
 #import <ServiceManagement/ServiceManagement.h>
 
@@ -59,7 +60,7 @@ BOOL blessHelperWithLabel(NSString *label, char *icon, char *prompt, NSError **e
     OSStatus status = AuthorizationCreate(&authRights, &authEnvironment, flags, &authRef);
     if (status != errAuthorizationSuccess)
     {
-        NSLog(@"Failed to create AuthorizationRef. Error code: %d", (int)status);
+        syslog(LOG_NOTICE, "Failed to create AuthorizationRef. Error code: %d", (int)status);
     }
     else
     {
@@ -88,7 +89,7 @@ int main(int argc, const char * argv[])
                               &error)
         )
     {
-        NSLog(@"Failed to bless helper. Error: %@", error);
+        syslog(LOG_NOTICE, "Failed to bless helper. Error: %s", error.localizedDescription.UTF8String);
         return (-1);
     }
     
