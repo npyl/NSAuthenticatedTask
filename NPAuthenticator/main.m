@@ -22,7 +22,7 @@ BOOL blessHelperWithLabel(NSString *label, char *icon, char *prompt, NSError **e
 {
     BOOL result = NO;
     
-    printf("SM: %s\n", icon);
+//    printf("SM: %s\n", icon);
     
     AuthorizationItem right = { kAuthorizationRightExecute, 0, NULL, 0 };
     AuthorizationRights authRights  = { 1, &right };
