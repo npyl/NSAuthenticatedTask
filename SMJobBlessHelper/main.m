@@ -142,7 +142,7 @@ static NSTask *task = nil;
         uses_pipes = xpc_dictionary_get_bool(event, USE_PIPES_KEY);
 
         helper_log("sessionID: %d", sessionID);
-        helper_log("isSessionNew: %s", isSessionNew);
+        helper_log("isSessionNew: %d", isSessionNew);
         helper_log("stay_authzd: %d", stay_authorized);
         helper_log("launch_path: %s", launch_path);
         helper_log("current_directory_path: %s", current_directory_path);
@@ -234,6 +234,13 @@ static NSTask *task = nil;
             helper_log("Exiting...");
             exit(EXIT_SUCCESS);
         }
+        
+        /*
+         * Register connection handle into our registry
+         */
+        NSString *key = [NSString stringWithFormat:@"%lu", (unsigned long)sessionID];
+        [[NSUserDefaults standardUserDefaults] setObject:connection
+                                                  forKey:key];
     }
 }
 

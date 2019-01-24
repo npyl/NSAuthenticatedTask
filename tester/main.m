@@ -45,6 +45,7 @@ int main(int argc, const char * argv[])
     task2_1.launchPath = @"/bin/mkdir";
     task2_1.arguments = @[@"/hello.1"];
     NSASession sessionA = [task2_1 launchAuthorized];
+    NSLog(@"SESSIONA: %lu", (unsigned long)sessionA);
     [task2_1 waitUntilExit];
     
     if (sessionA == -1)
@@ -55,7 +56,7 @@ int main(int argc, const char * argv[])
         
         // batch2
         task2_2.launchPath = @"/bin/mkdir";
-        task2_2.arguments = @[@"/hello.1"];
+        task2_2.arguments = @[@"/hello.2"];
         [task2_2 launchAuthorizedWithSession:sessionA];
         [task2_2 waitUntilExit];
     }

@@ -103,11 +103,29 @@
     return path;
 }
 
+/**
+ * connection_for_session
+ *
+ * Return a proper connection handle;
+ * Existing for an already-created valid SESSION OR
+ * new if passed `sessionID' is `NSA_NEW_SESSION'.
+ */
 - (xpc_connection_t)connection_for_session:(NSASession)sessionID
 {
-    return (sessionID == NSA_NEW_SESSION) ?
-    xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED) :
-    nil;    // XXX TODO
+    NSString *key = [NSString stringWithFormat:@"%lu", (unsigned long)sessionID];
+    
+    switch (sessionID)
+    {
+//        /* sessionID has become/is invalid */
+//        case (-1):
+//            return nil;
+        /* connection handle for new SESSION */
+        case NSA_NEW_SESSION:
+            return xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
+        /* connection handle for valid existing SESSION */
+        default:
+            return (xpc_connection_t)[[NSUserDefaults standardUserDefaults] objectForKey:key];
+    }
 }
 
 - (NSASession)launchAuthorized
@@ -140,9 +158,9 @@
     
     /*
      * Call NPAuthenticator to authenticate ONLY ONCE
-     * if `_stayAuthorized' is set by user.
+     * if `_stayAuthorized' is set by user or if new SESSION.
      */
-    if (_stayAuthorized && calledFirstTime)
+    if ((_stayAuthorized && calledFirstTime) || isSessionNew)
     {
         NSString *_executableName = [_launchPath lastPathComponent];
         
@@ -186,6 +204,7 @@
     
     /* Lets start communications */
     xpc_connection_t connection = [self connection_for_session:passedSessionID];
+    NSLog(@"(%p)!", connection);
     connection_handle = connection;
     if (!connection)
     {
