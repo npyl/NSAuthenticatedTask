@@ -12,6 +12,9 @@
 #import "../Shared.h"
 #import <Cocoa/Cocoa.h>
 
+/* Create new session */
+#define NSA_NEW_SESSION 1
+
 @implementation NSAuthenticatedTask
 
 - (instancetype)init
@@ -100,14 +103,36 @@
     return path;
 }
 
-- (void)launchAuthorized
+- (xpc_connection_t)connection_for_session:(NSASession)sessionID
 {
+    return (sessionID == NSA_NEW_SESSION) ?
+    xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED) :
+    nil;    // XXX TODO
+}
+
+- (NSASession)launchAuthorized
+{
+    return [self launchAuthorizedWithSession:NSA_NEW_SESSION];
+}
+
+- (NSASession)launchAuthorizedWithSession:(NSASession)passedSessionID
+{
+    NSASession sessionID = -1;
     static BOOL calledFirstTime = YES;
+    BOOL isSessionNew = (passedSessionID == NSA_NEW_SESSION);
+
+    /*
+     * Generate a SESSION ID
+     */
+    if (isSessionNew)
+    {
+        sessionID = arc4random_uniform(10000000);
+    }
     
     if (!_launchPath)
     {
         [NSException raise:@"launchPath cannot be nil" format:@""];
-        return;
+        return (-1);
     }
     
     if (_standardInput || _standardOutput || _standardError)
@@ -139,7 +164,7 @@
          * Call NPAuthenticator using the following format for the
          * authentication box to have a custom icon and text...
          *              EXECUTABLE          ARG0                    ARG1
-         * .../.../.../NPAuthenticator      EXECUTABLE_NAME         ICON
+         * .../.../.../NPAuthenticator      $EXECUTABLE_NAME        $ICON
          */
         NSTask *NPAuthenticator = [[NSTask alloc] init];
         NPAuthenticator.launchPath = NPAuthenticatorPath;
@@ -150,7 +175,7 @@
         if ([NPAuthenticator terminationStatus] != 0)
         {
             syslog(LOG_NOTICE, "Authentication failed!");
-            return;
+            return (-1);
         }
     }
     
@@ -160,67 +185,67 @@
     _running = YES;
     
     /* Lets start communications */
-    xpc_connection_t connection = xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
+    xpc_connection_t connection = [self connection_for_session:passedSessionID];
     connection_handle = connection;
     if (!connection)
     {
         syslog(LOG_NOTICE, "Failed to create XPC connection.");
-        return;
+        return (-1);
     }
     
     xpc_connection_set_event_handler(connection, ^(xpc_object_t event)
-    {
-        xpc_type_t type = xpc_get_type(event);
-        
-        if (type == XPC_TYPE_ERROR)
-        {
-            if (event == XPC_ERROR_CONNECTION_INTERRUPTED)  { syslog(LOG_NOTICE, "XPC connection interupted."); }
-            else if (event == XPC_ERROR_CONNECTION_INVALID) { syslog(LOG_NOTICE, "XPC connection invalid, releasing."); }
-            else                                            { syslog(LOG_NOTICE, "Unexpected XPC connection error."); }
-        }
-        else if (self->_usesPipes)
-        {
-            /*
-             * Ok, we are probably starting to get pipe data...
-             */
-            const char *standardOutput = xpc_dictionary_get_string(event, "standardOutput");
-            const char *standardError = xpc_dictionary_get_string(event, "standardError");
-            
-            NSFileHandle *writeHandle;
-            
-            if (standardOutput)
-            {
-                syslog(LOG_NOTICE, "out: %s", standardOutput);
-                
-                writeHandle = [self->_standardOutput fileHandleForWriting];
-                [writeHandle writeData:[[NSString stringWithUTF8String:standardOutput] dataUsingEncoding:NSUTF8StringEncoding]];
-            }
-            if (standardError)
-            {
-                syslog(LOG_NOTICE, "err: %s", standardError);
-
-                writeHandle = [self->_standardError fileHandleForWriting];
-                [writeHandle writeData:[[NSString stringWithUTF8String:standardError] dataUsingEncoding:NSUTF8StringEncoding]];
-            }
-        }
-        else // misc-events
-        {
-            const char *exit_event = xpc_dictionary_get_string(event, "exit_message");
-
-            if (exit_event)
-            {
-                /* termination status */
-                sscanf(exit_event, "%i", &self->_terminationStatus);
-                /* running? */
-                self->_running = NO;
-                
-                syslog(LOG_NOTICE, "Task finished with status: %i", self->_terminationStatus);
-            }
-        }
-    });
+                                     {
+                                         xpc_type_t type = xpc_get_type(event);
+                                         
+                                         if (type == XPC_TYPE_ERROR)
+                                         {
+                                             if (event == XPC_ERROR_CONNECTION_INTERRUPTED)  { syslog(LOG_NOTICE, "XPC connection interupted."); }
+                                             else if (event == XPC_ERROR_CONNECTION_INVALID) { syslog(LOG_NOTICE, "XPC connection invalid, releasing."); }
+                                             else                                            { syslog(LOG_NOTICE, "Unexpected XPC connection error."); }
+                                         }
+                                         else if (self->_usesPipes)
+                                         {
+                                             /*
+                                              * Ok, we are probably starting to get pipe data...
+                                              */
+                                             const char *standardOutput = xpc_dictionary_get_string(event, "standardOutput");
+                                             const char *standardError = xpc_dictionary_get_string(event, "standardError");
+                                             
+                                             NSFileHandle *writeHandle;
+                                             
+                                             if (standardOutput)
+                                             {
+                                                 syslog(LOG_NOTICE, "out: %s", standardOutput);
+                                                 
+                                                 writeHandle = [self->_standardOutput fileHandleForWriting];
+                                                 [writeHandle writeData:[[NSString stringWithUTF8String:standardOutput] dataUsingEncoding:NSUTF8StringEncoding]];
+                                             }
+                                             if (standardError)
+                                             {
+                                                 syslog(LOG_NOTICE, "err: %s", standardError);
+                                                 
+                                                 writeHandle = [self->_standardError fileHandleForWriting];
+                                                 [writeHandle writeData:[[NSString stringWithUTF8String:standardError] dataUsingEncoding:NSUTF8StringEncoding]];
+                                             }
+                                         }
+                                         else // misc-events
+                                         {
+                                             const char *exit_event = xpc_dictionary_get_string(event, "exit_message");
+                                             
+                                             if (exit_event)
+                                             {
+                                                 /* termination status */
+                                                 sscanf(exit_event, "%i", &self->_terminationStatus);
+                                                 /* running? */
+                                                 self->_running = NO;
+                                                 
+                                                 syslog(LOG_NOTICE, "Task finished with status: %i", self->_terminationStatus);
+                                             }
+                                         }
+                                     });
     
     xpc_connection_resume(connection);
-
+    
     /*
      * Create the arguments array
      */
@@ -240,12 +265,12 @@
      */
     NSDictionary *environmentDictionary = [NSProcessInfo processInfo].environment;
     xpc_object_t environment = xpc_dictionary_create(NULL, NULL, 0);
-
+    
     for (NSString *key in environmentDictionary.allKeys)
     {
         xpc_object_t value = xpc_string_create([[environmentDictionary objectForKey:key] UTF8String]);
         xpc_object_t key_o = xpc_string_create(key.UTF8String);
-
+        
         /* fill-in */
         xpc_array_append_value(environment_variables, key_o);
         xpc_dictionary_set_value(environment, key.UTF8String, value);
@@ -255,16 +280,18 @@
      * Send data!
      */
     xpc_object_t dictionary = xpc_dictionary_create(NULL, NULL, 0);
-
+    
     /* Tell Helper we are requesting a new-session event type */
-    xpc_dictionary_set_string(dictionary,   NEW_SESSION_KEY,        "###_NEW_SESSION_###");
-    xpc_dictionary_set_bool(dictionary,     STAY_AUTHORIZED_KEY,    _stayAuthorized);
-    xpc_dictionary_set_string(dictionary,   LAUNCH_PATH_KEY,        self.launchPath.UTF8String);
-    xpc_dictionary_set_string(dictionary,   CURRENT_DIR_KEY,        self.currentDirectoryPath.UTF8String);
-    xpc_dictionary_set_value(dictionary,    ARGUMENTS_KEY,          arguments);
-    xpc_dictionary_set_value(dictionary,    ENV_VARS_KEY,           environment_variables);
-    xpc_dictionary_set_value(dictionary,    ENVIRONMENT_KEY,        environment);
-    xpc_dictionary_set_bool(dictionary,     USE_PIPES_KEY,          _usesPipes);
+    xpc_dictionary_set_string(dictionary,   SESSION_INFO_COMING_KEY,    "###_NEW_SESSION_###");
+    xpc_dictionary_set_int64(dictionary,    SESSION_ID_KEY,             sessionID);
+    xpc_dictionary_set_bool(dictionary,     SESSION_IS_NEW_KEY,         isSessionNew);
+    xpc_dictionary_set_bool(dictionary,     STAY_AUTHORIZED_KEY,        _stayAuthorized);
+    xpc_dictionary_set_string(dictionary,   LAUNCH_PATH_KEY,            self.launchPath.UTF8String);
+    xpc_dictionary_set_string(dictionary,   CURRENT_DIR_KEY,            self.currentDirectoryPath.UTF8String);
+    xpc_dictionary_set_value(dictionary,    ARGUMENTS_KEY,              arguments);
+    xpc_dictionary_set_value(dictionary,    ENV_VARS_KEY,               environment_variables);
+    xpc_dictionary_set_value(dictionary,    ENVIRONMENT_KEY,            environment);
+    xpc_dictionary_set_bool(dictionary,     USE_PIPES_KEY,              _usesPipes);
     xpc_connection_send_message(connection, dictionary);
     
     /* Set PID */
@@ -276,6 +303,8 @@
         [self terminationHandler];
     }];
     [termination_checker_th start];
+    
+    return sessionID;
 }
 
 - (void)waitUntilExit

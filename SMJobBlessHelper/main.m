@@ -11,12 +11,16 @@
 #import "../Shared.h"
 #import <Foundation/Foundation.h>
 
-#define HELPER_VER 0.65
+// 0.7: Support pre-authorized sessions
+#define HELPER_VER 0.7
 
 @interface SMJobBlessHelper : NSObject
 {
     xpc_connection_t    connection_handle;
     xpc_connection_t    service;
+    
+    NSUInteger          sessionID;
+    bool                isSessionNew;
     
     /* data */
     bool                stay_authorized;
@@ -108,7 +112,7 @@ static NSTask *task = nil;
          * If `stay_authorized' is true, we need to identify what NSTask is sending us;
          * It may be task control-events or a new-session event...
          */
-        const char* new_session_stamp = xpc_dictionary_get_string(event, NEW_SESSION_KEY);
+        const char* new_session_stamp = xpc_dictionary_get_string(event, SESSION_INFO_COMING_KEY);
         if (!new_session_stamp)
         {
             const char *msg = xpc_dictionary_get_string(event, "msg");
@@ -126,7 +130,9 @@ static NSTask *task = nil;
             
             return;
         }
-        
+
+        sessionID = xpc_dictionary_get_int64(event, SESSION_ID_KEY);
+        isSessionNew = xpc_dictionary_get_bool(event, SESSION_IS_NEW_KEY);
         stay_authorized = xpc_dictionary_get_bool(event, STAY_AUTHORIZED_KEY);
         launch_path = xpc_dictionary_get_string(event, LAUNCH_PATH_KEY);
         current_directory_path = xpc_dictionary_get_string(event, CURRENT_DIR_KEY);
@@ -135,12 +141,14 @@ static NSTask *task = nil;
         environment = xpc_dictionary_get_value(event, ENVIRONMENT_KEY);
         uses_pipes = xpc_dictionary_get_bool(event, USE_PIPES_KEY);
 
+        helper_log("sessionID: %d", sessionID);
+        helper_log("isSessionNew: %s", isSessionNew);
         helper_log("stay_authzd: %d", stay_authorized);
         helper_log("launch_path: %s", launch_path);
         helper_log("current_directory_path: %s", current_directory_path);
-        helper_log("arguments: %i", arguments);
-        helper_log("environment_variables: %i", environment_variables);
-        helper_log("environment: %i", environment);
+        helper_log("arguments: %p", arguments);
+        helper_log("environment_variables: %p", environment_variables);
+        helper_log("environment: %p", environment);
         helper_log("pipes: %i", uses_pipes);
     
         if (!launch_path || !current_directory_path || !arguments || !environment_variables || !environment)
@@ -181,7 +189,7 @@ static NSTask *task = nil;
 
         /* if uses pipes, setup the pipe readers... */
         if (uses_pipes)
-        {
+        {            
             NSFileHandle *output, *error;
             
             [task setStandardOutput:[NSPipe pipe]];
@@ -217,8 +225,10 @@ static NSTask *task = nil;
          * Invalidate connection and close only if `stay_authorized' is false.
          * This way we keep an authenticated SMJobBlessHelper running and we can
          * execute more scripts/executables.  This should comprise of a SESSION.
+         *
+         * 0.7: If new session, keep running until teardown of macOS.
          */
-        if (!stay_authorized)
+        if (!stay_authorized || isSessionNew)
         {
             xpc_connection_cancel(connection_handle);
             helper_log("Exiting...");

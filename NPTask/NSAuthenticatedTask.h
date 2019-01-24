@@ -17,6 +17,14 @@ FOUNDATION_EXPORT double NSAuthenticatedTaskVersionNumber;
 //! Project version string for NSAuthenticatedTask.
 FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 
+/*
+ * SESSION ID
+ * 1:       no-session (create one)
+ * -1:      failure
+ * else:    SESSION ID
+ */
+typedef NSUInteger NSASession;
+
 @interface NSAuthenticatedTask : NSObject
 {
     BOOL _usesPipes;
@@ -56,7 +64,8 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
 - (BOOL)suspend;
 - (BOOL)resume;
 
-- (void)launchAuthorized;
+- (NSASession)launchAuthorized;
+- (NSASession)launchAuthorizedWithSession:(NSASession)sessionID;
 
 - (void)waitUntilExit;
 
