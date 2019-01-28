@@ -11,6 +11,9 @@
 
 #import <Cocoa/Cocoa.h>
 
+/* Create new session */
+#define NSA_NEW_SESSION 1
+
 //! Project version number for NSAuthenticatedTask.
 FOUNDATION_EXPORT double NSAuthenticatedTaskVersionNumber;
 

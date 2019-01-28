@@ -12,9 +12,6 @@
 #import "../Shared.h"
 #import <Cocoa/Cocoa.h>
 
-/* Create new session */
-#define NSA_NEW_SESSION 1
-
 @implementation NSAuthenticatedTask
 
 - (instancetype)init
