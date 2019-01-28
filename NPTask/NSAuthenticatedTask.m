@@ -329,6 +329,22 @@
         sleep(2);   // 2 sec
 }
 
+- (void)endSession:(NSASession)sessionID
+{
+    xpc_connection_t conn = [self connection_for_session:sessionID];
+    
+    if (!conn)
+    {
+        NSLog(@"Unable to find a connection with id: %li", sessionID);
+        return;
+    }
+
+    /* send a force-quit event to Helper */
+    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+    xpc_dictionary_set_string(msg, "msg", "force-quit");
+    xpc_connection_send_message(connection_handle, msg);
+}
+
 - (BOOL)suspend
 {
     if (!connection_handle)

@@ -72,6 +72,11 @@ typedef NSUInteger NSASession;
 
 - (void)waitUntilExit;
 
+/**
+ * You should be able end a SESSION (aka. to quit the Helper) in order to save resources and ensure security.
+ */
+- (void)endSession:(NSASession)sessionID;
+
 @end
 
 //+ (nullable NSTask *)launchedTaskWithExecutableURL:(NSURL *)url arguments:(NSArray<NSString *> *)arguments error:(out NSError ** _Nullable)error terminationHandler:(void (^_Nullable)(NSTask *))terminationHandler;

@@ -123,6 +123,12 @@ static NSTask *task = nil;
             else if (strcmp(msg, "RESUME") == 0)    { [task resume];    }
             else if (strcmp(msg, "INTERRUPT") == 0) { [task interrupt]; }
             else if (strcmp(msg, "TERMINATE") == 0) { [task terminate]; }
+            else if (strcmp(msg, "force-quit") == 0)
+            {
+                xpc_connection_cancel(connection_handle);
+                helper_log("Exiting... (force-quit)");
+                exit(EXIT_SUCCESS);
+            }
             else
             {
                 helper_log("received unknown msg (%s); ignoring.", msg);
