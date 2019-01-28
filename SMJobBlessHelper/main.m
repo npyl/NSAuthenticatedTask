@@ -40,9 +40,8 @@
 
 static NSTask *task = nil;
 
--(void)receivedData:(NSNotification*)notif
+- (void)printDataFromHandle:(NSFileHandle *)fh withStream:(NSString *)stream
 {
-    NSFileHandle *fh = [notif object];
     NSData *data = [fh availableData];
     if (data.length > 0)
     {
@@ -51,25 +50,18 @@ static NSTask *task = nil;
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
         xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-        xpc_dictionary_set_string(msg, "standardOutput", [str UTF8String]);
+        xpc_dictionary_set_string(msg, stream.UTF8String, [str UTF8String]);
         xpc_connection_send_message(connection_handle, msg);
     }
 }
 
--(void)receivedError:(NSNotification*)notif
+- (void)cleanup_after_exit
 {
-    NSFileHandle *fh = [notif object];
-    NSData *data = [fh availableData];
-    if (data.length > 0)
-    {
-        /* if data is found, re-register for more data (and print) */
-        [fh waitForDataInBackgroundAndNotify];
-        NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-        xpc_dictionary_set_string(msg, "standardError", [str UTF8String]);
-        xpc_connection_send_message(connection_handle, msg);
-    }
+    /*
+     * Remove connection handle from our registry
+     */
+    NSString *key = [NSString stringWithFormat:@"%lu", (unsigned long)sessionID];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
 }
 
 - (void) __XPC_Peer_Event_Handler:(xpc_connection_t)connection withEvent:(xpc_object_t)event
@@ -126,6 +118,7 @@ static NSTask *task = nil;
             else if (strcmp(msg, "force-quit") == 0)
             {
                 xpc_connection_cancel(connection_handle);
+                [self cleanup_after_exit];
                 helper_log("Exiting... (force-quit)");
                 exit(EXIT_SUCCESS);
             }
@@ -207,8 +200,12 @@ static NSTask *task = nil;
             [output waitForDataInBackgroundAndNotify];
             [error waitForDataInBackgroundAndNotify];
             
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedData:) name:NSFileHandleDataAvailableNotification object:output];
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receivedError:) name:NSFileHandleDataAvailableNotification object:error];
+            [output setReadabilityHandler:^(NSFileHandle * _Nonnull fh) {
+                [self printDataFromHandle:fh withStream:@"standardOutput"];
+            }];
+            [error setReadabilityHandler:^(NSFileHandle * _Nonnull fh) {
+                [self printDataFromHandle:fh withStream:@"standardError"];
+            }];
         }
     
         [task setTerminationHandler:^(NSTask * _Nonnull tsk) {
@@ -237,6 +234,7 @@ static NSTask *task = nil;
         if (!stay_authorized || isSessionNew)
         {
             xpc_connection_cancel(connection_handle);
+            [self cleanup_after_exit];
             helper_log("Exiting...");
             exit(EXIT_SUCCESS);
         }
