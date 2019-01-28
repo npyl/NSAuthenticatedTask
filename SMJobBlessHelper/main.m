@@ -12,7 +12,7 @@
 #import <Foundation/Foundation.h>
 
 // 0.7: Support pre-authorized sessions
-#define HELPER_VER 0.71
+#define HELPER_VER 0.7
 
 @interface SMJobBlessHelper : NSObject
 {
@@ -57,8 +57,6 @@ static NSTask *task = nil;
 
 - (void)cleanup_after_exit
 {
-    xpc_connection_cancel(connection_handle);
-    
     /*
      * Remove connection handle from our registry
      */
@@ -119,6 +117,7 @@ static NSTask *task = nil;
             else if (strcmp(msg, "TERMINATE") == 0) { [task terminate]; }
             else if (strcmp(msg, "force-quit") == 0)
             {
+                xpc_connection_cancel(connection_handle);
                 [self cleanup_after_exit];
                 helper_log("Exiting... (force-quit)");
                 exit(EXIT_SUCCESS);
@@ -157,7 +156,7 @@ static NSTask *task = nil;
                 return;
             else
             {
-                [self cleanup_after_exit];
+                xpc_connection_cancel(connection);
                 exit(EXIT_FAILURE);
             }
         }
@@ -234,6 +233,7 @@ static NSTask *task = nil;
          */
         if (!stay_authorized || isSessionNew)
         {
+            xpc_connection_cancel(connection_handle);
             [self cleanup_after_exit];
             helper_log("Exiting...");
             exit(EXIT_SUCCESS);
