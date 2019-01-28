@@ -30,6 +30,7 @@ typedef NSUInteger NSASession;
 
 @interface NSAuthenticatedTask : NSObject
 {
+    NSASession sessionID;
     BOOL _usesPipes;
     xpc_connection_t connection_handle;
 }
@@ -76,6 +77,10 @@ typedef NSUInteger NSASession;
  * You should be able end a SESSION (aka. to quit the Helper) in order to save resources and ensure security.
  */
 - (void)endSession:(NSASession)sessionID;
+/**
+ * End session with id, the session ID, this NSAuthenticatedTask is holding.
+ */
+- (void)endSession;
 
 @end
 

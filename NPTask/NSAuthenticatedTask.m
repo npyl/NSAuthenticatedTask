@@ -132,7 +132,7 @@
 
 - (NSASession)launchAuthorizedWithSession:(NSASession)passedSessionID
 {
-    NSASession sessionID = -1;
+    sessionID = -1; /* clear & re-initialise sessionID */
     static BOOL calledFirstTime = YES;
     BOOL isSessionNew = (passedSessionID == NSA_NEW_SESSION);
 
@@ -343,6 +343,11 @@
     xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
     xpc_dictionary_set_string(msg, "msg", "force-quit");
     xpc_connection_send_message(connection_handle, msg);
+}
+
+- (void)endSession
+{
+    [self endSession:self->sessionID];
 }
 
 - (BOOL)suspend
