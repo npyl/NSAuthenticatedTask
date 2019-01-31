@@ -11,8 +11,9 @@
 
 #import <Cocoa/Cocoa.h>
 
-/* Create new session */
-#define NSA_NEW_SESSION 1
+enum {
+    NSA_NEW_SESSION = 1,    /* Create new session */
+};
 
 //! Project version number for NSAuthenticatedTask.
 FOUNDATION_EXPORT double NSAuthenticatedTaskVersionNumber;

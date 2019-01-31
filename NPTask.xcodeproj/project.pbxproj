@@ -18,7 +18,7 @@
 		0966C5B5215DB1D0006B2DAA /* NPTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */; };
 		0966C5B7215DB1D0006B2DAA /* NSAuthenticatedTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 0966C5A9215DB1D0006B2DAA /* NSAuthenticatedTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0966C5C1215DB1DF006B2DAA /* NSAuthenticatedTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C0215DB1DF006B2DAA /* NSAuthenticatedTask.m */; };
-		0966C5C9215DB277006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C8215DB277006B2DAA /* main.m */; };
+		0966C5C9215DB277006B2DAA /* helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5C8215DB277006B2DAA /* helper.m */; };
 		0966C5D4215DB2D5006B2DAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5D3215DB2D5006B2DAA /* main.m */; };
 		0966C5DB215DB2E9006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
 		098EA57621AE1514009F139A /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 098EA57521AE1514009F139A /* Cocoa.framework */; };
@@ -104,7 +104,7 @@
 		0966C5B6215DB1D0006B2DAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0966C5C0215DB1DF006B2DAA /* NSAuthenticatedTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSAuthenticatedTask.m; sourceTree = "<group>"; };
 		0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = npyl.NPTask.SMJobBlessHelper; sourceTree = BUILT_PRODUCTS_DIR; };
-		0966C5C8215DB277006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0966C5C8215DB277006B2DAA /* helper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = helper.m; sourceTree = "<group>"; };
 		0966C5D1215DB2D5006B2DAA /* tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tester; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5D3215DB2D5006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		098EA57521AE1514009F139A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -219,7 +219,7 @@
 			children = (
 				092F04A7215DBB8C00869C20 /* SMJobBlessHelper-Info.plist */,
 				092F04A8215DBC2600869C20 /* SMJobBlessHelper-Launchd.plist */,
-				0966C5C8215DB277006B2DAA /* main.m */,
+				0966C5C8215DB277006B2DAA /* helper.m */,
 			);
 			path = SMJobBlessHelper;
 			sourceTree = "<group>";
@@ -460,7 +460,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				091A613C21B3575000ECF7AA /* Shared.m in Sources */,
-				0966C5C9215DB277006B2DAA /* main.m in Sources */,
+				0966C5C9215DB277006B2DAA /* helper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
