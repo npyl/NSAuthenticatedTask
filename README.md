@@ -6,6 +6,7 @@ A framework that adds a small perk to NSTask (Authentication) so you can execute
 Follows Apple's recommended way of doing this, using SMJobBlessHelper and XPC! (No deprecated APIs here!)
 
 ## Supported Features
+- [ ] Standard (NSTask) functionality
 - [x] Launch Authenticated
 - [x] Pass arguments
 - [x] Pass current directory
