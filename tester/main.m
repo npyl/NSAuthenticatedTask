@@ -9,7 +9,8 @@
 #import <NPTask/NSAuthenticatedTask.h>   // include for launchAuthenticated addition
 
 //#define TEST1
-#define TEST2
+//#define TEST2
+#define TEST3 // Test normal NSTask functionality
 
 int main(int argc, const char * argv[])
 {
@@ -75,6 +76,16 @@ int main(int argc, const char * argv[])
          */
         [task2_2 endSession:sessionA];
     }
+#endif
+
+#ifdef TEST3
+    NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
+    
+    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
+    task.launchPath = @"/bin/mkdir";
+    task.arguments = @[prettyPath];
+    [task launch];
+    [task waitUntilExit];
 #endif
 
     return 0;
