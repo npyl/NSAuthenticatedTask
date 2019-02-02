@@ -34,6 +34,9 @@ typedef NSUInteger NSASession;
     NSASession sessionID;
     BOOL _usesPipes;
     xpc_connection_t connection_handle;
+    
+    NSTask *tsk;    /* incase we are working in normal (NSTask) mode */
+    BOOL usingNSTask;   /* set this to yes/no depending on whether ^^^^ happens */
 }
 
 @property (nullable) NSString *text;   /* authentication text */
@@ -69,6 +72,7 @@ typedef NSUInteger NSASession;
 - (BOOL)suspend;
 - (BOOL)resume;
 
+- (void)launch;
 - (NSASession)launchAuthorized;
 - (NSASession)launchAuthorizedWithSession:(NSASession)sessionID;
 

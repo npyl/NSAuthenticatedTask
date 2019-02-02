@@ -125,6 +125,41 @@
     }
 }
 
+- (void)launch
+{
+    usingNSTask = YES;
+    
+    /*
+     * Bridge everything we got to NSTask! :)
+     */
+    
+    tsk = [[NSTask alloc] init];
+    tsk.launchPath = _launchPath;
+    tsk.currentDirectoryPath = _currentDirectoryPath;
+    tsk.environment = _environment;
+    tsk.arguments = _arguments;
+    
+    if (_usesPipes)
+    {
+        tsk.standardInput = _standardInput;
+        tsk.standardOutput = _standardOutput;
+        tsk.standardError = _standardError;
+    }
+
+    // XXX probably have to make NSAuthTask's standardXXX return tsk's standardXXX instead if usingNSTask is true...
+    // XXX a story for next time...
+    
+    [tsk setTerminationHandler:^(NSTask * _Nonnull _tsk) {
+        self->_terminationHandler(_tsk);
+
+        self->_running = NO;
+        self->usingNSTask = NO;
+    }];
+    
+    [tsk launch];
+    _running = YES;
+}
+
 - (NSASession)launchAuthorized
 {
     return [self launchAuthorizedWithSession:NSA_NEW_SESSION];
@@ -331,18 +366,25 @@
 
 - (void)endSession:(NSASession)sessionID
 {
-    xpc_connection_t conn = [self connection_for_session:sessionID];
-    
-    if (!conn)
+    if (!usingNSTask)
     {
-        NSLog(@"Unable to find a connection with id: %li", sessionID);
-        return;
+        xpc_connection_t conn = [self connection_for_session:sessionID];
+        
+        if (!conn)
+        {
+            NSLog(@"Unable to find a connection with id: %li", sessionID);
+            return;
+        }
+        
+        /* send a force-quit event to Helper */
+        xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+        xpc_dictionary_set_string(msg, "msg", "force-quit");
+        xpc_connection_send_message(connection_handle, msg);
     }
-
-    /* send a force-quit event to Helper */
-    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(msg, "msg", "force-quit");
-    xpc_connection_send_message(connection_handle, msg);
+    else
+    {
+        /* do nothing */
+    }
 }
 
 - (void)endSession
@@ -352,41 +394,69 @@
 
 - (BOOL)suspend
 {
-    if (!connection_handle)
-        return NO;
-    
-    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(msg, "msg", "SUSPEND");
-    xpc_connection_send_message(connection_handle, msg);
-    return YES;
+    if (!usingNSTask)
+    {
+        if (!connection_handle)
+            return NO;
+        
+        xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+        xpc_dictionary_set_string(msg, "msg", "SUSPEND");
+        xpc_connection_send_message(connection_handle, msg);
+        return YES;
+    }
+    else
+    {
+        return [tsk suspend];
+    }
 }
 - (BOOL)resume
 {
-    if (!connection_handle)
-        return NO;
-
-    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(msg, "msg", "RESUME");
-    xpc_connection_send_message(connection_handle, msg);
-    return YES;
+    if (!usingNSTask)
+    {
+        if (!connection_handle)
+            return NO;
+        
+        xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+        xpc_dictionary_set_string(msg, "msg", "RESUME");
+        xpc_connection_send_message(connection_handle, msg);
+        return YES;
+    }
+    else
+    {
+        return [tsk resume];
+    }
 }
 - (void)interrupt
 {
-    if (!connection_handle)
-        return;
-
-    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(msg, "msg", "INTERRUPT");
-    xpc_connection_send_message(connection_handle, msg);
+    if (!usingNSTask)
+    {
+        if (!connection_handle)
+            return;
+        
+        xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+        xpc_dictionary_set_string(msg, "msg", "INTERRUPT");
+        xpc_connection_send_message(connection_handle, msg);
+    }
+    else
+    {
+        [tsk interrupt];
+    }
 }
 - (void)terminate
 {
-    if (!connection_handle)
-        return;
-
-    xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
-    xpc_dictionary_set_string(msg, "msg", "TERMINATE");
-    xpc_connection_send_message(connection_handle, msg);
+    if (!usingNSTask)
+    {
+        if (!connection_handle)
+            return;
+        
+        xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
+        xpc_dictionary_set_string(msg, "msg", "TERMINATE");
+        xpc_connection_send_message(connection_handle, msg);
+    }
+    else
+    {
+        [tsk terminate];
+    }
 }
 
 @end
