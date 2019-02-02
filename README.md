@@ -6,7 +6,7 @@ A framework that adds a small perk to NSTask (Authentication) so you can execute
 Follows Apple's recommended way of doing this, using SMJobBlessHelper and XPC! (No deprecated APIs here!)
 
 ## Supported Features
-- [ ] Standard (NSTask) functionality
+- [ ] Standard (NSTask) functionality (See #2)
 - [x] Launch Authenticated
 - [x] Pass arguments
 - [x] Pass current directory
@@ -14,6 +14,11 @@ Follows Apple's recommended way of doing this, using SMJobBlessHelper and XPC! (
 - [x] Custom Authentication Text
 - [ ] Pass environment variables
 - [ ] Pipes
+
+## Projects Currently Using NSAuthenticatedTask
+
+[ManageConky](https://github.com/Conky-for-macOS/Manage-Conky) (The de-facto Manager for Conky on macOS)<br>
+[cocoasudo](https://github.com/npyl/cocoasudo) (a new implementation)
 
 ## Attributions
 ### Icons
