@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		091A613B21B3570800ECF7AA /* Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 091A613A21B3570800ECF7AA /* Shared.m */; };
-		091A613C21B3575000ECF7AA /* Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 091A613A21B3570800ECF7AA /* Shared.m */; };
-		091A613D21B3575700ECF7AA /* Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 091A613A21B3570800ECF7AA /* Shared.m */; };
 		092F04AB215E547700869C20 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 092F04AA215E547700869C20 /* ServiceManagement.framework */; };
 		092F04F8215E69BB00869C20 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 092F04F7215E69BB00869C20 /* main.m */; };
 		092F04FF215E6AF300869C20 /* NPAuthenticator.app in Resources */ = {isa = PBXBuildFile; fileRef = 092F04E9215E69BA00869C20 /* NPAuthenticator.app */; };
 		092F0501215E6B2A00869C20 /* npyl.NPTask.SMJobBlessHelper in Copy SMJobBlessHelper */ = {isa = PBXBuildFile; fileRef = 0966C5C6215DB277006B2DAA /* npyl.NPTask.SMJobBlessHelper */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		0930AE6E2207A5DF004E01C7 /* Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 0930AE6C2207A5DF004E01C7 /* Shared.m */; };
+		0930AE6F2207A5DF004E01C7 /* Shared.h in Headers */ = {isa = PBXBuildFile; fileRef = 0930AE6D2207A5DF004E01C7 /* Shared.h */; };
+		0930AE702207A620004E01C7 /* Shared.m in Sources */ = {isa = PBXBuildFile; fileRef = 0930AE6C2207A5DF004E01C7 /* Shared.m */; };
 		0966C5B0215DB1D0006B2DAA /* NPTask.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0966C5A6215DB1D0006B2DAA /* NPTask.framework */; };
 		0966C5B5215DB1D0006B2DAA /* NPTaskTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0966C5B4215DB1D0006B2DAA /* NPTaskTests.m */; };
 		0966C5B7215DB1D0006B2DAA /* NSAuthenticatedTask.h in Headers */ = {isa = PBXBuildFile; fileRef = 0966C5A9215DB1D0006B2DAA /* NSAuthenticatedTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -89,13 +89,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		091A613A21B3570800ECF7AA /* Shared.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Shared.m; sourceTree = "<group>"; };
 		092F04A7215DBB8C00869C20 /* SMJobBlessHelper-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Info.plist"; sourceTree = "<group>"; };
 		092F04A8215DBC2600869C20 /* SMJobBlessHelper-Launchd.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SMJobBlessHelper-Launchd.plist"; sourceTree = "<group>"; };
 		092F04AA215E547700869C20 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		092F04E9215E69BA00869C20 /* NPAuthenticator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NPAuthenticator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		092F04F6215E69BB00869C20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		092F04F7215E69BB00869C20 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0930AE6C2207A5DF004E01C7 /* Shared.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Shared.m; path = NPTask/Shared/Shared.m; sourceTree = SOURCE_ROOT; };
+		0930AE6D2207A5DF004E01C7 /* Shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Shared.h; path = NPTask/Shared/Shared.h; sourceTree = SOURCE_ROOT; };
 		0966C5A6215DB1D0006B2DAA /* NPTask.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NPTask.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5A9215DB1D0006B2DAA /* NSAuthenticatedTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSAuthenticatedTask.h; sourceTree = "<group>"; };
 		0966C5AA215DB1D0006B2DAA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -108,7 +109,6 @@
 		0966C5D1215DB2D5006B2DAA /* tester */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = tester; sourceTree = BUILT_PRODUCTS_DIR; };
 		0966C5D3215DB2D5006B2DAA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		098EA57521AE1514009F139A /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
-		0990FCD621A1D130009F4D1A /* Shared.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Shared.h; sourceTree = "<group>"; };
 		09E912E0216900CF00BECB57 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		09E912E22169019B00BECB57 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -166,12 +166,20 @@
 			path = NPAuthenticator;
 			sourceTree = "<group>";
 		};
+		0930AE6B2207A5CA004E01C7 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				0930AE6D2207A5DF004E01C7 /* Shared.h */,
+				0930AE6C2207A5DF004E01C7 /* Shared.m */,
+			);
+			name = Shared;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		0966C59C215DB1D0006B2DAA = {
 			isa = PBXGroup;
 			children = (
 				09E912E22169019B00BECB57 /* README.md */,
-				0990FCD621A1D130009F4D1A /* Shared.h */,
-				091A613A21B3570800ECF7AA /* Shared.m */,
 				0966C5A8215DB1D0006B2DAA /* NPTask */,
 				0966C5C7215DB277006B2DAA /* SMJobBlessHelper */,
 				092F04EA215E69BA00869C20 /* NPAuthenticator */,
@@ -197,6 +205,7 @@
 		0966C5A8215DB1D0006B2DAA /* NPTask */ = {
 			isa = PBXGroup;
 			children = (
+				0930AE6B2207A5CA004E01C7 /* Shared */,
 				0966C5DA215DB2E9006B2DAA /* Frameworks */,
 				0966C5AA215DB1D0006B2DAA /* Info.plist */,
 				0966C5A9215DB1D0006B2DAA /* NSAuthenticatedTask.h */,
@@ -257,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0966C5B7215DB1D0006B2DAA /* NSAuthenticatedTask.h in Headers */,
+				0930AE6F2207A5DF004E01C7 /* Shared.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,7 +443,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				091A613D21B3575700ECF7AA /* Shared.m in Sources */,
 				092F04F8215E69BB00869C20 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,7 +451,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				091A613B21B3570800ECF7AA /* Shared.m in Sources */,
+				0930AE6E2207A5DF004E01C7 /* Shared.m in Sources */,
 				0966C5C1215DB1DF006B2DAA /* NSAuthenticatedTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -459,7 +468,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				091A613C21B3575000ECF7AA /* Shared.m in Sources */,
+				0930AE702207A620004E01C7 /* Shared.m in Sources */,
 				0966C5C9215DB277006B2DAA /* helper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

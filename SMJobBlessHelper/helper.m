@@ -8,7 +8,7 @@
 
 #import <syslog.h>
 #import <xpc/xpc.h>
-#import "../Shared.h"
+#import "../NPTask/Shared/Shared.h"
 #import <Foundation/Foundation.h>
 
 // 0.7: Support pre-authorized sessions

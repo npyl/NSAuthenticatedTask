@@ -9,7 +9,7 @@
 #import "NSAuthenticatedTask.h"
 
 #import <syslog.h>
-#import "../Shared.h"
+#import "Shared/Shared.h"
 #import <Cocoa/Cocoa.h>
 
 double NSAuthenticatedTaskVersionNumber = 0.71;
