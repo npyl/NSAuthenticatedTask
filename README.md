@@ -6,11 +6,11 @@ A framework that adds a small perk to NSTask (Authentication) so you can execute
 Follows Apple's recommended way of doing this, using SMJobBlessHelper and XPC! (No deprecated APIs here!)
 
 ## Supported Features
-- [ ] Standard (NSTask) functionality (See #2)
+- [ ] Standard (NSTask) functionality (See [#2](https://github.com/npyl/NSAuthenticatedTask/issues/2))
 - [x] Launch Authenticated
 - [x] Pass arguments
 - [x] Pass current directory
-- [x] Custom Authentication Icon
+- [x] Custom Authentication Icon (still quite buggy, though! [#3](https://github.com/npyl/NSAuthenticatedTask/issues/3))
 - [x] Custom Authentication Text
 - [ ] Pass environment variables
 - [ ] Pipes
