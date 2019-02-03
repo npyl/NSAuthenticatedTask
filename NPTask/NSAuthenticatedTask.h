@@ -11,10 +11,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-enum {
-    NSA_NEW_SESSION = 1,    /* Create new session */
-};
-
 //! Project version number for NSAuthenticatedTask.
 FOUNDATION_EXPORT double NSAuthenticatedTaskVersionNumber;
 
@@ -28,6 +24,11 @@ FOUNDATION_EXPORT const unsigned char NSAuthenticatedTaskVersionString[];
  * else:    SESSION ID
  */
 typedef NSUInteger NSASession;
+
+enum : NSASession {
+    NSA_SESSION_FAIL = -1,  /* Indicate SESSION failure */
+    NSA_SESSION_NEW = 1,    /* Create new SESSION */
+};
 
 @interface NSAuthenticatedTask : NSObject
 {
@@ -88,11 +89,5 @@ typedef NSUInteger NSASession;
 - (void)endSession;
 
 @end
-
-//+ (nullable NSTask *)launchedTaskWithExecutableURL:(NSURL *)url arguments:(NSArray<NSString *> *)arguments error:(out NSError ** _Nullable)error terminationHandler:(void (^_Nullable)(NSTask *))terminationHandler;
-
-// actions
-// (npyl): I don't like this...
-//- (BOOL)launchAndReturnError:(out NSError **_Nullable)error;
 
 #endif

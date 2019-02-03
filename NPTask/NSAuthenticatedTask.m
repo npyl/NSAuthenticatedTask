@@ -12,6 +12,14 @@
 #import "../Shared.h"
 #import <Cocoa/Cocoa.h>
 
+double NSAuthenticatedTaskVersionNumber = 0.71;
+const unsigned char NSAuthenticatedTaskVersionString[] = "Basic_Functionality_Still_Alpha_Though";
+
+enum {
+    NSA_MODE_NSTASK,
+    NSA_MODE_AUTHTSK,
+};
+
 @implementation NSAuthenticatedTask
 
 - (instancetype)init
@@ -117,7 +125,7 @@
 //        case (-1):
 //            return nil;
         /* connection handle for new SESSION */
-        case NSA_NEW_SESSION:
+        case NSA_SESSION_NEW:
             return xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
         /* connection handle for valid existing SESSION */
         default:
@@ -162,14 +170,14 @@
 
 - (NSASession)launchAuthorized
 {
-    return [self launchAuthorizedWithSession:NSA_NEW_SESSION];
+    return [self launchAuthorizedWithSession:NSA_SESSION_NEW];
 }
 
 - (NSASession)launchAuthorizedWithSession:(NSASession)passedSessionID
 {
     sessionID = -1; /* clear & re-initialise sessionID */
     static BOOL calledFirstTime = YES;
-    BOOL isSessionNew = (passedSessionID == NSA_NEW_SESSION);
+    BOOL isSessionNew = (passedSessionID == NSA_SESSION_NEW);
 
     /*
      * Generate a SESSION ID
