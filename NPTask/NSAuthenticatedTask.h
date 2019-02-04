@@ -37,7 +37,7 @@ enum : NSASession {
     xpc_connection_t connection_handle;
     
     NSTask *tsk;    /* incase we are working in normal (NSTask) mode */
-    BOOL usingNSTask;   /* set this to yes/no depending on whether ^^^^ happens */
+    int mode;   /* our operation modes: a) Authenticated Task b) NSTask emulation */
 }
 
 @property (nullable) NSString *text;   /* authentication text */

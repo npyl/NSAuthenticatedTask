@@ -135,7 +135,7 @@ enum {
 
 - (void)launch
 {
-    usingNSTask = YES;
+    mode = NSA_MODE_NSTASK;
     
     /*
      * Bridge everything we got to NSTask! :)
@@ -161,7 +161,6 @@ enum {
         self->_terminationHandler(_tsk);
 
         self->_running = NO;
-        self->usingNSTask = NO;
     }];
     
     [tsk launch];
@@ -192,6 +191,8 @@ enum {
         [NSException raise:@"launchPath cannot be nil" format:@""];
         return (-1);
     }
+    
+    mode = NSA_MODE_AUTHTSK;
     
     if (_standardInput || _standardOutput || _standardError)
         _usesPipes = YES;
@@ -374,7 +375,7 @@ enum {
 
 - (void)endSession:(NSASession)sessionID
 {
-    if (!usingNSTask)
+    if (mode == NSA_MODE_NSTASK)
     {
         xpc_connection_t conn = [self connection_for_session:sessionID];
         
@@ -402,7 +403,7 @@ enum {
 
 - (BOOL)suspend
 {
-    if (!usingNSTask)
+    if (mode == NSA_MODE_NSTASK)
     {
         if (!connection_handle)
             return NO;
@@ -419,7 +420,7 @@ enum {
 }
 - (BOOL)resume
 {
-    if (!usingNSTask)
+    if (mode == NSA_MODE_NSTASK)
     {
         if (!connection_handle)
             return NO;
@@ -436,7 +437,7 @@ enum {
 }
 - (void)interrupt
 {
-    if (!usingNSTask)
+    if (mode == NSA_MODE_NSTASK)
     {
         if (!connection_handle)
             return;
@@ -452,7 +453,7 @@ enum {
 }
 - (void)terminate
 {
-    if (!usingNSTask)
+    if (mode == NSA_MODE_NSTASK)
     {
         if (!connection_handle)
             return;
