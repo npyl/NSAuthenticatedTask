@@ -8,13 +8,12 @@
 
 #import <NPTask/NSAuthenticatedTask.h>   // include for launchAuthenticated addition
 
-//#define TEST1
-//#define TEST2
+//#define TEST1 // stayAuthorized
+//#define TEST2 // Assign to Pre-authorized Session
 #define TEST3 // Test normal NSTask functionality
 
 int main(int argc, const char * argv[])
 {
-// TEST1: stayAuthorized
 #ifdef TEST1
     NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
 
@@ -45,8 +44,7 @@ int main(int argc, const char * argv[])
     NSLog(@"GOT: %@", str);
      */
 #endif
-    
-// TEST2: Assign to Pre-authorized Session
+
 #ifdef TEST2
     NSAuthenticatedTask *task2_1 = [[NSAuthenticatedTask alloc] init];
 
