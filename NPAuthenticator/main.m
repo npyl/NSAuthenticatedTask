@@ -28,7 +28,7 @@ BOOL blessHelperWithLabel(NSString *label, char *icon, char *prompt, NSError **e
     AuthorizationRights authRights  = { 1, &right };
     AuthorizationFlags flags  = kAuthorizationFlagDefaults | kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;
     
-    AuthorizationEnvironment authEnvironment;
+    AuthorizationEnvironment authEnvironment = { 0, NULL };
     AuthorizationItem kAuthEnv[2];
     authEnvironment.items = kAuthEnv;
     
@@ -72,7 +72,8 @@ BOOL blessHelperWithLabel(NSString *label, char *icon, char *prompt, NSError **e
         result = SMJobBless(kSMDomainSystemLaunchd, (__bridge CFStringRef)label, authRef, &outError);
         
         /* get NSError out of CFErrorRef */
-        *error = (__bridge NSError *)outError;
+        if (*error)
+            *error = (__bridge NSError *)outError;
     }
     
     return result;
