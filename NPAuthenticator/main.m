@@ -24,15 +24,15 @@ BOOL blessHelperWithLabel(NSString *label, char *icon, char *prompt, NSError **e
     
 //    printf("SM: %s\n", icon);
     
-    AuthorizationItem right = { kAuthorizationRightExecute, 0, NULL, 0 };
+    AuthorizationItem right = { kAuthorizationRightExecute, 0, nil, 0 };
     AuthorizationRights authRights  = { 1, &right };
     AuthorizationFlags flags  = kAuthorizationFlagDefaults | kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;
     
-    AuthorizationEnvironment authEnvironment = { 0, NULL };
+    AuthorizationEnvironment authEnvironment = { 0, nil };
     AuthorizationItem kAuthEnv[2];
     authEnvironment.items = kAuthEnv;
     
-    AuthorizationRef authRef = NULL;
+    AuthorizationRef authRef = nil;
     CFErrorRef outError = nil;
 
     if (!prompt)
