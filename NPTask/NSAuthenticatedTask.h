@@ -38,6 +38,10 @@ enum : NSASession {
     
     NSTask *tsk;    /* incase we are working in normal (NSTask) mode */
     int mode;   /* our operation modes: a) Authenticated Task b) NSTask emulation */
+    
+    int _processIdentifier; // NSTask mode
+    int _terminationStatus;  //  NSTask mode
+    NSTaskTerminationReason _terminationReason; // NSTask mode
 }
 
 @property (nullable) NSString *text;   /* authentication text */
@@ -45,27 +49,27 @@ enum : NSASession {
 @property BOOL stayAuthorized;   /* ability to authorize only ONCE, but keep admin privileges for longer... */
 
 // these methods can only be set before a launch
-@property (nullable, copy, nonatomic, setter=setLaunchPath:) NSString *launchPath;
-@property (nullable, copy) NSURL *executableURL;
-@property (nullable, copy) NSArray<NSString *> *arguments;
-@property (nullable, copy) NSDictionary<NSString *, NSString *> *environment; // if not set, use current
-@property (nullable, copy) NSURL *currentDirectoryURL;
-@property (copy) NSString * _Nonnull currentDirectoryPath; // if not set, use current
+@property (nullable, copy, nonatomic, getter=launchPath, setter=setLaunchPath:) NSString *launchPath;
+@property (nullable, copy, getter=executableURL, setter=setExecutableURL:) NSURL *executableURL;
+@property (nullable, copy, getter=arguments, setter=setArguments:) NSArray<NSString *> *arguments;
+@property (nullable, copy, getter=environment, setter=setEnvironment:) NSDictionary<NSString *, NSString *> *environment; // if not set, use current
+@property (nullable, copy, getter=currentDirectoryURL, setter=setCurrentDirectoryURL:) NSURL *currentDirectoryURL;
+@property (copy, getter=currentDirectoryPath, setter=setCurrentDirectoryPath:) NSString * _Nonnull currentDirectoryPath; // if not set, use current
 
 // status
-@property (readonly) int processIdentifier;
+@property (readonly, getter=processIdentifier) int processIdentifier;
 @property (readonly, getter=isRunning) BOOL running;
 
-@property (readonly) int terminationStatus;
-@property (readonly) NSTaskTerminationReason terminationReason;
+@property (readonly, getter=terminationStatus) int terminationStatus;
+@property (readonly, getter=terminationReason) NSTaskTerminationReason terminationReason;
 
-@property (nullable, copy) void (^terminationHandler)(NSTask *_Nonnull);
+@property (nullable, copy, getter=terminationHandler, setter=setTerminationHandler:) void (^terminationHandler)(NSTask *_Nonnull);
 @property NSQualityOfService qualityOfService;
 
 // standard I/O channels; could be either an NSFileHandle or an NSPipe
-@property (nullable, retain) id standardInput;
-@property (nullable, retain) id standardOutput;
-@property (nullable, retain) id standardError;
+@property (nullable, retain, getter=standardInput, setter=setStandardInput:) id standardInput;
+@property (nullable, retain, getter=standardOutput, setter=setStandardOutput:) id standardOutput;
+@property (nullable, retain, getter=standardError, setter=setStandardError:) id standardError;
 
 - (void)interrupt; // Not always possible. Sends SIGINT.
 - (void)terminate; // Not always possible. Sends SIGTERM.

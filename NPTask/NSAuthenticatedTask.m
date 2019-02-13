@@ -12,7 +12,7 @@
 #import "Shared/Shared.h"
 #import <Cocoa/Cocoa.h>
 
-double NSAuthenticatedTaskVersionNumber = 0.71;
+double NSAuthenticatedTaskVersionNumber = 0.73;
 const unsigned char NSAuthenticatedTaskVersionString[] = "Basic_Functionality_Still_Alpha_Though";
 
 enum {
@@ -34,23 +34,18 @@ enum {
         if (getcwd(cwd, sizeof(cwd)) == NULL)
             return nil;
         
+        tsk = [[NSTask alloc] init];
         _stayAuthorized = NO;
         _usesPipes = NO;
         _icon = nil;
-        _currentDirectoryPath = [NSString stringWithUTF8String:cwd];
-        _environment = [[NSProcessInfo processInfo] environment];
-        _terminationHandler = ^(NSTask *tsk) {};
-        _terminationStatus = 1; // !0 = error
+        tsk.currentDirectoryPath = [NSString stringWithUTF8String:cwd];
+        tsk.currentDirectoryURL = nil;
+        tsk.environment = [[NSProcessInfo processInfo] environment];
+        tsk.terminationHandler = ^(NSTask *tsk) {};
+        // XXX fuck...
+//        self.terminationStatus = 1; // !0 = error
     }
     return self;
-}
-
-- (void)setLaunchPath:(NSString *)launchPath
-{
-    _launchPath = launchPath;
-    
-    /* Get Icon for File */
-    _icon = [self GetImageForFile:_launchPath];
 }
 
 /**
@@ -136,29 +131,9 @@ enum {
 - (void)launch
 {
     mode = NSA_MODE_NSTASK;
-    
-    /*
-     * Bridge everything we got to NSTask! :)
-     */
-    
-    tsk = [[NSTask alloc] init];
-    tsk.launchPath = _launchPath;
-    tsk.currentDirectoryPath = _currentDirectoryPath;
-    tsk.environment = _environment;
-    tsk.arguments = _arguments;
-    
-    if (_usesPipes)
-    {
-        tsk.standardInput = _standardInput;
-        tsk.standardOutput = _standardOutput;
-        tsk.standardError = _standardError;
-    }
 
-    // XXX probably have to make NSAuthTask's standardXXX return tsk's standardXXX instead if usingNSTask is true...
-    // XXX a story for next time...
-    
     [tsk setTerminationHandler:^(NSTask * _Nonnull _tsk) {
-        self->_terminationHandler(_tsk);
+        self->tsk.terminationHandler(_tsk);
 
         self->_running = NO;
     }];
@@ -186,7 +161,7 @@ enum {
         sessionID = arc4random_uniform(10000000);
     }
     
-    if (!_launchPath)
+    if (!self.launchPath)
     {
         [NSException raise:@"launchPath cannot be nil" format:@""];
         return (-1);
@@ -194,7 +169,7 @@ enum {
     
     mode = NSA_MODE_AUTHTSK;
     
-    if (_standardInput || _standardOutput || _standardError)
+    if (self.standardInput || self.standardOutput || self.standardError)
         _usesPipes = YES;
     
     /*
@@ -203,7 +178,7 @@ enum {
      */
     if ((_stayAuthorized && calledFirstTime) || isSessionNew)
     {
-        NSString *_executableName = [_launchPath lastPathComponent];
+        NSString *_executableName = [self.launchPath lastPathComponent];
         
         /*
          * Call the NPAuthenticator
@@ -277,14 +252,14 @@ enum {
                                              {
                                                  syslog(LOG_NOTICE, "out: %s", standardOutput);
                                                  
-                                                 writeHandle = [self->_standardOutput fileHandleForWriting];
+                                                 writeHandle = [self.standardOutput fileHandleForWriting];
                                                  [writeHandle writeData:[[NSString stringWithUTF8String:standardOutput] dataUsingEncoding:NSUTF8StringEncoding]];
                                              }
                                              if (standardError)
                                              {
                                                  syslog(LOG_NOTICE, "err: %s", standardError);
                                                  
-                                                 writeHandle = [self->_standardError fileHandleForWriting];
+                                                 writeHandle = [self.standardError fileHandleForWriting];
                                                  [writeHandle writeData:[[NSString stringWithUTF8String:standardError] dataUsingEncoding:NSUTF8StringEncoding]];
                                              }
                                          }
@@ -466,6 +441,95 @@ enum {
     {
         [tsk terminate];
     }
+}
+
+//
+// SETTERS/GETTERS
+// Bridge everything to NSTask.
+//
+
+- (void)setLaunchPath:(NSString *)launchPath
+{
+    tsk.launchPath = launchPath;
+    
+    /* Get Icon for File */
+    _icon = [self GetImageForFile:tsk.launchPath];
+}
+- (NSString *)launchPath {
+    return tsk.launchPath;
+}
+
+- (NSURL *)executableURL {
+    return tsk.executableURL;
+}
+- (void)setExecutableURL:(NSURL *)url {
+    tsk.executableURL = url;
+}
+
+- (NSArray *)arguments {
+    return tsk.arguments;
+}
+- (void)setArguments:(NSArray *)args {
+    tsk.arguments = args;
+}
+
+- (NSDictionary *)environment {
+    return tsk.environment;
+}
+- (void)setEnvironment:(NSDictionary *)environment {
+    tsk.environment = environment;
+}
+
+- (NSURL *)currentDirectoryURL {
+    return tsk.currentDirectoryURL;
+}
+- (void)setCurrentDirectoryURL:(NSURL *)currentDirectoryURL {
+    tsk.currentDirectoryURL = currentDirectoryURL;
+}
+
+- (NSString *)currentDirectoryPath {
+    return tsk.currentDirectoryPath;
+}
+- (void)setCurrentDirectoryPath:(NSString *)currentDirectoryPath {
+    tsk.currentDirectoryPath = currentDirectoryPath;
+}
+
+- (int)processIdentifier {
+    return (mode == NSA_MODE_NSTASK) ? tsk.processIdentifier : _processIdentifier;
+}
+- (int)terminationStatus {
+    return (mode == NSA_MODE_NSTASK) ? tsk.terminationStatus : _terminationStatus;
+}
+- (NSTaskTerminationReason)isTerminationReason {
+    return (mode == NSA_MODE_NSTASK) ? tsk.terminationReason : _terminationReason;
+}
+
+- (void (^)(NSTask *_Nonnull))terminationHandler {
+    return tsk.terminationHandler;
+}
+- (void)setTerminationHandler:(void (^)(NSTask * _Nonnull))terminationHandler {
+    tsk.terminationHandler = terminationHandler;
+}
+
+- (id)standardInput {
+    return tsk.standardInput;
+}
+- (void)setStandardInput:(id)standardInput {
+    tsk.standardInput = standardInput;
+}
+
+- (id)standardOutput {
+    return tsk.standardOutput;
+}
+- (void)setStandardOutput:(id)standardOutput {
+    tsk.standardOutput = standardOutput;
+}
+
+- (id)standardError {
+    return tsk.standardError;
+}
+- (void)setStandardError:(id)standardError {
+    tsk.standardError = standardError;
 }
 
 @end
