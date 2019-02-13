@@ -42,8 +42,7 @@ enum {
         tsk.currentDirectoryURL = nil;
         tsk.environment = [[NSProcessInfo processInfo] environment];
         tsk.terminationHandler = ^(NSTask *tsk) {};
-        // XXX fuck...
-//        self.terminationStatus = 1; // !0 = error
+        _terminationStatus = 1; // !0 = error
     }
     return self;
 }
@@ -116,9 +115,6 @@ enum {
     
     switch (sessionID)
     {
-//        /* sessionID has become/is invalid */
-//        case (-1):
-//            return nil;
         /* connection handle for new SESSION */
         case NSA_SESSION_NEW:
             return xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
