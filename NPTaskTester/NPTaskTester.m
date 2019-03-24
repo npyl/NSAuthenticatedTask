@@ -19,17 +19,6 @@
 //
 // NSTask Functionality
 //
-- (void)testNSTaskFunctionality__launch_part1
-{
-    NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
-    
-    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
-    task.launchPath = @"/bin/mkdir";
-    task.arguments = @[prettyPath];
-    [task setTerminationHandler:nil];
-    [task launch];
-    [task waitUntilExit];
-}
 - (void)testNSTaskFunctionality__launch_
 {
     NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
@@ -49,6 +38,17 @@
     task.launchPath = @"/bin/mkdir";
     task.currentDirectoryURL = currentDirectoryURL;
     task.arguments = @[prettyPath];
+    [task launch];
+    [task waitUntilExit];
+}
+- (void)testNSTaskFunctionality__launch__nil_termination_handler_
+{
+    NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
+    
+    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
+    task.launchPath = @"/bin/mkdir";
+    task.arguments = @[prettyPath];
+    [task setTerminationHandler:nil];
     [task launch];
     [task waitUntilExit];
 }
@@ -125,6 +125,7 @@
     // Default Functinality
     [self testNSTaskFunctionality__launch_];
     [self testNSTaskFunctionality__currentDirectoryURL_];
+    [self testNSTaskFunctionality__launch__nil_termination_handler_];
 
     // Authenticated Functionality
     [self testLaunchAuthorized];
