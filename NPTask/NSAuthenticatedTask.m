@@ -208,9 +208,6 @@ enum {
     
     calledFirstTime = NO;
     
-    /* Set Running to Yes */
-    _running = YES;
-    
     /* Lets start communications */
     xpc_connection_t connection = [self connection_for_session:passedSessionID];
     connection_handle = connection;
@@ -219,6 +216,9 @@ enum {
         syslog(LOG_NOTICE, "Failed to create XPC connection.");
         return (-1);
     }
+    
+    /* Set Running to Yes */
+    _running = YES;
     
     xpc_connection_set_event_handler(connection, ^(xpc_object_t event)
                                      {
@@ -229,6 +229,9 @@ enum {
                                              if (event == XPC_ERROR_CONNECTION_INTERRUPTED)  { syslog(LOG_NOTICE, "XPC connection interupted."); }
                                              else if (event == XPC_ERROR_CONNECTION_INVALID) { syslog(LOG_NOTICE, "XPC connection invalid, releasing."); }
                                              else                                            { syslog(LOG_NOTICE, "Unexpected XPC connection error."); }
+                                             
+                                             /* Things went south; Doesn't mean we need to stay here forever... */
+                                             self->_running = NO;
                                          }
                                          else if (self->_usesPipes)
                                          {
