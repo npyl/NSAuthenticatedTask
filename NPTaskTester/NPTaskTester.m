@@ -45,11 +45,21 @@
 //
 // Authenticated Functionality
 //
-/*
- * Test "run 2 tasks with admin privileges BUT authenticate ONCE" case;
- */
+- (void)testLaunchAuthorized
+{
+    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
+
+    task.launchPath = @"/bin/mkdir";
+    task.arguments = @[@"/hello.1"];
+    [task launchAuthorized];
+    [task waitUntilExit];
+}
+
 - (void)testAuthenticationIsPreservedAfterTaskTermination
 {
+    //
+    // Test "run 2 tasks with admin privileges BUT authenticate ONCE" case;
+    //
     NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
 
     task.stayAuthorized = YES;
@@ -76,7 +86,6 @@
     task2_1.launchPath = @"/bin/mkdir";
     task2_1.arguments = @[@"/hello.1"];
     NSASession sessionA = [task2_1 launchAuthorized];
-    NSLog(@"SESSIONA: %lu", (unsigned long)sessionA);
     [task2_1 waitUntilExit];
     
     if (sessionA == -1)
@@ -107,6 +116,7 @@
     [self testNSTaskFunctionality__currentDirectoryURL_];
 
     // Authenticated Functionality
+    [self testLaunchAuthorized];
     [self testAuthenticationIsPreservedAfterTaskTermination];
     [self testSessions];
 }
