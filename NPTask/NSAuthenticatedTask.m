@@ -110,29 +110,32 @@ enum {
  */
 - (xpc_connection_t)connection_for_session:(NSASession)sessionID
 {
+    xpc_connection_t conn;
     NSString *key = [NSString stringWithFormat:@"%lu", (unsigned long)sessionID];
     
     switch (sessionID)
     {
         /* connection handle for new SESSION */
         case NSA_SESSION_NEW:
-            return xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
+            conn = xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
+
+            NSLog(@"Created new Connection Handle: (%p)", conn);
+            break;
         /* connection handle for valid existing SESSION */
         default:
-            return (xpc_connection_t)[[NSUserDefaults standardUserDefaults] objectForKey:key];
+            conn = (xpc_connection_t)[[NSUserDefaults standardUserDefaults] objectForKey:key];
+
+            NSLog(@"Got Previous Connection Handle: (%p)", conn);
+            break;
     }
+    
+    return conn;
 }
 
 - (void)launch
 {
     mode = NSA_MODE_NSTASK;
 
-    [tsk setTerminationHandler:^(NSTask * _Nonnull _tsk) {
-        self->tsk.terminationHandler(_tsk);
-
-        self->_running = NO;
-    }];
-    
     [tsk launch];
     _running = YES;
 }
@@ -210,7 +213,6 @@ enum {
     
     /* Lets start communications */
     xpc_connection_t connection = [self connection_for_session:passedSessionID];
-    NSLog(@"(%p)!", connection);
     connection_handle = connection;
     if (!connection)
     {
@@ -503,7 +505,10 @@ enum {
     return tsk.terminationHandler;
 }
 - (void)setTerminationHandler:(void (^)(NSTask * _Nonnull))terminationHandler {
-    tsk.terminationHandler = terminationHandler;
+    tsk.terminationHandler = ^(NSTask *tsk) {
+        terminationHandler(tsk);
+        self->_running = NO;
+    };
 }
 
 - (id)standardInput {
