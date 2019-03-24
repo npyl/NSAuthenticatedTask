@@ -40,7 +40,7 @@ enum {
         _icon = nil;
         tsk.currentDirectoryPath = [NSString stringWithUTF8String:cwd];
         tsk.environment = [[NSProcessInfo processInfo] environment];
-        tsk.terminationHandler = ^(NSTask *tsk) {};
+        [self setTerminationHandler:^(NSTask * _Nonnull tsk) {}];
         _terminationStatus = 1; // !0 = error
     }
     return self;
