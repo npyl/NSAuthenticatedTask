@@ -233,31 +233,6 @@ enum {
                                              /* Things went south; Doesn't mean we need to stay here forever... */
                                              self->_running = NO;
                                          }
-                                         else if (self->_usesPipes)
-                                         {
-                                             /*
-                                              * Ok, we are probably starting to get pipe data...
-                                              */
-                                             const char *standardOutput = xpc_dictionary_get_string(event, "standardOutput");
-                                             const char *standardError = xpc_dictionary_get_string(event, "standardError");
-                                             
-                                             NSFileHandle *writeHandle;
-                                             
-                                             if (standardOutput)
-                                             {
-                                                 syslog(LOG_NOTICE, "out: %s", standardOutput);
-                                                 
-                                                 writeHandle = [self.standardOutput fileHandleForWriting];
-                                                 [writeHandle writeData:[[NSString stringWithUTF8String:standardOutput] dataUsingEncoding:NSUTF8StringEncoding]];
-                                             }
-                                             if (standardError)
-                                             {
-                                                 syslog(LOG_NOTICE, "err: %s", standardError);
-                                                 
-                                                 writeHandle = [self.standardError fileHandleForWriting];
-                                                 [writeHandle writeData:[[NSString stringWithUTF8String:standardError] dataUsingEncoding:NSUTF8StringEncoding]];
-                                             }
-                                         }
                                          else // misc-events
                                          {
                                              const char *exit_event = xpc_dictionary_get_string(event, "exit_message");
@@ -271,9 +246,49 @@ enum {
                                                  
                                                  syslog(LOG_NOTICE, "Task finished with status: %i", self->_terminationStatus);
                                              }
+                                             else
+                                             {
+                                                 // This means we received data from the task;
+                                                 // If pipes are being used, then write to our pipes so that user can access the data;
+                                                 // else, print to console like NSTask does...
+
+                                                 const char *standardOutput = xpc_dictionary_get_string(event, "standardOutput");
+                                                 const char *standardError = xpc_dictionary_get_string(event, "standardError");
+                                                 
+                                                 // XXX (npyl): this should be !self->_usesPipes
+                                                 if (self->_usesPipes)
+                                                 {
+                                                     //
+                                                     // Write to stdout/stderr
+                                                     //
+                                                     printf("================\nPRINTING TO CONSOLE!\n=================\n\n");
+                                                     
+                                                     if (standardOutput) fprintf(stdout, "%s", standardOutput);
+                                                     if (standardError) fprintf(stderr, "%s", standardError);
+                                                 }
+                                                 else
+                                                 {
+                                                     NSFileHandle *writeHandle;
+                                                     
+                                                     if (standardOutput)
+                                                     {
+                                                         syslog(LOG_NOTICE, "out: %s", standardOutput);
+                                                         
+                                                         writeHandle = [self.standardOutput fileHandleForWriting];
+                                                         [writeHandle writeData:[[NSString stringWithUTF8String:standardOutput] dataUsingEncoding:NSUTF8StringEncoding]];
+                                                     }
+                                                     if (standardError)
+                                                     {
+                                                         syslog(LOG_NOTICE, "err: %s", standardError);
+                                                         
+                                                         writeHandle = [self.standardError fileHandleForWriting];
+                                                         [writeHandle writeData:[[NSString stringWithUTF8String:standardError] dataUsingEncoding:NSUTF8StringEncoding]];
+                                                     }
+                                                 }
+                                             }
                                          }
                                      });
-    
+
     xpc_connection_resume(connection);
     
     /*
