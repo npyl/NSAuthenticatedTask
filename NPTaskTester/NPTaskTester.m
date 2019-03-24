@@ -19,6 +19,17 @@
 //
 // NSTask Functionality
 //
+- (void)testNSTaskFunctionality__launch_part1
+{
+    NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
+    
+    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
+    task.launchPath = @"/bin/mkdir";
+    task.arguments = @[prettyPath];
+    [task setTerminationHandler:nil];
+    [task launch];
+    [task waitUntilExit];
+}
 - (void)testNSTaskFunctionality__launch_
 {
     NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];

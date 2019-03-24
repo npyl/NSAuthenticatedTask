@@ -506,7 +506,11 @@ enum {
 }
 - (void)setTerminationHandler:(void (^)(NSTask * _Nonnull))terminationHandler {
     tsk.terminationHandler = ^(NSTask *tsk) {
-        terminationHandler(tsk);
+        /* call passed handler */
+        if (terminationHandler)
+            terminationHandler(tsk);
+
+        /* notify our NSAuthenticatedTask that we are done here (task exited)... */
         self->_running = NO;
     };
 }
