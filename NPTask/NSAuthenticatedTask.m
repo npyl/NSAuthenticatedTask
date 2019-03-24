@@ -39,7 +39,6 @@ enum {
         _usesPipes = NO;
         _icon = nil;
         tsk.currentDirectoryPath = [NSString stringWithUTF8String:cwd];
-        tsk.currentDirectoryURL = nil;
         tsk.environment = [[NSProcessInfo processInfo] environment];
         tsk.terminationHandler = ^(NSTask *tsk) {};
         _terminationStatus = 1; // !0 = error
@@ -136,11 +135,6 @@ enum {
     
     [tsk launch];
     _running = YES;
-}
-
-- (NSASession)launchAuthorized
-{
-    return [self launchAuthorizedWithSession:NSA_SESSION_NEW];
 }
 
 - (NSASession)launchAuthorizedWithSession:(NSASession)passedSessionID
@@ -336,6 +330,11 @@ enum {
     [termination_checker_th start];
     
     return sessionID;
+}
+
+- (NSASession)launchAuthorized
+{
+    return [self launchAuthorizedWithSession:NSA_SESSION_NEW];
 }
 
 - (void)waitUntilExit

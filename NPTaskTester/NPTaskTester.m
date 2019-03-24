@@ -98,6 +98,8 @@
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
     
+    // XXX add test for when we are using currentDirectoryURL instead of currentDirectory
+    
     [self testOne];
     [self testTwo];
     [self testThree];
