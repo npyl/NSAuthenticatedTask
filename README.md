@@ -2,8 +2,8 @@
 
 **UNDER DEVELOPMENT (currently supports basic functions)**
 
-A framework that adds a small perk to NSTask (Authentication) so you can execute your task with root permissions!
-Follows Apple's recommended way of doing this, using SMJobBlessHelper and XPC! (No deprecated APIs here!)
+A framework that adds administrator Authentication support to NSTask so you can execute your task with root privileges!
+Follows Apple's recommended way of doing it (using SMJobBlessHelper and XPC) so no deprecated APIs here!
 
 ## Supported Features
 - [ ] Standard (NSTask) functionality (See [#2](https://github.com/npyl/NSAuthenticatedTask/issues/2))
