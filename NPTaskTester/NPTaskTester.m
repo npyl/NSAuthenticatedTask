@@ -1,34 +1,44 @@
 //
-//  main.m
-//  tester
+//  NPTaskTester.m
+//  NPTaskTester
 //
-//  Created by Nickolas Pylarinos Stamatelatos on 28/09/2018.
-//  Copyright © 2018 Nickolas Pylarinos Stamatelatos. All rights reserved.
+//  Created by Nickolas Pylarinos Stamatelatos on 24/03/2019.
+//  Copyright © 2019 Nickolas Pylarinos Stamatelatos. All rights reserved.
 //
 
-#import <NPTask/NSAuthenticatedTask.h>   // include for launchAuthenticated addition
+#import <XCTest/XCTest.h>
 
-//#define TEST1 // stayAuthorized
-//#define TEST2 // Assign to Pre-authorized Session
-#define TEST3 // Test normal NSTask functionality
+#import "../NPTask/NSAuthenticatedTask.h"
 
-int main(int argc, const char * argv[])
-{
-#ifdef TEST1
+@interface NPTaskTester : XCTestCase
+
+@end
+
+@implementation NPTaskTester
+
+- (void)setUp {
+    // Put setup code here. This method is called before the invocation of each test method in the class.
+}
+
+- (void)tearDown {
+    // Put teardown code here. This method is called after the invocation of each test method in the class.
+}
+
+- (void)testOne {
     NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
-
+    
     /*
      * Allow us to call another script with admin
      * privileges without having to type in the password again.
      */
     task.stayAuthorized = YES;
-
+    
     // batch1
     task.launchPath = @"/bin/mkdir";
     task.arguments = @[@"/hello.1"];
     [task launchAuthorized];
     [task waitUntilExit];
-
+    
     // batch2
     task.launchPath = @"/bin/mkdir";
     task.arguments = @[@"/hello.2"];
@@ -38,16 +48,15 @@ int main(int argc, const char * argv[])
     // XXX remember to endSession (Update to newer NSAuthenticatedTask.)
     
     /*
-    NSFileHandle *fh = [[task standardOutput] fileHandleForReading];
-    NSData *data = [fh readDataToEndOfFile];
-    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"GOT: %@", str);
+     NSFileHandle *fh = [[task standardOutput] fileHandleForReading];
+     NSData *data = [fh readDataToEndOfFile];
+     NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+     NSLog(@"GOT: %@", str);
      */
-#endif
-
-#ifdef TEST2
+}
+- (void)testTwo {
     NSAuthenticatedTask *task2_1 = [[NSAuthenticatedTask alloc] init];
-
+    
     // batch1
     task2_1.launchPath = @"/bin/mkdir";
     task2_1.arguments = @[@"/hello.1"];
@@ -74,9 +83,8 @@ int main(int argc, const char * argv[])
          */
         [task2_2 endSession:sessionA];
     }
-#endif
-
-#ifdef TEST3
+}
+- (void)testThree {
     NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
     
     NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
@@ -84,7 +92,18 @@ int main(int argc, const char * argv[])
     task.arguments = @[prettyPath];
     [task launch];
     [task waitUntilExit];
-#endif
-
-    return 0;
 }
+
+- (void)testExample {
+    // This is an example of a functional test case.
+    // Use XCTAssert and related functions to verify your tests produce the correct results.
+}
+
+- (void)testPerformanceExample {
+    // This is an example of a performance test case.
+    [self measureBlock:^{
+        // Put the code you want to measure the time of here.
+    }];
+}
+
+@end
