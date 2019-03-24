@@ -16,21 +16,42 @@
 
 @implementation NPTaskTester
 
-- (void)setUp {
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-}
-
-- (void)tearDown {
-    // Put teardown code here. This method is called after the invocation of each test method in the class.
-}
-
-- (void)testOne {
-    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
+//
+// NSTask Functionality
+//
+- (void)testNSTaskFunctionality__launch_
+{
+    NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
     
-    /*
-     * Allow us to call another script with admin
-     * privileges without having to type in the password again.
-     */
+    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
+    task.launchPath = @"/bin/mkdir";
+    task.arguments = @[prettyPath];
+    [task launch];
+    [task waitUntilExit];
+}
+- (void)testNSTaskFunctionality__currentDirectoryURL_
+{
+    NSURL *currentDirectoryURL = [NSURL fileURLWithPath:NSHomeDirectory()];
+    NSString *prettyPath = @"this_is_a_test_from_NSAuthTask";
+    
+    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
+    task.launchPath = @"/bin/mkdir";
+    task.currentDirectoryURL = currentDirectoryURL;
+    task.arguments = @[prettyPath];
+    [task launch];
+    [task waitUntilExit];
+}
+
+//
+// Authenticated Functionality
+//
+/*
+ * Test "run 2 tasks with admin privileges BUT authenticate ONCE" case;
+ */
+- (void)testAuthenticationIsPreservedAfterTaskTermination
+{
+    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
+
     task.stayAuthorized = YES;
     
     // batch1
@@ -46,15 +67,9 @@
     [task waitUntilExit];
     
     // XXX remember to endSession (Update to newer NSAuthenticatedTask.)
-    
-    /*
-     NSFileHandle *fh = [[task standardOutput] fileHandleForReading];
-     NSData *data = [fh readDataToEndOfFile];
-     NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-     NSLog(@"GOT: %@", str);
-     */
 }
-- (void)testTwo {
+- (void)testSessions
+{
     NSAuthenticatedTask *task2_1 = [[NSAuthenticatedTask alloc] init];
     
     // batch1
@@ -84,32 +99,16 @@
         [task2_2 endSession:sessionA];
     }
 }
-- (void)testThree {
-    NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
-    
-    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
-    task.launchPath = @"/bin/mkdir";
-    task.arguments = @[prettyPath];
-    [task launch];
-    [task waitUntilExit];
-}
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-    
-    // XXX add test for when we are using currentDirectoryURL instead of currentDirectory
-    
-    [self testOne];
-    [self testTwo];
-    [self testThree];
-}
+- (void)testExample
+{
+    // Default Functinality
+    [self testNSTaskFunctionality__launch_];
+    [self testNSTaskFunctionality__currentDirectoryURL_];
 
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+    // Authenticated Functionality
+    [self testAuthenticationIsPreservedAfterTaskTermination];
+    [self testSessions];
 }
 
 @end
