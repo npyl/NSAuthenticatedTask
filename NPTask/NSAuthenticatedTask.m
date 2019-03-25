@@ -36,6 +36,9 @@ enum {
         
         tsk = [[NSTask alloc] init];
         _stayAuthorized = NO;
+        [self setStandardInput:[NSPipe pipe]];
+        [self setStandardOutput:[NSPipe pipe]];
+        [self setStandardError:[NSPipe pipe]];
         _usesPipes = NO;
         _icon = nil;
         tsk.currentDirectoryPath = [NSString stringWithUTF8String:cwd];
