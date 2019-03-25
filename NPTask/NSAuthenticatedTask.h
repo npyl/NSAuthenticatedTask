@@ -92,6 +92,11 @@ enum : NSASession {
  */
 - (void)endSession;
 
+/**
+ * Returns the task we bridge to
+ */
+- (NSTask *)task;
+
 @end
 
 #endif

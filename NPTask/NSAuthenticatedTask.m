@@ -12,7 +12,7 @@
 #import "Shared/Shared.h"
 #import <Cocoa/Cocoa.h>
 
-double NSAuthenticatedTaskVersionNumber = 0.73;
+double NSAuthenticatedTaskVersionNumber = 0.76;
 const unsigned char NSAuthenticatedTaskVersionString[] = "Basic_Functionality_Still_Alpha_Though";
 
 enum {
@@ -255,8 +255,7 @@ enum {
                                                  const char *standardOutput = xpc_dictionary_get_string(event, "standardOutput");
                                                  const char *standardError = xpc_dictionary_get_string(event, "standardError");
                                                  
-                                                 // XXX (npyl): this should be !self->_usesPipes
-                                                 if (self->_usesPipes)
+                                                 if (!self->_usesPipes)
                                                  {
                                                      //
                                                      // Write to stdout/stderr
@@ -523,11 +522,13 @@ enum {
     return tsk.terminationHandler;
 }
 - (void)setTerminationHandler:(void (^)(NSTask * _Nonnull))terminationHandler {
-    tsk.terminationHandler = ^(NSTask *tsk) {
+    tsk.terminationHandler = ^(NSTask * _Nonnull _tsk) {
         /* call passed handler */
         if (terminationHandler)
-            terminationHandler(tsk);
-
+            terminationHandler(_tsk);
+        
+        NSLog(@"Task finished!");
+        
         /* notify our NSAuthenticatedTask that we are done here (task exited)... */
         self->_running = NO;
     };
@@ -552,6 +553,10 @@ enum {
 }
 - (void)setStandardError:(id)standardError {
     tsk.standardError = standardError;
+}
+
+- (NSTask *)task {
+    return self->tsk.copy;
 }
 
 @end
