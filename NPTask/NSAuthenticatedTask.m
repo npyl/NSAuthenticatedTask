@@ -162,9 +162,6 @@ enum {
     
     mode = NSA_MODE_AUTHTSK;
     
-    if (self.standardInput || self.standardOutput || self.standardError)
-        _usesPipes = YES;
-    
     /*
      * Call NPAuthenticator to authenticate ONLY ONCE
      * if `_stayAuthorized' is set by user or if new SESSION.
@@ -539,6 +536,7 @@ enum {
 }
 - (void)setStandardInput:(id)standardInput {
     tsk.standardInput = standardInput;
+    _usesPipes = YES;
 }
 
 - (id)standardOutput {
@@ -546,6 +544,7 @@ enum {
 }
 - (void)setStandardOutput:(id)standardOutput {
     tsk.standardOutput = standardOutput;
+    _usesPipes = YES;
 }
 
 - (id)standardError {
@@ -553,8 +552,14 @@ enum {
 }
 - (void)setStandardError:(id)standardError {
     tsk.standardError = standardError;
+    _usesPipes = YES;
 }
 
+//
+// (npyl): Find a way to remove me;
+// I was brought to life because terminationHandler doesn't use NSAuthenticatedTask
+// but NSTask and we have a problem converting it...
+//
 - (NSTask *)task {
     return self->tsk.copy;
 }
