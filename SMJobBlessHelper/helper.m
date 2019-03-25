@@ -12,7 +12,7 @@
 #import <Foundation/Foundation.h>
 
 // 0.7: Support pre-authorized sessions
-#define HELPER_VER 0.7
+#define HELPER_VER 0.75
 
 @interface SMJobBlessHelper : NSObject
 {
@@ -31,8 +31,6 @@
     xpc_object_t        environment_variables;  /* array: list of keys */
     bool                uses_pipes;
 }
-
-- (instancetype)init;
 
 @end
 
@@ -209,35 +207,46 @@ static NSTask *task = nil;
         }
     
         [task setTerminationHandler:^(NSTask * _Nonnull tsk) {
-
             const char *termStatusStr = [NSString stringWithFormat:@"%i", tsk.terminationStatus].UTF8String;
-            
-            /* Send termination message */
+
+            helper_log("Started blocking for exit!...");
+
+            /*
+             * Send message to NSAuthenticatedTask that task finished BUT;
+             * Wait for his reply, to make sure no race condition happens between:
+             * `exit_message` and XPC_CONNECTION_INTERRUPTED
+             */
             xpc_object_t exit_msg = xpc_dictionary_create(NULL, NULL, 0);
             xpc_dictionary_set_string(exit_msg, "exit_message", termStatusStr);
-            xpc_connection_send_message(connection, exit_msg);
-            
+            xpc_object_t res = xpc_connection_send_message_with_reply_sync(connection, exit_msg);
+
+            helper_log("Got race-condition-prevent message! (%s)", xpc_dictionary_get_string(res, "dummy_key"));
+
             task = nil;
-            
             helper_log("Task (%@) terminated.", tsk.launchPath.lastPathComponent);
+
+            /*
+             * Invalidate connection and close only if `stay_authorized' is false.
+             * This way we keep an authenticated SMJobBlessHelper running and we can
+             * execute more scripts/executables.  This should comprise of a SESSION.
+             *
+             * 0.7: If new session, keep running until teardown of macOS.
+             */
+            //
+            // (npyl): add a special case here that will allow the Helper to exit if task has been running for quite some time without exiting.
+            // It either means it has hunged, or it is doing something that needs time;
+            // Either case Helper does not need to be running...
+            //
+            if (!self->stay_authorized || self->isSessionNew)
+            {
+                xpc_connection_cancel(self->connection_handle);
+                [self cleanup_after_exit];
+                helper_log("Exiting...");
+                exit(EXIT_SUCCESS);
+            }
         }];
     
         [task launch];
-
-        /*
-         * Invalidate connection and close only if `stay_authorized' is false.
-         * This way we keep an authenticated SMJobBlessHelper running and we can
-         * execute more scripts/executables.  This should comprise of a SESSION.
-         *
-         * 0.7: If new session, keep running until teardown of macOS.
-         */
-        if (!stay_authorized || isSessionNew)
-        {
-            xpc_connection_cancel(connection_handle);
-            [self cleanup_after_exit];
-            helper_log("Exiting...");
-            exit(EXIT_SUCCESS);
-        }
         
         /*
          * Register connection handle into our registry
@@ -285,7 +294,7 @@ static NSTask *task = nil;
 
 int main(int argc, const char *argv[])
 {
-    helper_log("NSAuthenticatedTaskHelper v%.1f | npyl", HELPER_VER);
+    helper_log("NSAuthenticatedTaskHelper v%.2f | npyl", HELPER_VER);
     
     SMJobBlessHelper *helper = [[SMJobBlessHelper alloc] init];
     if (!helper)

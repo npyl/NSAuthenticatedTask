@@ -245,6 +245,13 @@ enum {
                                                  self->_running = NO;
                                                  
                                                  syslog(LOG_NOTICE, "Task finished with status: %i", self->_terminationStatus);
+                                                 
+                                                 //
+                                                 // As per Helper(v0.75) we reply after receiving `exit_message` to prevent race condition
+                                                 //
+                                                 xpc_object_t race_condition_prevent = xpc_dictionary_create(NULL, NULL, 0);
+                                                 xpc_dictionary_set_string(race_condition_prevent, "dummy_key", "dummy_string");
+                                                 xpc_connection_send_message(connection, race_condition_prevent);
                                              }
                                              else
                                              {
