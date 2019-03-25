@@ -252,6 +252,11 @@ enum {
                                                  xpc_object_t race_condition_prevent = xpc_dictionary_create(NULL, NULL, 0);
                                                  xpc_dictionary_set_string(race_condition_prevent, "dummy_key", "dummy_string");
                                                  xpc_connection_send_message(connection, race_condition_prevent);
+                                                 
+                                                 //
+                                                 // It is now the right time to call the termination Handler...
+                                                 //
+                                                 self.terminationHandler(self.task);
                                              }
                                              else
                                              {
@@ -534,7 +539,7 @@ enum {
         if (terminationHandler)
             terminationHandler(_tsk);
         
-        NSLog(@"Task finished!");
+        NSLog(@"Calling Termination handler...");
         
         /* notify our NSAuthenticatedTask that we are done here (task exited)... */
         self->_running = NO;
@@ -571,7 +576,7 @@ enum {
 // but NSTask and we have a problem converting it...
 //
 - (NSTask *)task {
-    return self->tsk.copy;
+    return self->tsk;
 }
 
 @end
