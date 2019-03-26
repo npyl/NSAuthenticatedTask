@@ -539,7 +539,7 @@ enum {
         if (terminationHandler)
             terminationHandler(_tsk);
         
-        NSLog(@"Calling Termination handler...");
+        syslog(LOG_INFO, "Calling Termination handler...");
         
         /* notify our NSAuthenticatedTask that we are done here (task exited)... */
         self->_running = NO;
