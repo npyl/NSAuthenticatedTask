@@ -349,13 +349,6 @@ enum {
     /* Set PID */
     _processIdentifier = xpc_connection_get_pid(connection);
     
-    /* Create Termination Checker and Start it... */
-    NSThread *termination_checker_th = [[NSThread alloc] initWithBlock:^{
-        [self waitUntilExit];
-        [self terminationHandler];
-    }];
-    [termination_checker_th start];
-    
     return sessionID;
 }
 
