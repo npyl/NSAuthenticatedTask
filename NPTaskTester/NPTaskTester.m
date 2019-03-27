@@ -6,12 +6,12 @@
 //  Copyright © 2019 Nickolas Pylarinos Stamatelatos. All rights reserved.
 //
 
+#include <sys/stat.h>
 #import <XCTest/XCTest.h>
 
 #import "../NPTask/NSAuthenticatedTask.h"
 
 @interface NPTaskTester : XCTestCase
-
 @end
 
 @implementation NPTaskTester
@@ -120,17 +120,89 @@
     }
 }
 
+/* just check if file exists */
+//    for (NSString *file in createdFiles)
+//    {
+//        XCTAssertEqual(access(file.UTF8String, F_OK), 0);
+//    }
+// (XXX): this is for later...
+//    XCTAssertEqual(janitor.terminationStatus, 0);
+
+- (void)testCase:(SEL)selector withCreatedFile:(NSArray *)createdFiles
+{
+    if (!selector)
+    {
+        @throw [NSException exceptionWithName:@"Test" reason:@"Did not supply a selector." userInfo:nil];
+        return;
+    }
+    
+    for (NSString *file in createdFiles)
+    {
+        NSLog(@"TEST: Removing file(%@)!", file);
+    }
+    
+    //
+    // This is our task which cleans up stuff before the test runs
+    //
+    static NSAuthenticatedTask *janitor = nil;
+    
+    NSMutableArray<NSString *> *arguments = [NSMutableArray arrayWithObject:@"-f"];
+
+    if (!createdFiles)
+        [arguments addObjectsFromArray:createdFiles];
+    
+    if (!janitor)
+    {
+        janitor = [[NSAuthenticatedTask alloc] init];
+        janitor.launchPath = @"/bin/rm";
+    }
+    
+    janitor.arguments = arguments;
+
+    [janitor launchAuthorized];
+    [janitor waitUntilExit];
+    
+    //
+    // Run method
+    //
+    {
+        IMP imp = [self methodForSelector:selector];
+        void (*func)(id, SEL) = (void *)imp;
+
+        /* run */
+        func(self, selector);
+    }
+
+    /* check if file's owner is root; (this automatically checks if file */
+    for (NSString *file in createdFiles)
+    {
+        struct stat *stat_info;
+        
+        int ret = stat(file.UTF8String, stat_info);
+        
+        XCTAssertEqual(ret, 0); /* check if stat succeeded */
+        XCTAssertEqual(stat_info->st_uid, 0); /* check if owned by root */
+    }
+}
+
 - (void)testExample
 {
+    NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
+    
     // Default Functinality
-    [self testNSTaskFunctionality__launch_];
-    [self testNSTaskFunctionality__currentDirectoryURL_];
-    [self testNSTaskFunctionality__launch__nil_termination_handler_];
+    [self testCase:@selector(testNSTaskFunctionality__launch_)
+   withCreatedFile:@[prettyPath]];
+    [self testCase:@selector(testNSTaskFunctionality__currentDirectoryURL_)
+   withCreatedFile:@[prettyPath]];
+    [self testCase:@selector(testNSTaskFunctionality__launch__nil_termination_handler_)
+   withCreatedFile:@[prettyPath]];
 
     // Authenticated Functionality
-    [self testLaunchAuthorized];
-    [self testAuthenticationIsPreservedAfterTaskTermination];
-    [self testSessions];
+    [self testCase:@selector(testLaunchAuthorized) withCreatedFile:@[@"/hello.1"]];
+    [self testCase:@selector(testAuthenticationIsPreservedAfterTaskTermination) withCreatedFile:@[@"/hello.1",
+                                                                                                  @"/hello.2"]];
+    [self testCase:@selector(testSessions) withCreatedFile:@[@"/hello.1",
+                                                             @"/hello.2"]];
 }
 
 @end
