@@ -122,13 +122,13 @@ enum {
         case NSA_SESSION_NEW:
             conn = xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
 
-            NSLog(@"Created new Connection Handle: (%p)", conn);
+            syslog(LOG_NOTICE, "Created new Connection Handle: (%p)", conn);
             break;
         /* connection handle for valid existing SESSION */
         default:
             conn = (xpc_connection_t)[[NSUserDefaults standardUserDefaults] objectForKey:key];
 
-            NSLog(@"Got Previous Connection Handle: (%p)", conn);
+            syslog(LOG_NOTICE, "Got Previous Connection Handle: (%p)", conn);
             break;
     }
     
