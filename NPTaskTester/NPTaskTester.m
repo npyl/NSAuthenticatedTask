@@ -142,15 +142,44 @@
     }
 }
 
-/* just check if file exists */
-//    for (NSString *file in createdFiles)
-//    {
-//        XCTAssertEqual(access(file.UTF8String, F_OK), 0);
-//    }
 // (XXX): this is for later...
-//    XCTAssertEqual(janitor.terminationStatus, 0);
+// XCTAssertEqual(janitor.terminationStatus, 0);
 
 - (void)testCase:(SEL)selector withCreatedFile:(NSArray *)createdFiles
+{
+    if (!selector)
+    {
+        @throw [NSException exceptionWithName:@"Test" reason:@"Did not supply a selector." userInfo:nil];
+        return;
+    }
+
+    /* remove files */
+    for (NSString *file in createdFiles)
+    {
+        NSLog(@"TEST: Removing file(%@)!", file);
+
+        XCTAssertEqual(remove(file.UTF8String), 0);
+    }
+    
+    //
+    // Run method
+    //
+    {
+        IMP imp = [self methodForSelector:selector];
+        void (*func)(id, SEL) = (void *)imp;
+        
+        /* run */
+        func(self, selector);
+    }
+    
+    /* just check if file exists */
+    for (NSString *file in createdFiles)
+    {
+        XCTAssertEqual(access(file.UTF8String, F_OK), 0);
+    }
+}
+
+- (void)testAuthenticatedCase:(SEL)selector withCreatedFile:(NSArray *)createdFiles
 {
     if (!selector)
     {
@@ -212,20 +241,19 @@
     NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
     
     // Default Functinality
-    [self testCase:@selector(testNSTaskFunctionality__launch_)
-   withCreatedFile:@[prettyPath]];
-    [self testCase:@selector(testNSTaskFunctionality__currentDirectoryURL_)
-   withCreatedFile:@[prettyPath]];
-    [self testCase:@selector(testNSTaskFunctionality__launch__nil_termination_handler_)
-   withCreatedFile:@[prettyPath]];
+    [self testCase:@selector(testNSTaskFunctionality__launch_) withCreatedFile:@[prettyPath]];
+    [self testCase:@selector(testNSTaskFunctionality__currentDirectoryURL_) withCreatedFile:@[prettyPath]];
+    [self testCase:@selector(testNSTaskFunctionality__launch__nil_termination_handler_) withCreatedFile:@[prettyPath]];
 
     // Authenticated Functionality
-    [self testCase:@selector(testLaunchAuthorized) withCreatedFile:@[@"/hello.1"]];
-    [self testCase:@selector(testLaunchAuthorizedWithPipes) withCreatedFile:@[@"/hello.1"]];
-    [self testCase:@selector(testAuthenticationIsPreservedAfterTaskTermination) withCreatedFile:@[@"/hello.1",
-                                                                                                  @"/hello.2"]];
-    [self testCase:@selector(testSessions) withCreatedFile:@[@"/hello.1",
-                                                             @"/hello.2"]];
+    [self testAuthenticatedCase:@selector(testLaunchAuthorized)
+                withCreatedFile:@[@"/hello.1"]];
+    [self testAuthenticatedCase:@selector(testLaunchAuthorizedWithPipes)
+                withCreatedFile:@[@"/hello.1"]];
+    [self testAuthenticatedCase:@selector(testAuthenticationIsPreservedAfterTaskTermination)
+                withCreatedFile:@[@"/hello.1", @"/hello.2"]];
+    [self testAuthenticatedCase:@selector(testSessions)
+                withCreatedFile:@[@"/hello.1", @"/hello.2"]];
 }
 
 @end
