@@ -122,7 +122,7 @@ static NSTask *task = nil;
             }
             else
             {
-                helper_log("received unknown msg (%s); ignoring.", msg);
+                helper_log("received unknown msg (%s); ignoring...", msg);
             }
             
             return;
@@ -186,22 +186,14 @@ static NSTask *task = nil;
 
         /* if uses pipes, setup the pipe readers... */
         if (uses_pipes)
-        {            
-            NSFileHandle *output, *error;
+        {
+            task.standardOutput = [NSPipe pipe];
+            task.standardError = [NSPipe pipe];
             
-            [task setStandardOutput:[NSPipe pipe]];
-            [task setStandardError:[NSPipe pipe]];
-            
-            output = [task.standardOutput fileHandleForReading];
-            error = [task.standardError fileHandleForReading];
-            
-            [output waitForDataInBackgroundAndNotify];
-            [error waitForDataInBackgroundAndNotify];
-            
-            [output setReadabilityHandler:^(NSFileHandle * _Nonnull fh) {
+            [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle * _Nonnull fh) {
                 [self printDataFromHandle:fh withStream:@"standardOutput"];
             }];
-            [error setReadabilityHandler:^(NSFileHandle * _Nonnull fh) {
+            [[task.standardError fileHandleForReading] setReadabilityHandler:^(NSFileHandle * _Nonnull fh) {
                 [self printDataFromHandle:fh withStream:@"standardError"];
             }];
         }
