@@ -248,8 +248,12 @@
     // Authenticated Functionality
     [self testAuthenticatedCase:@selector(testLaunchAuthorized)
                 withCreatedFile:@[@"/hello.1"]];
-    [self testAuthenticatedCase:@selector(testLaunchAuthorizedWithPipes)
-                withCreatedFile:@[@"/hello.1"]];
+
+    [self testLaunchAuthorizedWithPipes];   /*
+                                             * this should run without our cleanup technics;
+                                             * this is because we *NEED* mkdir to fail (and print a message)
+                                             */
+
     [self testAuthenticatedCase:@selector(testAuthenticationIsPreservedAfterTaskTermination)
                 withCreatedFile:@[@"/hello.1", @"/hello.2"]];
     [self testAuthenticatedCase:@selector(testSessions)
