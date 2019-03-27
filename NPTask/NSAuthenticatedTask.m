@@ -283,15 +283,11 @@ enum {
                                                      
                                                      if (standardOutput)
                                                      {
-                                                         syslog(LOG_NOTICE, "out: %s", standardOutput);
-                                                         
                                                          writeHandle = [self.standardOutput fileHandleForWriting];
                                                          [writeHandle writeData:[[NSString stringWithUTF8String:standardOutput] dataUsingEncoding:NSUTF8StringEncoding]];
                                                      }
                                                      if (standardError)
                                                      {
-                                                         syslog(LOG_NOTICE, "err: %s", standardError);
-                                                         
                                                          writeHandle = [self.standardError fileHandleForWriting];
                                                          [writeHandle writeData:[[NSString stringWithUTF8String:standardError] dataUsingEncoding:NSUTF8StringEncoding]];
                                                      }

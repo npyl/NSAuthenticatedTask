@@ -65,7 +65,29 @@
     [task launchAuthorized];
     [task waitUntilExit];
 }
+- (void)testLaunchAuthorizedWithPipes
+{
+    NSAuthenticatedTask *task = [[NSAuthenticatedTask alloc] init];
+    
+    task.launchPath = @"/bin/mkdir";
+    task.arguments = @[@"/hello.1"];
+    
+    // (XXX): this is necessary now; it shouldn't!
+    task.standardOutput = [NSPipe pipe];
+    task.standardError = [NSPipe pipe];
 
+    [[task.standardOutput fileHandleForReading] setReadabilityHandler:^(NSFileHandle * _Nonnull fh) {
+        NSString *data = [[NSString alloc] initWithData:fh.availableData encoding:NSUTF8StringEncoding];
+        NSLog(@"%@", data);
+    }];
+    [[task.standardError fileHandleForReading] setReadabilityHandler:^(NSFileHandle * _Nonnull fh) {
+        NSString *data = [[NSString alloc] initWithData:fh.availableData encoding:NSUTF8StringEncoding];
+        NSLog(@"%@", data);
+    }];
+    
+    [task launchAuthorized];
+    [task waitUntilExit];
+}
 - (void)testAuthenticationIsPreservedAfterTaskTermination
 {
     //
@@ -146,7 +168,7 @@
     //
     static NSAuthenticatedTask *janitor = nil;
     
-    NSMutableArray<NSString *> *arguments = [NSMutableArray arrayWithObject:@"-f"];
+    NSMutableArray *arguments = [NSMutableArray arrayWithObject:@"-f"];
 
     if (!createdFiles)
         [arguments addObjectsFromArray:createdFiles];
@@ -199,6 +221,7 @@
 
     // Authenticated Functionality
     [self testCase:@selector(testLaunchAuthorized) withCreatedFile:@[@"/hello.1"]];
+    [self testCase:@selector(testLaunchAuthorizedWithPipes) withCreatedFile:@[@"/hello.1"]];
     [self testCase:@selector(testAuthenticationIsPreservedAfterTaskTermination) withCreatedFile:@[@"/hello.1",
                                                                                                   @"/hello.2"]];
     [self testCase:@selector(testSessions) withCreatedFile:@[@"/hello.1",

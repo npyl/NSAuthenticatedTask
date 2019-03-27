@@ -223,7 +223,7 @@ static NSTask *task = nil;
             helper_log("Got race-condition-prevent message! (%s)", xpc_dictionary_get_string(res, "dummy_key"));
 
             task = nil;
-            helper_log("Task (%@) terminated.", tsk.launchPath.lastPathComponent);
+            helper_log("Task (%@) terminated with status %i.", tsk.launchPath.lastPathComponent, tsk.terminationStatus);
 
             /*
              * Invalidate connection and close only if `stay_authorized' is false.
