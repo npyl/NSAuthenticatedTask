@@ -10,7 +10,6 @@
 
 #import <syslog.h>
 #import "Shared/Shared.h"
-#import <Cocoa/Cocoa.h>
 
 double NSAuthenticatedTaskVersionNumber = 0.76;
 const unsigned char NSAuthenticatedTaskVersionString[] = "Basic_Functionality_Still_Alpha_Though";
@@ -19,6 +18,18 @@ enum {
     NSA_MODE_NSTASK,
     NSA_MODE_AUTHTSK,
 };
+
+void debug_log(const char *format, ...)
+{
+#if 1
+    va_list vargs;
+    va_start(vargs, format);
+    NSString* formattedMessage = [[NSString alloc] initWithFormat:[NSString stringWithUTF8String:format] arguments:vargs];
+    va_end(vargs);
+    
+    syslog(LOG_NOTICE, "[NPTask]: %s", formattedMessage.UTF8String);
+#endif
+}
 
 @implementation NSAuthenticatedTask
 
@@ -122,13 +133,13 @@ enum {
         case NSA_SESSION_NEW:
             conn = xpc_connection_create_mach_service(HELPER_IDENTIFIER, NULL, XPC_CONNECTION_MACH_SERVICE_PRIVILEGED);
 
-            syslog(LOG_NOTICE, "Created new Connection Handle: (%p)", conn);
+            debug_log("Created new Connection Handle: (%p)", conn);
             break;
         /* connection handle for valid existing SESSION */
         default:
             conn = (xpc_connection_t)[[NSUserDefaults standardUserDefaults] objectForKey:key];
 
-            syslog(LOG_NOTICE, "Got Previous Connection Handle: (%p)", conn);
+            debug_log("Got Previous Connection Handle: (%p)", conn);
             break;
     }
     
@@ -155,12 +166,6 @@ enum {
     if (isSessionNew)
     {
         sessionID = arc4random_uniform(10000000);
-    }
-    
-    if (!self.launchPath)
-    {
-        [NSException raise:@"launchPath cannot be nil" format:@""];
-        return (-1);
     }
     
     mode = NSA_MODE_AUTHTSK;
@@ -201,7 +206,6 @@ enum {
         
         if ([NPAuthenticator terminationStatus] != 0)
         {
-            syslog(LOG_NOTICE, "Authentication failed!");
             return (-1);
         }
     }
@@ -213,7 +217,7 @@ enum {
     connection_handle = connection;
     if (!connection)
     {
-        syslog(LOG_NOTICE, "Failed to create XPC connection.");
+        fprintf(stderr, "error: failed to create XPC connection with privileged helper.");
         return (-1);
     }
     
@@ -226,9 +230,9 @@ enum {
                                          
                                          if (type == XPC_TYPE_ERROR)
                                          {
-                                             if (event == XPC_ERROR_CONNECTION_INTERRUPTED)  { syslog(LOG_NOTICE, "XPC connection interupted."); }
-                                             else if (event == XPC_ERROR_CONNECTION_INVALID) { syslog(LOG_NOTICE, "XPC connection invalid, releasing."); }
-                                             else                                            { syslog(LOG_NOTICE, "Unexpected XPC connection error."); }
+                                             if (event == XPC_ERROR_CONNECTION_INTERRUPTED)  { debug_log("XPC connection interupted."); }
+                                             else if (event == XPC_ERROR_CONNECTION_INVALID) { debug_log("XPC connection invalid, releasing."); }
+                                             else                                            { debug_log("Unexpected XPC connection error."); }
                                              
                                              /* Things went south; Doesn't mean we need to stay here forever... */
                                              self->_running = NO;
@@ -244,7 +248,7 @@ enum {
                                                  /* running? */
                                                  self->_running = NO;
                                                  
-                                                 syslog(LOG_NOTICE, "Task finished with status: %i", self->_terminationStatus);
+                                                 debug_log("Task finished with status: %i", self->_terminationStatus);
                                                  
                                                  //
                                                  // As per Helper(v0.75) we reply after receiving `exit_message` to prevent race condition
@@ -371,7 +375,7 @@ enum {
         
         if (!conn)
         {
-            NSLog(@"Unable to find a connection with id: %li", sessionID);
+            fprintf(stderr, "error: unable to find a connection with sessionID = %li.", sessionID);
             return;
         }
         
@@ -527,9 +531,7 @@ enum {
         /* call passed handler */
         if (terminationHandler)
             terminationHandler(_tsk);
-        
-        syslog(LOG_INFO, "Calling Termination handler...");
-        
+
         /* notify our NSAuthenticatedTask that we are done here (task exited)... */
         self->_running = NO;
     };
