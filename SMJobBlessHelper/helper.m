@@ -64,7 +64,6 @@ static NSTask *task = nil;
 
 - (void) __XPC_Peer_Event_Handler:(xpc_connection_t)connection withEvent:(xpc_object_t)event
 {
-//    syslog(LOG_NOTICE, "Received message in generic event handler: %s\n", xpc_copy_description(event));
     connection_handle = connection;
 
     xpc_type_t type = xpc_get_type(event);
@@ -224,11 +223,6 @@ static NSTask *task = nil;
              *
              * 0.7: If new session, keep running until teardown of macOS.
              */
-            //
-            // (npyl): add a special case here that will allow the Helper to exit if task has been running for quite some time without exiting.
-            // It either means it has hunged, or it is doing something that needs time;
-            // Either case Helper does not need to be running...
-            //
             if (!self->stay_authorized || self->isSessionNew)
             {
                 xpc_connection_cancel(self->connection_handle);
@@ -244,7 +238,8 @@ static NSTask *task = nil;
          * Register connection handle into our registry
          */
         NSString *key = [NSString stringWithFormat:@"%lu", (unsigned long)sessionID];
-        [[NSUserDefaults standardUserDefaults] setObject:connection
+        NSNumber *val = [NSNumber numberWithUnsignedInteger:(uint)connection];
+        [[NSUserDefaults standardUserDefaults] setObject:val
                                                   forKey:key];
     }
 }
