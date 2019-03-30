@@ -72,7 +72,6 @@
     task.launchPath = @"/bin/mkdir";
     task.arguments = @[@"/hello.1"];
     
-    // (XXX): this is necessary now; it shouldn't!
     task.standardOutput = [NSPipe pipe];
     task.standardError = [NSPipe pipe];
 
@@ -142,11 +141,13 @@
     }
 }
 
-// (XXX): this is for later...
-// XCTAssertEqual(janitor.terminationStatus, 0);
-
 - (void)testCase:(SEL)selector withCreatedFile:(NSArray *)createdFiles
 {
+    NSLog(@"====================================");
+    NSLog(@"TESTCASE: %s", sel_getName(selector));
+    NSLog(@"====================================");
+    printf("\n");
+
     if (!selector)
     {
         @throw [NSException exceptionWithName:@"Test" reason:@"Did not supply a selector." userInfo:nil];
@@ -156,7 +157,7 @@
     /* remove files */
     for (NSString *file in createdFiles)
     {
-        NSLog(@"TEST: Removing file(%@)!", file);
+        NSLog(@"Deleting: %@", file);
 
         XCTAssertEqual(remove(file.UTF8String), 0);
     }
@@ -177,10 +178,18 @@
     {
         XCTAssertEqual(access(file.UTF8String, F_OK), 0);
     }
+
+    NSLog(@"================END=================");
+    printf("\n\n");
 }
 
 - (void)testAuthenticatedCase:(SEL)selector withCreatedFile:(NSArray *)createdFiles
 {
+    NSLog(@"====================================");
+    NSLog(@"TESTCASE: %s", sel_getName(selector));
+    NSLog(@"====================================");
+    printf("\n");
+    
     if (!selector)
     {
         @throw [NSException exceptionWithName:@"Test" reason:@"Did not supply a selector." userInfo:nil];
@@ -189,7 +198,7 @@
     
     for (NSString *file in createdFiles)
     {
-        NSLog(@"TEST: Removing file(%@)!", file);
+        NSLog(@"Deleting: %@", file);
     }
     
     //
@@ -231,9 +240,17 @@
         
         int ret = stat(file.UTF8String, stat_info);
         
+        if (ret != 0)
+        {
+            NSLog(@"stat: %s", strerror(errno));
+        }
+        
         XCTAssertEqual(ret, 0); /* check if stat succeeded */
         XCTAssertEqual(stat_info->st_uid, 0); /* check if owned by root */
     }
+
+    NSLog(@"================END=================");
+    printf("\n\n");
 }
 
 - (void)testExample
@@ -248,11 +265,17 @@
     // Authenticated Functionality
     [self testAuthenticatedCase:@selector(testLaunchAuthorized)
                 withCreatedFile:@[@"/hello.1"]];
-
+    
+    NSLog(@"====================================");
+    NSLog(@"TESTCASE: testLaunchAuthorizedWithPipes");
+    NSLog(@"====================================");
+    printf("\n");
     [self testLaunchAuthorizedWithPipes];   /*
                                              * this should run without our cleanup technics;
                                              * this is because we *NEED* mkdir to fail (and print a message)
                                              */
+    NSLog(@"================END=================");
+    printf("\n\n");
 
     [self testAuthenticatedCase:@selector(testAuthenticationIsPreservedAfterTaskTermination)
                 withCreatedFile:@[@"/hello.1", @"/hello.2"]];
