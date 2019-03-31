@@ -2,8 +2,8 @@
 //  NPTaskTester.m
 //  NPTaskTester
 //
-//  Created by Nickolas Pylarinos Stamatelatos on 24/03/2019.
-//  Copyright © 2019 Nickolas Pylarinos Stamatelatos. All rights reserved.
+//  Created by Nickolas Pylarinos on 24/03/2019.
+//  Copyright © 2019 Nickolas Pylarinos. All rights reserved.
 //
 
 #include <sys/stat.h>
@@ -108,7 +108,7 @@
     [task launchAuthorized];
     [task waitUntilExit];
     
-    // XXX remember to endSession (Update to newer NSAuthenticatedTask.)
+    [task endSession];
 }
 - (void)testSessions
 {

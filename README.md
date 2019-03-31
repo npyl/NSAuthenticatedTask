@@ -13,7 +13,7 @@ Follows Apple's recommended way of doing it (using SMJobBlessHelper and XPC) so 
 - [x] Custom Authentication Icon (still quite buggy, though! [#3](https://github.com/npyl/NSAuthenticatedTask/issues/3))
 - [x] Custom Authentication Text
 - [ ] Pass environment variables
-- [ ] Pipes
+- [x] Pipes
 
 ## Projects Currently Using NSAuthenticatedTask
 

@@ -214,12 +214,14 @@ void debug_log(const char *format, ...)
     
     /* Lets start communications */
     xpc_connection_t connection = [self connection_for_session:passedSessionID];
-    connection_handle = connection;
     if (!connection)
     {
         fprintf(stderr, "error: failed to create XPC connection with privileged helper.");
         return (-1);
     }
+    
+    /* Keep a record of the handle */
+    connection_handle = connection;
     
     /* Set Running to Yes */
     _running = YES;
