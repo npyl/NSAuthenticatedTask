@@ -144,12 +144,12 @@
 - (void)testCase:(SEL)selector withCreatedFile:(NSArray *)createdFiles
 {
     const char *selectorName = sel_getName(selector);
-    
     if (!selectorName)
         selectorName = "unknown";
     
     NSLog(@"====================================");
-    NSLog(@"TESTCASE: %s", selectorName);
+    NSLog(@"=============START TEST=============");
+    NSLog(@"\t\t%s", sel_getName(selector));
     NSLog(@"====================================");
     printf("\n");
 
@@ -190,8 +190,13 @@
 
 - (void)testAuthenticatedCase:(SEL)selector withCreatedFile:(NSArray *)createdFiles
 {
+    const char *selectorName = sel_getName(selector);
+    if (!selectorName)
+        selectorName = "unknown";
+
     NSLog(@"====================================");
-    NSLog(@"TESTCASE: %s", sel_getName(selector));
+    NSLog(@"=============START TEST=============");
+    NSLog(@"\t\t%s", selectorName);
     NSLog(@"====================================");
     printf("\n");
     

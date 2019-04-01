@@ -43,8 +43,6 @@ static NSTask *task = nil;
     NSData *data = [fh availableData];
     if (data.length > 0)
     {
-        /* if data is found, re-register for more data (and print) */
-        [fh waitForDataInBackgroundAndNotify];
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         
         xpc_object_t msg = xpc_dictionary_create(NULL, NULL, 0);
