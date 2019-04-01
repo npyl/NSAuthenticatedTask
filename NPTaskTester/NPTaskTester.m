@@ -143,8 +143,13 @@
 
 - (void)testCase:(SEL)selector withCreatedFile:(NSArray *)createdFiles
 {
+    const char *selectorName = sel_getName(selector);
+    
+    if (!selectorName)
+        selectorName = "unknown";
+    
     NSLog(@"====================================");
-    NSLog(@"TESTCASE: %s", sel_getName(selector));
+    NSLog(@"TESTCASE: %s", selectorName);
     NSLog(@"====================================");
     printf("\n");
 
@@ -208,7 +213,7 @@
     
     NSMutableArray *arguments = [NSMutableArray arrayWithObject:@"-f"];
 
-    if (!createdFiles)
+    if (createdFiles)
         [arguments addObjectsFromArray:createdFiles];
     
     if (!janitor)
@@ -257,12 +262,16 @@
 {
     NSString *prettyPath = [NSHomeDirectory() stringByAppendingPathComponent:@"this_is_a_test_from_NSAuthTask"];
     
+    //
     // Default Functinality
+    //
     [self testCase:@selector(testNSTaskFunctionality__launch_) withCreatedFile:@[prettyPath]];
     [self testCase:@selector(testNSTaskFunctionality__currentDirectoryURL_) withCreatedFile:@[prettyPath]];
     [self testCase:@selector(testNSTaskFunctionality__launch__nil_termination_handler_) withCreatedFile:@[prettyPath]];
 
+    //
     // Authenticated Functionality
+    //
     [self testAuthenticatedCase:@selector(testLaunchAuthorized)
                 withCreatedFile:@[@"/hello.1"]];
     
