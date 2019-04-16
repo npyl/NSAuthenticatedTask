@@ -6,7 +6,7 @@ A framework that adds administrator Authentication support to NSTask so you can 
 Follows Apple's recommended way of doing it (using SMJobBlessHelper and XPC) so no deprecated APIs here!
 
 ## Supported Features
-- [x] Standard (NSTask) functionality (See [#2](https://github.com/npyl/NSAuthenticatedTask/issues/2))
+- [x] Standard (NSTask) functionality
 - [x] Launch Authenticated
 - [x] Pass arguments
 - [x] Pass current directory
@@ -23,6 +23,12 @@ Follows Apple's recommended way of doing it (using SMJobBlessHelper and XPC) so 
 ## Attributions
 ### Icons
 Key by Luis Prado from the Noun Project
+
+## LICENSE
+
+Dual-Licensed under [996ICU License](https://github.com/996icu/996.ICU/blob/master/LICENSE) and [MIT License](https://github.com/npyl/NSAuthenticatedTask/blob/master/LICENSE).
+
+By using this project as a company (or even person), you agree that your company (or yourself) will use the project while abiding to the labor rules of your country's.  For more info, and specific law matters carefully read the 996ICU License.
 
 ## SUPPORTING 💰
 
