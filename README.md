@@ -6,14 +6,14 @@ A framework that adds administrator Authentication support to NSTask so you can 
 Follows Apple's recommended way of doing it (using SMJobBlessHelper and XPC) so no deprecated APIs here!
 
 ## Supported Features
-- [ ] Standard (NSTask) functionality (See [#2](https://github.com/npyl/NSAuthenticatedTask/issues/2))
+- [x] Standard (NSTask) functionality (See [#2](https://github.com/npyl/NSAuthenticatedTask/issues/2))
 - [x] Launch Authenticated
 - [x] Pass arguments
 - [x] Pass current directory
 - [x] Custom Authentication Icon (still quite buggy, though! [#3](https://github.com/npyl/NSAuthenticatedTask/issues/3))
 - [x] Custom Authentication Text
 - [ ] Pass environment variables
-- [x] Pipes
+- [x] Pipes (nearly done)
 
 ## Projects Currently Using NSAuthenticatedTask
 
